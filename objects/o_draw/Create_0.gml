@@ -32,6 +32,8 @@ mouse = {
     }
 };
 
+stamps = [];
+
 colours = [
     c_white,
     c_red,
@@ -52,26 +54,70 @@ colours = [
 
 brush_settings = {
     size: 5,
-    colour: c_white
+    colour: c_white,
+    stamp_index: undefined
 };
 
 brushes = {
     circle: {
-        draw: function(old_mx, old_my, new_mx, new_my, brush_settings) {
+        draw: function(old_mx, old_my, new_mx, new_my, brush_settings, clicked) {
             
-            draw_set_colour(brush_settings.colour);
-            
-            draw_circle(old_mx, old_my, brush_settings.size / 2, false);
-            draw_line_width(old_mx, old_my, new_mx, new_my, brush_settings.size);
-            draw_circle(old_mx, old_my, brush_settings.size / 2, false);
-            
-            draw_set_colour(c_white);
-            
-            return true;
+            if (clicked) {
+                draw_set_colour(brush_settings.colour);
+                
+                draw_circle(old_mx, old_my, brush_settings.size / 2, false);
+                draw_line_width(old_mx, old_my, new_mx, new_my, brush_settings.size);
+                draw_circle(old_mx, old_my, brush_settings.size / 2, false);
+                
+                draw_set_colour(c_white);
+                
+                return true;
+            } else {
+                
+                draw_set_colour(brush_settings.colour);
+                draw_circle(old_mx, old_my, brush_settings.size / 2, true);
+                draw_set_colour(c_white);
+                
+                return false;
+            }
         },
         
         min_size: 1,
         max_size: 50
+    },
+    stamp: {
+        draw: function(old_mx, old_my, new_mx, new_my, brush_settings, clicked) {
+            
+            var known_stamp = brush_settings.stamp_index == undefined;
+            
+            show_message(known_stamp)
+            
+            if (!known_stamp) {
+                var fname = get_open_filename("png", "img");
+    
+                if (fname != "") {
+                    var spr = sprite_add(fname, 0, false, false, 0, 0);
+                    brush_settings.stamp_index = array_length(stamps);
+                    array_push(stamps, spr);
+                }
+                
+                return false;
+            }
+            
+            if (!clicked) {
+                draw_set_alpha(0.6);
+            }
+            
+            draw_sprite(stamps[brush_settings.stamp_index], 0, new_mx, new_my);
+            
+            if (!clicked) {
+                draw_set_alpha(1);
+            }
+            
+            return clicked;
+            
+        
+        }
     }
 };
 
@@ -109,7 +155,7 @@ handle_pan = function(_mx, _my) {
     }
 }
 
-handle_draw = function(_mx, _my) {
+handle_draw = function(_mx, _my, clicked) {
     
     var old_mx = mouse.x - canvas_pan_x;
     var old_my = mouse.y - canvas_pan_y;
@@ -126,7 +172,7 @@ handle_draw = function(_mx, _my) {
     
     draw_clear_alpha(c_white, 0);
     
-    var done = brushes[$ brush].draw(old_mx, old_my, new_mx, new_my, brush_settings);
+    var done = brushes[$ brush].draw(old_mx, old_my, new_mx, new_my, brush_settings, clicked);
     
     surface_reset_target();
     
@@ -151,6 +197,8 @@ draw_gui = function() {
     var width = 50;
     var height = 50;
     
+    var tools = struct_get_names(brushes);
+    
     draw_set_alpha(0.5);
     draw_rectangle(0, 0, num_cols * width, height, false);
     draw_set_alpha(1);
@@ -168,6 +216,15 @@ draw_gui = function() {
         draw_rectangle(pos.x1, pos.y1, pos.x2, pos.y2, brush_settings.colour != colours[i]);
         draw_set_colour(c_white);
         
+    }
+    
+    var off = height;
+    
+    for (var i = 0; i < array_length(tools); i ++) {
+        var str = tools[i];
+        off += string_height(str);
+        
+        draw_text(20 * (str == brush), off, str);
     }
     
 }
