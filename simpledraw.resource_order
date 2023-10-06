@@ -1,7 +1,13 @@
 {
   "FolderOrderSettings": [
-    {"name":"Objects","order":9,"path":"folders/Objects.yy",},
-    {"name":"Rooms","order":10,"path":"folders/Rooms.yy",},
+    {"name":"Objects","order":10,"path":"folders/Objects.yy",},
+    {"name":null,"path":"datafiles.yy","order":1,},
+    {"name":"Rooms","order":11,"path":"folders/Rooms.yy",},
+    {"name":"script","path":"folders/script.yy","order":0,},
   ],
-  "ResourceOrderSettings": [],
+  "ResourceOrderSettings": [
+    {"name":"PlacementPosition","path":"scripts/PlacementPosition/PlacementPosition.yy","order":1,},
+    {"name":"Vec2","path":"scripts/Vec2/Vec2.yy","order":2,},
+    {"name":"Canvas","path":"scripts/Canvas/Canvas.yy","order":0,},
+  ],
 }
