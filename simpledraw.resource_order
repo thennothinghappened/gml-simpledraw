@@ -4,9 +4,12 @@
     {"name":null,"path":"datafiles.yy","order":1,},
     {"name":"Rooms","order":11,"path":"folders/Rooms.yy",},
     {"name":"script","path":"folders/script.yy","order":0,},
+    {"name":"widgets","path":"folders/script/widgets.yy","order":3,},
   ],
   "ResourceOrderSettings": [
+    {"name":"Text","path":"scripts/Text/Text.yy","order":1,},
     {"name":"PlacementPosition","path":"scripts/PlacementPosition/PlacementPosition.yy","order":1,},
+    {"name":"Surface","path":"scripts/Surface/Surface.yy","order":2,},
     {"name":"Vec2","path":"scripts/Vec2/Vec2.yy","order":2,},
     {"name":"Canvas","path":"scripts/Canvas/Canvas.yy","order":0,},
   ],

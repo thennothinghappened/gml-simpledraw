@@ -70,7 +70,7 @@ function placement_get(vertical, horizontal, src, dest) {
     var hplace = placement_get_on_axis(horizontal, src.horizontal, dest.horizontal);
     var vplace = placement_get_on_axis(vertical, src.vertical, dest.vertical);
     
-    return [hplace, vplace];
+    return new Vec2(hplace, vplace);
 }
 
 /// Place a position correctly within another.

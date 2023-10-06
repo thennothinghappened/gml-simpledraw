@@ -17,11 +17,22 @@ function Canvas(width, height) constructor {
         buffer_set_surface(self.buf, self.surf, 0);
     }
     
-    resize = function(width, height) {
+    /// @param {number} width
+    /// @param {number} height
+    /// @param {Placement} vertical
+    /// @param {Placement} horizontal
+    resize = function(width, height, vertical, horizontal) {
         self._ensure_exists();
         
         var surf = surface_create(width, height);
-        surface_copy_part(surf, 0, 0, self.surf, 0, 0,)
+        var pos = placement_get_fancy(vertical, horizontal, new Size(self.width, self.height), new Size(width, height));
+        
+        show_debug_message(pos);
+        
+        surface_copy(surf, pos.x.start, pos.y.start, self.surf);
+        surface_free(self.surf);
+        
+        self.surf = surf;
     }
     
 }
