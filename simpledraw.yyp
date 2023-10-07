@@ -31,6 +31,7 @@
     {"id":{"name":"Surface","path":"scripts/Surface/Surface.yy",},"order":0,},
     {"id":{"name":"Canvas","path":"scripts/Canvas/Canvas.yy",},"order":0,},
     {"id":{"name":"Room1","path":"rooms/Room1/Room1.yy",},},
+    {"id":{"name":"assert","path":"scripts/assert/assert.yy",},"order":0,},
   ],
   "RoomOrderNodes": [
     {"roomId":{"name":"Room1","path":"rooms/Room1/Room1.yy",},},

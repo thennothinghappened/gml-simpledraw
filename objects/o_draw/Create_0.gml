@@ -5,10 +5,16 @@ application_surface_draw_enable(false);
 window_width = window_get_width();
 window_height = window_get_height();
 
-gui = new Surface()
-    .child_add(new Text("uwu"));
+var node = new Node()
+    .add_child(
+        new Node()
+            .add_child(new Node())
+            .add_child(new Node()
+                .add_child(new Node())))
+    .add_child(new Node());
 
-view = new Surface();
+
+show_debug_message(node.debug_render_node_tree());
 
 /// @param {number} new_width
 /// @param {number} new_height

@@ -1,78 +1,61 @@
-function Widget() constructor {
+function Node() constructor {
     
-    self.surf = surface_create(1, 1);
-    self.has_update = true;
-    self.on_update = function() {  };
+    self.children = [];
     
-    _draw_setup = function(w, h) {
-        if (!surface_exists(self.surf)) {
-            self.surf = surface_create(w, h);
-            self.has_update = true;
-            
-            return;
-        }
-        
-        if (surface_get_width(self.surf) != w || surface_get_height(self.surf) != h) {
-            self.surf = surface_create(w, h);
-            self.has_update = true;
-            
-            return;
-        }
-    }
-    
-    draw_content = function(w, h) {
-        
-        _draw_setup(w, h);
-        
-        if (!self.has_update) {
-            return;
-        }
-        
-        var tg = surface_get_target();
-        
-        if (surface_exists(tg)) {
-            surface_reset_target();
-        }
-        
-        surface_set_target(self.surf);
-        
-        draw(w, h);
-        
-        surface_reset_target();
-        
-        if (surface_exists(tg)) {
-            surface_set_target(tg);
-        }
-        
-        self.has_update = false;
+    /// @param {Constraints} constraints
+    measure = function(constraints) {
         
     }
     
-    draw = function(w, h) { return; }
-    
-    find_focused = function(x, y, w, h) {
-        return undefined;
+    /// @param {Node} child
+    add_child = function(child) {
+        array_push(self.children, child);
+        return self;
     }
     
-    update = function() {
-        self.has_update = true;
-        on_update();
+    debug_render_node_tree = function(depth = 0) {
+        var str = "\n" + string_repeat(" ", depth);
+        str += $"|- {self}";
+        
+        for (var i = 0; i < array_length(self.children); i ++) {
+            str += self.children[i].debug_render_node_tree(depth + 1);
+        }
+        
+        return str;
+    }
+    
+    toString = function() {
+        return instanceof(self);
     }
     
 }
 
-function TreeWidget() : Widget() constructor {
+/// @param {number} min_width
+/// @param {number} min_height
+/// @param {number} max_width
+/// @param {number} max_height
+function Constraints(min_width, min_height, max_width, max_height) constructor {
     
-    self.children = [];
+    assert(max_width >= min_width, $"Max width {max_width} must be >= to {min_width}");
+    assert(min_height >= min_height, $"Max height {max_height} must be >= to {min_height}");
     
-    child_add = function(child) {
-        
-        child.on_update = self.update;
-        
-        array_push(self.children, child);
-        self.has_update = true;
-        
-        return self;
-    }
+    self.min_width      = min_width;
+    self.min_height     = min_height;
+    self.max_width      = max_width;
+    self.max_height     = max_height;
     
+    self.bounded_width  = (self.max_width != infinity);
+    self.bounded_height = (self.max_height != infinity);
+    
+    self.fixed_width    = (self.min_width != self.max_width);
+    self.fixed_height   = (self.min_height != self.max_height);
+    
+    
+    
+}
+
+/// @param {number} width
+/// @param {number} height
+function constraints_fixed(width, height) {
+    return new Constraints(width, height, width, height);
 }
