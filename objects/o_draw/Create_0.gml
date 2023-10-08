@@ -9,13 +9,57 @@ window_height = window_get_height();
 
 #endregion
 
+#region State
+
+enum State {
+	Idle,
+	Panning,
+	Zooming,
+	Drawing
+}
+
+/// What we're currently doing!
+state = State.Idle;
+
+#endregion
+
 #region Mouse
+
+enum ClickState {
+	None,		// not down
+	StartClick, // just started clicking
+	Clicking,	// currently clicking
+	EndClick	// just finished clicking
+}
+
+enum MouseButtons {
+	Left,
+	Right,
+	Middle
+}
 
 prev_mouse_x = window_mouse_get_x();
 prev_mouse_y = window_mouse_get_y();
 
 current_mouse_x = prev_mouse_x;
 current_mouse_y = prev_mouse_y;
+
+/// click state last frame
+prev_click = [];
+prev_click[MouseButtons.Left] = ClickState.None;
+prev_click[MouseButtons.Middle] = ClickState.None;
+prev_click[MouseButtons.Right] = ClickState.None;
+
+/// click state this frame
+current_click = [];
+current_click[MouseButtons.Left] = ClickState.None;
+current_click[MouseButtons.Middle] = ClickState.None;
+current_click[MouseButtons.Right] = ClickState.None;
+
+/// get the current mouse state 
+mouse_state_get = function() {
+	
+}
 
 #endregion
 
@@ -87,6 +131,18 @@ canvas_save_to_file = function(filepath) {
 	surface_save(canvas, filepath);
 }
 
+/// load the canvas from a file!
+/// @param {string} filepath
+canvas_load_from_file = function(filepath) {
+	throw "Not implemented!";
+}
+
+#endregion
+
+#region GUI
+
+
+
 #endregion
 
 #region Event handlers
@@ -100,7 +156,7 @@ on_window_resize = function(new_width, new_height) {
 }
 
 /// called when the user hits save
-on_save = function() {
+on_save_canvas = function() {
 	var filepath = get_save_filename("*.png", "Canvas");
 	
 	if (filepath == "") {
@@ -111,8 +167,22 @@ on_save = function() {
 }
 
 /// called when the user hits load
-on_load = function() {
+on_load_canvas = function() {
+	if (canvas_unsaved_changes) {
+		var ok = show_question("You have unsaved changes! Are you sure?");
+		
+		if (!ok) {
+			return;
+		}
+	}
 	
+	var filepath = get_open_filename("*.png", "Canvas");
+	
+	if (filepath == "") {
+		return;
+	}
+	
+	canvas_load_from_file(filepath);
 }
 
 #endregion
