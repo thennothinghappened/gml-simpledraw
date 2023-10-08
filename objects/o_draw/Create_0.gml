@@ -25,17 +25,10 @@ state = State.Idle;
 
 #region Mouse
 
-enum ClickState {
-	None,		// not down
-	StartClick, // just started clicking
-	Clicking,	// currently clicking
-	EndClick	// just finished clicking
-}
-
 enum MouseButtons {
 	Left,
-	Right,
-	Middle
+	Middle,
+	Right
 }
 
 prev_mouse_x = window_mouse_get_x();
@@ -46,19 +39,32 @@ current_mouse_y = prev_mouse_y;
 
 /// click state last frame
 prev_click = [];
-prev_click[MouseButtons.Left] = ClickState.None;
-prev_click[MouseButtons.Middle] = ClickState.None;
-prev_click[MouseButtons.Right] = ClickState.None;
+prev_click[MouseButtons.Left]		= false;
+prev_click[MouseButtons.Middle]		= false;
+prev_click[MouseButtons.Right]		= false;
 
 /// click state this frame
 current_click = [];
-current_click[MouseButtons.Left] = ClickState.None;
-current_click[MouseButtons.Middle] = ClickState.None;
-current_click[MouseButtons.Right] = ClickState.None;
+current_click[MouseButtons.Left]	= false;
+current_click[MouseButtons.Middle]	= false;
+current_click[MouseButtons.Right]	= false;
 
-/// get the current mouse state 
-mouse_state_get = function() {
+/// load the current mouse state
+mouse_state_load = function() {
 	
+	prev_click[MouseButtons.Left]	= current_click[MouseButtons.Left];
+	prev_click[MouseButtons.Middle] = current_click[MouseButtons.Middle];
+	prev_click[MouseButtons.Right]	= current_click[MouseButtons.Right];
+	
+	current_click[MouseButtons.Left]	= device_mouse_check_button(0, mb_left);
+	current_click[MouseButtons.Middle]	= device_mouse_check_button(0, mb_middle);
+	current_click[MouseButtons.Right]	= device_mouse_check_button(0, mb_right);
+	
+	prev_mouse_x = current_mouse_x;
+	prev_mouse_y = current_mouse_y;
+
+	current_mouse_x = window_mouse_get_x();
+	current_mouse_y = window_mouse_get_y();
 }
 
 #endregion
@@ -75,6 +81,13 @@ brush_surface = -1;
 
 canvas_width = window_width;
 canvas_height = window_height;
+
+/// how much we've panned the canvas on screen!
+canvas_pan_x = 0;
+canvas_pan_y = 0;
+
+/// how much we've zoomed the canvas!
+canvas_scale = 1;
 
 /// surface id for the canvas
 canvas = -1;
@@ -141,7 +154,26 @@ canvas_load_from_file = function(filepath) {
 
 #region GUI
 
+/// gui's draw surface
+gui_surface = surface_create(window_width, window_height);
 
+/// whether we need to redraw the gui
+gui_redraw = true;
+
+gui_draw = function() {
+	draw_text(0, 0, $"hi! {current_time}");
+	
+	gui_redraw = false;
+}
+
+gui_ensure_exists = function() {
+	if (surface_exists(gui_surface)) {
+		return;
+	}
+	
+	gui_surface = surface_create(window_width, window_height);
+	gui_redraw = true;
+}
 
 #endregion
 
@@ -153,6 +185,8 @@ canvas_load_from_file = function(filepath) {
 on_window_resize = function(new_width, new_height) {
     window_width = new_width;
     window_height = new_height;
+	
+	surface_free(gui_surface);
 }
 
 /// called when the user hits save
