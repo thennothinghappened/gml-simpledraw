@@ -11,9 +11,9 @@
   },
   "defaultScriptType": 1,
   "Folders": [
-    {"resourceType":"GMFolder","resourceVersion":"1.0","name":"Objects","folderPath":"folders/Objects.yy",},
-    {"resourceType":"GMFolder","resourceVersion":"1.0","name":"Rooms","folderPath":"folders/Rooms.yy",},
     {"resourceType":"GMFolder","resourceVersion":"1.0","name":"script","folderPath":"folders/script.yy",},
+    {"resourceType":"GMFolder","resourceVersion":"1.0","name":"Tools","folderPath":"folders/Tools.yy",},
+    {"resourceType":"GMFolder","resourceVersion":"1.0","name":"Icons","folderPath":"folders/Tools/Icons.yy",},
   ],
   "IncludedFiles": [],
   "isEcma": false,
@@ -23,13 +23,15 @@
   },
   "resources": [
     {"id":{"name":"gui","path":"scripts/gui/gui.yy",},},
+    {"id":{"name":"Tool","path":"scripts/Tool/Tool.yy",},},
+    {"id":{"name":"s_Pencil","path":"sprites/s_Pencil/s_Pencil.yy",},},
     {"id":{"name":"surface_buffer_size","path":"scripts/surface_buffer_size/surface_buffer_size.yy",},},
     {"id":{"name":"bg","path":"sprites/bg/bg.yy",},},
     {"id":{"name":"o_draw","path":"objects/o_draw/o_draw.yy",},},
-    {"id":{"name":"Room1","path":"rooms/Room1/Room1.yy",},},
+    {"id":{"name":"Room","path":"rooms/Room/Room.yy",},},
   ],
   "RoomOrderNodes": [
-    {"roomId":{"name":"Room1","path":"rooms/Room1/Room1.yy",},},
+    {"roomId":{"name":"Room","path":"rooms/Room/Room.yy",},},
   ],
   "templateType": "game",
   "TextureGroups": [

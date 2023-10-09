@@ -1,10 +1,12 @@
 {
   "FolderOrderSettings": [
-    {"name":"Objects","order":10,"path":"folders/Objects.yy",},
-    {"name":"Rooms","order":11,"path":"folders/Rooms.yy",},
+    {"name":"Tools","order":3,"path":"folders/Tools.yy",},
+    {"name":"Icons","order":1,"path":"folders/Tools/Icons.yy",},
   ],
   "ResourceOrderSettings": [
     {"name":"gui","order":1,"path":"scripts/gui/gui.yy",},
-    {"name":"bg","order":12,"path":"sprites/bg/bg.yy",},
+    {"name":"bg","order":2,"path":"sprites/bg/bg.yy",},
+    {"name":"o_draw","order":4,"path":"objects/o_draw/o_draw.yy",},
+    {"name":"Room","order":5,"path":"rooms/Room/Room.yy",},
   ],
 }

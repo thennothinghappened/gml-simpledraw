@@ -11,8 +11,8 @@
   "managed": true,
   "overriddenProperties": [],
   "parent": {
-    "name": "Objects",
-    "path": "folders/Objects.yy",
+    "name": "simpledraw",
+    "path": "simpledraw.yyp",
   },
   "parentObjectId": null,
   "persistent": false,

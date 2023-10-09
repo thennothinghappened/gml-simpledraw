@@ -178,9 +178,18 @@ mouse_state_load = function() {
 
 #region Brushes and Tools!
 
-/// a new surface to draw into with the selected brush!
-brush_surface = -1;
+enum Tools {
+	Pencil,
+	Brush
+}
 
+brushes = [];
+
+brushes[Tools.Pencil] = {
+	size: 5,
+	
+	
+};
 
 #endregion
 
