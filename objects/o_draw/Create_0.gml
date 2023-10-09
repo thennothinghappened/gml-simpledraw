@@ -88,6 +88,8 @@ handlers[State.Drawing] = function() {
 	
 	if (click[MouseButtons.Left][0] == ClickState.Released) {
 		
+		canvas_unsaved_changes = true;
+		
 		game_set_speed(normal_fps, gamespeed_fps);
 		
 		canvas_backup();
@@ -303,12 +305,19 @@ canvas_ensure_exists = function() {
 canvas_resize = function(new_width, new_height) {
 	var new_canvas = surface_create(new_width, new_height);
 	
+	if (!surface_exists(new_canvas)) {
+		throw "Failed to resize the canvas!";
+	}
+	
 	canvas_ensure_exists();
 	
 	surface_copy(new_canvas, 0, 0, canvas);
 	surface_free(canvas);
 	
 	canvas = new_canvas;
+	canvas_width = new_width;
+	canvas_height = new_height;
+	
 	canvas_create_backup();
 	
 }
@@ -324,9 +333,11 @@ canvas_zoom = function(scale_factor, window_center_x, window_center_y) {
 	
 	// see: https://stackoverflow.com/questions/19999694/how-to-scale-about-point
 	
+	// todo: this is totally broken with rotation
+	
 	var pt = point_to_canvas(window_center_x, window_center_y);
 
-	canvas_translate(pt[X] * canvas_scale, pt[Y] * canvas_scale);
+	canvas_translate(pt[X] * canvas_scale , pt[Y] * canvas_scale);
 	canvas_scale = clamp(canvas_scale + (canvas_scale * scale_factor), min_zoom, max_zoom);
 	
 	//pt = point_to_canvas(window_center_x, window_center_y);
@@ -442,7 +453,6 @@ gui_redraw = true;
 
 /// draw the gui
 gui_draw = function() {
-	
 	
 	gui_redraw = false;
 }
