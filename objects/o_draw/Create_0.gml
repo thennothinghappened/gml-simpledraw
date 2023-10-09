@@ -10,6 +10,11 @@ draw_set_valign(fa_middle);
 window_width = window_get_width();
 window_height = window_get_height();
 
+/// fps to run at normally
+normal_fps = 60;
+/// fps to run at while drawing
+draw_fps = 240;
+
 #endregion
 
 #region State
@@ -29,11 +34,15 @@ handlers = [];
 handlers[State.Idle] = function() {
 	
 	if (click[MouseButtons.Right][0] == ClickState.Pressed) {
+		game_set_speed(draw_fps, gamespeed_fps);
+		
 		state = State.Panning;
 		return;
 	}
 	
 	if (click[MouseButtons.Left][0] == ClickState.Pressed) {
+		game_set_speed(draw_fps, gamespeed_fps);
+		
 		state = State.Drawing;
 		return;
 	}
@@ -41,7 +50,7 @@ handlers[State.Idle] = function() {
 	var scroll_delta = real(mouse_wheel_up()) - real(mouse_wheel_down());
 	
 	if (scroll_delta != 0) {
-		on_zoom(scroll_delta);
+		on_zoom(scroll_delta, current_mouse_x, current_mouse_y);
 		return;
 	}
 }
@@ -52,6 +61,8 @@ handlers[State.Panning] = function() {
 	static pan_dist_threshold = 16;
 	
 	if (click[MouseButtons.Right][0] == ClickState.Released) {
+		
+		game_set_speed(normal_fps, gamespeed_fps);
 		
 		state = State.Idle;
 		
@@ -74,6 +85,8 @@ handlers[State.Panning] = function() {
 handlers[State.Drawing] = function() {
 	
 	if (click[MouseButtons.Left][0] == ClickState.Released) {
+		
+		game_set_speed(normal_fps, gamespeed_fps);
 		
 		canvas_backup();
 		state = State.Idle;
@@ -219,6 +232,11 @@ tools[Tools.Pencil] = {
 
 tool_ind = Tools.Pencil;
 
+/// set the brush colour to a colour index
+set_brush_colour = function(colour_ind) {
+	brush_colour = colours[colour_ind];
+}
+
 #endregion
 
 #region Canvas setup and manipulation
@@ -282,6 +300,22 @@ canvas_resize = function(new_width, new_height) {
 	
 }
 
+/// zoom in or out of the canvas
+canvas_zoom = function(scale_factor) {
+	canvas_scale = clamp(canvas_scale + (canvas_scale * scale_factor), 0.01, 100);
+}
+
+/// move the canvas
+canvas_translate = function(x, y) {
+	canvas_pan_x += x * canvas_scale;
+	canvas_pan_y += y * canvas_scale;
+}
+
+/// rotate the canvas
+canvas_rotate = function(degrees) {
+	throw "Not implemented!";
+}
+
 /// convert a point in window space to a point in canvas space!
 /// @param {real} x
 /// @param {real} y
@@ -323,7 +357,6 @@ canvas_load_from_file = function(filepath) {
 // temp
 bg_surface = surface_create(canvas_width, canvas_height);
 
-
 bg_ensure_exists = function() {
 	
 	if (!surface_exists(bg_surface)) {
@@ -345,14 +378,25 @@ gui_redraw = true;
 
 gui_focused = undefined;
 
-gui_container = new GuiRect(0, 0, 1, 0.2, [
-	new GuiButton(0.1, 0.2, 0.1, 0.1, [
-		
-	], function() {
-		show_message("hi!");
-	})
-], c_white, 0.6);
+#region draw colours (temp)
 
+gui_colours = [];
+
+var num_colours = array_length(colours);
+
+for (var i = 0; i < num_colours; i ++) {
+	gui_colours[i] = new GuiButton(i / num_colours, 0, 1 / num_colours, 1, [
+		new GuiRect(0, 0, 1, 1, [], colours[i], 1)
+	], method({ colour: i, set_brush_colour: set_brush_colour }, function() {
+		set_brush_colour(colour);
+	}));
+}
+
+#endregion
+
+gui_container = new GuiRect(0, 0, 1, 0.02, gui_colours, c_white, 0.6);
+
+/// draw the gui
 gui_draw = function() {
 	gui_container.draw(
 		window_width * gui_container.rel_x,
@@ -364,6 +408,7 @@ gui_draw = function() {
 	gui_redraw = false;
 }
 
+/// ensure the gui layer exists, if not, mark for redraw
 gui_ensure_exists = function() {
 	if (surface_exists(gui_surface)) {
 		return;
@@ -373,6 +418,7 @@ gui_ensure_exists = function() {
 	gui_redraw = true;
 }
 
+/// check if the gui has received input. if not, pass
 gui_check_input = function() {
 	var new_gui_focus = gui_container.get_focused(
 		current_mouse_x,
@@ -394,16 +440,16 @@ gui_check_input = function() {
 		switch (lmb) {
 			case ClickState.Pressed: {
 				gui_focused.on_click(true);
-				return true;
+				break;
 			}
 			
 			case ClickState.Released: {
 				gui_focused.on_click(false);
-				return true;
+				break;
 			}
-			
-			default: return false;
 		}
+		
+		return true;
 	}
 	
 	var absorb_input = false;
@@ -419,10 +465,10 @@ gui_check_input = function() {
 	
 	if (new_gui_focus != undefined) {
 		new_gui_focus.on_hover(true);
+		absorb_input = true;
 		
 		if (lmb == ClickState.Pressed) {
 			new_gui_focus.on_click(true);
-			absorb_input = true;
 		}
 	}
 	
@@ -480,17 +526,22 @@ on_load_canvas = function() {
 on_view_context = function() {
 	state = State.Idle;
 	show_message("view context menu!");
+	show_debug_overlay(true);
 }
 
 /// called on zooming in and out on the canvas
 /// @param {real} delta
-on_zoom = function(delta) {
-	static zoom_factor = 0.02;
-	var amount = delta * zoom_factor;
+/// @param {real} window_center_x center x position in window space
+/// @param {real} window_center_y center y position in window space
+on_zoom = function(delta, window_center_x, window_center_y) {
+	static zoom_multiplier = 0.04;
+	var zoom_factor = delta * zoom_multiplier;
 	
-	canvas_scale = clamp(canvas_scale + (canvas_scale * amount), 0.01, 100);
+	var center = point_to_canvas(window_center_x, window_center_y);
 	
-	// TODO: pan around mouse
+	canvas_translate(center[0], center[1]);
+	canvas_zoom(zoom_factor);
+	canvas_translate(-center[0], -center[1]);
 }
 
 #endregion
