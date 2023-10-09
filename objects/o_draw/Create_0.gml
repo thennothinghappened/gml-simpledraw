@@ -24,7 +24,7 @@ draw_fps = 240;
 
 enum State {
 	Idle,
-	Panning,
+	ClickPanning,
 	Zooming,
 	Drawing
 }
@@ -39,7 +39,7 @@ handlers[State.Idle] = function() {
 	if (click[MouseButtons.Right][0] == ClickState.Pressed) {
 		game_set_speed(draw_fps, gamespeed_fps);
 		
-		state = State.Panning;
+		state = State.ClickPanning;
 		return;
 	}
 	
@@ -58,7 +58,7 @@ handlers[State.Idle] = function() {
 	}
 }
 
-handlers[State.Panning] = function() {
+handlers[State.ClickPanning] = function() {
 	
 	/// min distance before the pan won't open context menu
 	static pan_dist_threshold = 16;
@@ -440,34 +440,9 @@ gui_surface = surface_create(window_width, window_height);
 /// whether we need to redraw the gui
 gui_redraw = true;
 
-gui_focused = undefined;
-
-#region draw colours (temp)
-
-gui_colours = [];
-
-var num_colours = array_length(colours);
-
-for (var i = 0; i < num_colours; i ++) {
-	gui_colours[i] = new GuiButton(i / num_colours, 0, 1 / num_colours, 1, [
-		new GuiRect(0, 0, 1, 1, [], colours[i], 1)
-	], method({ colour: i, set_brush_colour: set_brush_colour }, function() {
-		set_brush_colour(colour);
-	}));
-}
-
-#endregion
-
-gui_container = new GuiRect(0, 0, 1, 0.02, gui_colours, c_white, 0.6);
-
 /// draw the gui
 gui_draw = function() {
-	gui_container.draw(
-		window_width * gui_container.rel_x,
-		window_height * gui_container.rel_y,
-		window_width * gui_container.rel_w,
-		window_height * gui_container.rel_h
-	);
+	
 	
 	gui_redraw = false;
 }

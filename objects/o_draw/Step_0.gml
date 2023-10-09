@@ -9,7 +9,7 @@ if (keyboard_check_pressed(vk_f7)) {
 
 mouse_state_load();
 
-if (gui_check_input()) {
+if (false) {
 	window_set_cursor(cr_default);
 	return;
 }
