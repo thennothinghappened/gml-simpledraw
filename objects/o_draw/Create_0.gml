@@ -4,6 +4,9 @@
 application_surface_enable(false);
 application_surface_draw_enable(false);
 
+draw_set_halign(fa_center);
+draw_set_valign(fa_middle);
+
 window_width = window_get_width();
 window_height = window_get_height();
 
@@ -154,14 +157,46 @@ canvas_load_from_file = function(filepath) {
 
 #region GUI
 
+// temp
+bg_surface = surface_create(canvas_width, canvas_height);
+
+
+bg_ensure_exists = function() {
+	
+	if (!surface_exists(bg_surface)) {
+		bg_surface = surface_create(canvas_width, canvas_height);
+	}
+	
+	surface_set_target(bg_surface);
+
+	draw_sprite_tiled(bg, 0, 0, 0);
+
+	surface_reset_target();
+}
+
 /// gui's draw surface
 gui_surface = surface_create(window_width, window_height);
 
 /// whether we need to redraw the gui
 gui_redraw = true;
 
+gui_focused = undefined;
+
+gui_container = new GuiRect(0, 0, 1, 0.2, [
+	new GuiButton(0.1, 0.2, 0.1, 0.1, [
+		
+	], function() {
+		show_message("hi!");
+	})
+], c_white, 0.6);
+
 gui_draw = function() {
-	draw_text(0, 0, $"hi! {current_time}");
+	gui_container.draw(
+		window_width * gui_container.rel_x,
+		window_height * gui_container.rel_y,
+		window_width * gui_container.rel_w,
+		window_height * gui_container.rel_h
+	);
 	
 	gui_redraw = false;
 }
@@ -173,6 +208,68 @@ gui_ensure_exists = function() {
 	
 	gui_surface = surface_create(window_width, window_height);
 	gui_redraw = true;
+}
+
+gui_check_input = function() {
+	var new_gui_focus = gui_container.get_focused(
+		current_mouse_x,
+		current_mouse_y,
+		window_width * gui_container.rel_x,
+		window_height * gui_container.rel_y,
+		window_width * gui_container.rel_w,
+		window_height * gui_container.rel_h
+	);
+
+	if (new_gui_focus == undefined && gui_focused == undefined) {
+		return false;
+	}
+	
+	var click_changed = current_click[MouseButtons.Left] != prev_click[MouseButtons.Left];
+	
+	if (new_gui_focus == gui_focused) {
+		
+		if (!click_changed || gui_focused == undefined) {
+			return true;
+		}
+		
+		gui_focused.on_click(current_click[MouseButtons.Left]);
+		
+		return true;
+	}
+	
+	if (!click_changed) {
+		// continue a drag click
+		if (current_click[MouseButtons.Left]) {
+			return true;
+		}
+		
+		if (gui_focused != undefined) {
+			gui_focused.on_hover(false);
+		}
+		
+		gui_focused = new_gui_focus;
+	
+		if (gui_focused != undefined) {
+			gui_focused.on_hover(true);
+		}
+		
+		return true;
+	}
+	
+	if (gui_focused != undefined) {
+		gui_focused.on_hover(false);
+		gui_focused.on_click(prev_click[MouseButtons.Left]);
+	}
+	
+	gui_focused = new_gui_focus;
+	
+	if (gui_focused != undefined) {
+		gui_focused.on_hover(true);
+		gui_focused.on_click(current_click[MouseButtons.Left]);
+	}
+	
+	return true;
+	
 }
 
 #endregion
@@ -217,6 +314,11 @@ on_load_canvas = function() {
 	}
 	
 	canvas_load_from_file(filepath);
+}
+
+on_pan = function() {
+	canvas_pan_x += current_mouse_x - prev_mouse_x;
+	canvas_pan_y += current_mouse_y - prev_mouse_y;
 }
 
 #endregion

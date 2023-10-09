@@ -22,7 +22,9 @@
     "IDEVersion": "2023.8.1.102",
   },
   "resources": [
+    {"id":{"name":"gui","path":"scripts/gui/gui.yy",},},
     {"id":{"name":"surface_buffer_size","path":"scripts/surface_buffer_size/surface_buffer_size.yy",},},
+    {"id":{"name":"bg","path":"sprites/bg/bg.yy",},},
     {"id":{"name":"o_draw","path":"objects/o_draw/o_draw.yy",},},
     {"id":{"name":"Room1","path":"rooms/Room1/Room1.yy",},},
   ],

@@ -3,5 +3,8 @@
     {"name":"Objects","order":10,"path":"folders/Objects.yy",},
     {"name":"Rooms","order":11,"path":"folders/Rooms.yy",},
   ],
-  "ResourceOrderSettings": [],
+  "ResourceOrderSettings": [
+    {"name":"gui","order":1,"path":"scripts/gui/gui.yy",},
+    {"name":"bg","order":12,"path":"sprites/bg/bg.yy",},
+  ],
 }

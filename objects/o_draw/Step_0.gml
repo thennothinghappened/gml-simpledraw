@@ -1,12 +1,17 @@
 
-#region Get mouse state
+mouse_state_load();
 
-prev_mouse_x = current_mouse_x;
-prev_mouse_y = current_mouse_y;
+var gui_absorbed_input = gui_check_input();
 
-current_mouse_x = window_mouse_get_x();
-current_mouse_y = window_mouse_get_y();
-
-
-
-#endregion
+if (!gui_absorbed_input) {
+	
+	if (current_click[MouseButtons.Right]) {
+		
+		// pan
+		if (prev_click[MouseButtons.Right]) {
+			
+		}
+		
+	}
+	
+}

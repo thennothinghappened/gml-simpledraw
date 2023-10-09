@@ -11,7 +11,10 @@ gui_ensure_exists();
 if (gui_redraw) {
 	surface_set_target(gui_surface);
 	
+	draw_clear_alpha(c_white, 0);
 	gui_draw();
 	
 	surface_reset_target();
 }
+
+bg_ensure_exists();
