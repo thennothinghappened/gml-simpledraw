@@ -28,11 +28,22 @@ handlers = [];
 
 handlers[State.Idle] = function() {
 	
-	if (click[MouseButtons.Right][0] == ClickState.Held) {
+	if (click[MouseButtons.Right][0] == ClickState.Pressed) {
 		state = State.Panning;
 		return;
 	}
 	
+	if (click[MouseButtons.Left][0] == ClickState.Pressed) {
+		state = State.Drawing;
+		return;
+	}
+	
+	var scroll_delta = real(mouse_wheel_up()) - real(mouse_wheel_down());
+	
+	if (scroll_delta != 0) {
+		on_zoom(scroll_delta);
+		return;
+	}
 }
 
 handlers[State.Panning] = function() {
@@ -58,6 +69,29 @@ handlers[State.Panning] = function() {
 	
 	canvas_pan_x += current_mouse_x - prev_mouse_x;
 	canvas_pan_y += current_mouse_y - prev_mouse_y;
+}
+
+handlers[State.Drawing] = function() {
+	
+	if (click[MouseButtons.Left][0] == ClickState.Released) {
+		
+		canvas_backup();
+		state = State.Idle;
+		
+		return;
+		
+	}
+	
+	surface_set_target(canvas);
+
+	var mprev = point_to_canvas(prev_mouse_x, prev_mouse_y);
+	var m = point_to_canvas(current_mouse_x, current_mouse_y);
+
+	draw_circle(m[0], m[1], 10, 0);
+	draw_line_width(mprev[0], mprev[1], m[0], m[1], 20);
+
+	surface_reset_target();
+	
 }
 
 
@@ -209,6 +243,28 @@ canvas_resize = function(new_width, new_height) {
 	canvas = new_canvas;
 	canvas_create_backup();
 	
+}
+
+/// convert a point in window space to a point in canvas space!
+/// @param {real} x
+/// @param {real} y
+/// @returns {real[]}
+point_to_canvas = function(x, y) {
+	return [
+		(x - canvas_pan_x) / canvas_scale,
+		(y - canvas_pan_y) / canvas_scale
+	];
+}
+
+/// convert a point in canvas space back to window space!
+/// @param {real} x
+/// @param {real} y
+/// @returns {real[]}
+point_from_canvas = function(x, y) {
+	return [
+		(x * canvas_scale) + canvas_pan_x,
+		(y * canvas_scale) + canvas_pan_y
+	];
 }
 
 /// save the canvas to a file!
@@ -387,6 +443,17 @@ on_load_canvas = function() {
 on_view_context = function() {
 	state = State.Idle;
 	show_message("view context menu!");
+}
+
+/// called on zooming in and out on the canvas
+/// @param {real} delta
+on_zoom = function(delta) {
+	static zoom_factor = 0.02;
+	var amount = delta * zoom_factor;
+	
+	canvas_scale = clamp(canvas_scale + (canvas_scale * amount), 0.01, 100);
+	
+	// TODO: pan around mouse
 }
 
 #endregion
