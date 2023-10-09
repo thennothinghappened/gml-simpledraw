@@ -1,4 +1,7 @@
 
+#macro X 0
+#macro Y 1
+
 #region Initial window setup
 
 application_surface_enable(false);
@@ -78,8 +81,7 @@ handlers[State.Panning] = function() {
 		return;
 	}
 	
-	canvas_pan_x += current_mouse_x - prev_mouse_x;
-	canvas_pan_y += current_mouse_y - prev_mouse_y;
+	canvas_translate(current_mouse_x - prev_mouse_x, current_mouse_y - prev_mouse_y);
 }
 
 handlers[State.Drawing] = function() {
@@ -104,7 +106,7 @@ handlers[State.Drawing] = function() {
 	draw_set_colour(brush_colour);
 	
 	var tool = tools[tool_ind];
-	tool.draw(mprev[0], mprev[1], m[0], m[1]);
+	tool.draw(mprev[X], mprev[Y], m[X], m[Y]);
 	
 	draw_set_color(c_white);
 	draw_set_alpha(1);
@@ -230,7 +232,15 @@ tools[Tools.Pencil] = {
 	icon: s_Pencil
 }
 
-tool_ind = Tools.Pencil;
+tools[Tools.Brush] = {
+	draw: function(prev_x, prev_y, new_x, new_y) {
+		draw_line_width(prev_x, prev_y, new_x, new_y, o_draw.brush_size);
+		draw_circle(new_x, new_y, o_draw.brush_size / 2, false);
+	},
+	icon: s_Brush
+}
+
+tool_ind = Tools.Brush;
 
 /// set the brush colour to a colour index
 set_brush_colour = function(colour_ind) {
@@ -250,6 +260,9 @@ canvas_pan_y = 0;
 
 /// how much we've zoomed the canvas!
 canvas_scale = 1;
+
+/// canvas rotation (degrees)!
+canvas_rotation = 0;
 
 /// surface id for the canvas
 canvas = -1;
@@ -300,20 +313,55 @@ canvas_resize = function(new_width, new_height) {
 	
 }
 
-/// zoom in or out of the canvas
-canvas_zoom = function(scale_factor) {
-	canvas_scale = clamp(canvas_scale + (canvas_scale * scale_factor), 0.01, 100);
+/// zoom in or out of the canvas around a point in window space
+/// @param {real} scale_factor
+/// @param {real} window_center_x center x position in window space
+/// @param {real} window_center_y center y position in window space
+canvas_zoom = function(scale_factor, window_center_x, window_center_y) {
+	
+	static min_zoom = 0.01;
+	static max_zoom = 100;
+	
+	// see: https://stackoverflow.com/questions/19999694/how-to-scale-about-point
+	
+	var pt = point_to_canvas(window_center_x, window_center_y);
+
+	canvas_translate(pt[X] * canvas_scale, pt[Y] * canvas_scale);
+	canvas_scale = clamp(canvas_scale + (canvas_scale * scale_factor), min_zoom, max_zoom);
+	
+	//pt = point_to_canvas(window_center_x, window_center_y);
+	canvas_translate(-pt[X] * canvas_scale, -pt[Y] * canvas_scale);
 }
 
 /// move the canvas
 canvas_translate = function(x, y) {
-	canvas_pan_x += x * canvas_scale;
-	canvas_pan_y += y * canvas_scale;
+	canvas_pan_x += x;
+	canvas_pan_y += y;
 }
 
-/// rotate the canvas
-canvas_rotate = function(degrees) {
-	throw "Not implemented!";
+/// rotate the canvas around a point
+canvas_rotate = function(degrees, window_center_x, window_center_y) {
+	
+	// see: https://stackoverflow.com/questions/2259476/rotating-a-point-about-another-point-2d#2259502
+	
+	var center = point_to_canvas(window_center_x, window_center_y);
+	var new_rotation = canvas_rotation + degrees;
+	
+	var s = dsin(new_rotation);
+	var c = dcos(new_rotation);
+
+	// translate point back to origin:
+	canvas_translate(center[X], center[Y]);
+
+	// rotate point
+	canvas_rotation = new_rotation;
+	
+	var xnew = canvas_pan_x * c - canvas_pan_y * s;
+	var ynew = canvas_pan_x * s + canvas_pan_y * c;
+
+	// translate point back:
+	canvas_pan_x = xnew + center[X];
+	canvas_pan_y = ynew + center[Y];
 }
 
 /// convert a point in window space to a point in canvas space!
@@ -321,9 +369,25 @@ canvas_rotate = function(degrees) {
 /// @param {real} y
 /// @returns {real[]}
 point_to_canvas = function(x, y) {
+	
+	var s = dsin(canvas_rotation);
+	var c = dcos(canvas_rotation);
+	
+	// translate the coordinate to the pan origin
+	var zeroed_x = x - canvas_pan_x;
+	var zeroed_y = y - canvas_pan_y;
+	
+	
+	// rotate the coordinate
+	var rot_x = zeroed_x * c - zeroed_y * s;
+	var rot_y = zeroed_x * s + zeroed_y * c;
+	
+	// scale the coordinate
+	var scaled_x = rot_x / canvas_scale;
+	var scaled_y = rot_y / canvas_scale;
+	
 	return [
-		(x - canvas_pan_x) / canvas_scale,
-		(y - canvas_pan_y) / canvas_scale
+		scaled_x, scaled_y
 	];
 }
 
@@ -525,8 +589,7 @@ on_load_canvas = function() {
 /// called on viewing the context menu
 on_view_context = function() {
 	state = State.Idle;
-	show_message("view context menu!");
-	show_debug_overlay(true);
+	
 }
 
 /// called on zooming in and out on the canvas
@@ -537,11 +600,7 @@ on_zoom = function(delta, window_center_x, window_center_y) {
 	static zoom_multiplier = 0.04;
 	var zoom_factor = delta * zoom_multiplier;
 	
-	var center = point_to_canvas(window_center_x, window_center_y);
-	
-	canvas_translate(center[0], center[1]);
-	canvas_zoom(zoom_factor);
-	canvas_translate(-center[0], -center[1]);
+	canvas_zoom(zoom_factor, window_center_x, window_center_y);
 }
 
 #endregion

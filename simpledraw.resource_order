@@ -4,6 +4,7 @@
   ],
   "ResourceOrderSettings": [
     {"name":"gui","order":1,"path":"scripts/gui/gui.yy",},
+    {"name":"s_Brush","order":1,"path":"sprites/s_Brush/s_Brush.yy",},
     {"name":"bg","order":2,"path":"sprites/bg/bg.yy",},
     {"name":"o_draw","order":4,"path":"objects/o_draw/o_draw.yy",},
     {"name":"Room","order":5,"path":"rooms/Room/Room.yy",},
