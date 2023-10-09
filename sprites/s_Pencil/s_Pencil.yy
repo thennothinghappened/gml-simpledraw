@@ -2,9 +2,9 @@
   "resourceType": "GMSprite",
   "resourceVersion": "1.0",
   "name": "s_Pencil",
-  "bbox_bottom": 1,
+  "bbox_bottom": 14,
   "bbox_left": 0,
-  "bbox_right": 1,
+  "bbox_right": 14,
   "bbox_top": 0,
   "bboxMode": 0,
   "collisionKind": 1,
@@ -13,20 +13,20 @@
   "edgeFiltering": false,
   "For3D": false,
   "frames": [
-    {"resourceType":"GMSpriteFrame","resourceVersion":"1.1","name":"420da43b-f736-409c-9b3e-038a4b28f9e9",},
+    {"resourceType":"GMSpriteFrame","resourceVersion":"1.1","name":"494f9517-ebb5-430c-a68b-a009cf2140ca",},
   ],
   "gridX": 0,
   "gridY": 0,
   "height": 16,
   "HTile": false,
   "layers": [
-    {"resourceType":"GMImageLayer","resourceVersion":"1.0","name":"d9e5830f-5b11-4686-8056-7cd14538104d","blendMode":0,"displayName":"default","isLocked":false,"opacity":100.0,"visible":true,},
+    {"resourceType":"GMImageLayer","resourceVersion":"1.0","name":"9f5801bf-7cb3-4b8b-aee6-440161bafc37","blendMode":0,"displayName":"default","isLocked":false,"opacity":100.0,"visible":true,},
   ],
   "nineSlice": null,
   "origin": 0,
   "parent": {
-    "name": "Icons",
-    "path": "folders/Tools/Icons.yy",
+    "name": "img",
+    "path": "folders/img.yy",
   },
   "preMultiplyAlpha": false,
   "sequence": {
@@ -54,7 +54,7 @@
     "timeUnits": 1,
     "tracks": [
       {"resourceType":"GMSpriteFramesTrack","resourceVersion":"1.0","name":"frames","builtinName":0,"events":[],"inheritsTrackColour":true,"interpolation":1,"isCreationTrack":false,"keyframes":{"resourceType":"KeyframeStore<SpriteFrameKeyframe>","resourceVersion":"1.0","Keyframes":[
-            {"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"1.0","Channels":{"0":{"resourceType":"SpriteFrameKeyframe","resourceVersion":"1.0","Id":{"name":"420da43b-f736-409c-9b3e-038a4b28f9e9","path":"sprites/s_Pencil/s_Pencil.yy",},},},"Disabled":false,"id":"7fde20d8-d256-420e-b342-e755c97c34a0","IsCreationKey":false,"Key":0.0,"Length":1.0,"Stretch":false,},
+            {"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"1.0","Channels":{"0":{"resourceType":"SpriteFrameKeyframe","resourceVersion":"1.0","Id":{"name":"494f9517-ebb5-430c-a68b-a009cf2140ca","path":"sprites/s_Pencil/s_Pencil.yy",},},},"Disabled":false,"id":"31a548e4-d190-4d24-b9d0-bffd6edb0bf8","IsCreationKey":false,"Key":0.0,"Length":1.0,"Stretch":false,},
           ],},"modifiers":[],"spriteId":null,"trackColour":0,"tracks":[],"traits":0,},
     ],
     "visibleRange": null,

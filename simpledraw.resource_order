@@ -1,7 +1,6 @@
 {
   "FolderOrderSettings": [
-    {"name":"Tools","order":3,"path":"folders/Tools.yy",},
-    {"name":"Icons","order":1,"path":"folders/Tools/Icons.yy",},
+    {"name":"img","order":6,"path":"folders/img.yy",},
   ],
   "ResourceOrderSettings": [
     {"name":"gui","order":1,"path":"scripts/gui/gui.yy",},

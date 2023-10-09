@@ -87,8 +87,14 @@ handlers[State.Drawing] = function() {
 	var mprev = point_to_canvas(prev_mouse_x, prev_mouse_y);
 	var m = point_to_canvas(current_mouse_x, current_mouse_y);
 
-	draw_circle(m[0], m[1], 10, 0);
-	draw_line_width(mprev[0], mprev[1], m[0], m[1], 20);
+	draw_set_alpha(brush_alpha);
+	draw_set_colour(brush_colour);
+	
+	var tool = tools[tool_ind];
+	tool.draw(mprev[0], mprev[1], m[0], m[1]);
+	
+	draw_set_color(c_white);
+	draw_set_alpha(1);
 
 	surface_reset_target();
 	
@@ -180,16 +186,38 @@ mouse_state_load = function() {
 
 enum Tools {
 	Pencil,
-	Brush
+	Brush,
+	Eraser
 }
 
-brushes = [];
+brush_colour = c_white;
+brush_alpha = 1;
+brush_size = 5;
 
-brushes[Tools.Pencil] = {
-	size: 5,
-	
-	
-};
+colours = [
+	c_white,
+	c_black,
+	c_red,
+	c_orange,
+	c_yellow,
+	c_green,
+	c_aqua,
+	c_blue,
+	c_purple,
+	c_fuchsia
+];
+
+tools = [];
+
+tools[Tools.Pencil] = {
+	draw: function(prev_x, prev_y, new_x, new_y) {
+		draw_line(prev_x, prev_y, new_x, new_y);
+		draw_point(new_x, new_y);
+	},
+	icon: s_Pencil
+}
+
+tool_ind = Tools.Pencil;
 
 #endregion
 
