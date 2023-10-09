@@ -1,3 +1,7 @@
+/// TODO: gonna implement a multi-step undo!
+/// plan is to take an extra old buffer snapshot, and record X amount
+/// of actions after it, in a way that you could literally step through and replay them
+/// to undo and redo.
 
 #macro X 0
 #macro Y 1
