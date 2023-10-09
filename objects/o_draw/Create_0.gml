@@ -24,6 +24,11 @@ enum State {
 /// What we're currently doing!
 state = State.Idle;
 
+/// figure out what the current state is
+get_current_state = function() {
+	
+}
+
 #endregion
 
 #region Mouse
@@ -34,40 +39,76 @@ enum MouseButtons {
 	Right
 }
 
+enum ClickState {
+	None,
+	Pressed,
+	Held,
+	Released
+}
+
 prev_mouse_x = window_mouse_get_x();
 prev_mouse_y = window_mouse_get_y();
 
 current_mouse_x = prev_mouse_x;
 current_mouse_y = prev_mouse_y;
 
-/// click state last frame
-prev_click = [];
-prev_click[MouseButtons.Left]		= false;
-prev_click[MouseButtons.Middle]		= false;
-prev_click[MouseButtons.Right]		= false;
+/// mapping for click states, util stuff
+_clickstatemap = [];
+_clickstatemap[MouseButtons.Left] = mb_left;
+_clickstatemap[MouseButtons.Middle] = mb_middle;
+_clickstatemap[MouseButtons.Right] = mb_right;
 
-/// click state this frame
-current_click = [];
-current_click[MouseButtons.Left]	= false;
-current_click[MouseButtons.Middle]	= false;
-current_click[MouseButtons.Right]	= false;
+/// click state this frame [state, time (for last Held)]
+click = [];
+click[MouseButtons.Left]	= [ClickState.None, 0];
+click[MouseButtons.Middle]	= [ClickState.None, 0];
+click[MouseButtons.Right]	= [ClickState.None, 0];
 
-/// load the current mouse state
-mouse_state_load = function() {
+/// load the current mouse state for a button
+mouse_btn_state_load = function(index) {
 	
-	prev_click[MouseButtons.Left]	= current_click[MouseButtons.Left];
-	prev_click[MouseButtons.Middle] = current_click[MouseButtons.Middle];
-	prev_click[MouseButtons.Right]	= current_click[MouseButtons.Right];
+	if (device_mouse_check_button_released(0, _clickstatemap[index])) {
+		click[index][0] = ClickState.Released;
+		return;
+	}
 	
-	current_click[MouseButtons.Left]	= device_mouse_check_button(0, mb_left);
-	current_click[MouseButtons.Middle]	= device_mouse_check_button(0, mb_middle);
-	current_click[MouseButtons.Right]	= device_mouse_check_button(0, mb_right);
+	if (device_mouse_check_button_pressed(0, _clickstatemap[index])) {
+		click[index][0] = ClickState.Pressed;
+		return;
+	}
 	
+	if (device_mouse_check_button(0, _clickstatemap[index])) {
+		click[index][0] = ClickState.Held;
+		click[index][1] += 1;
+		return;
+	}
+	
+	click[index][0] = ClickState.None;
+	click[index][1] = 0;
+	
+}
+
+/// load the mouse position state
+mouse_pos_state_load = function() {
 	prev_mouse_x = current_mouse_x;
 	prev_mouse_y = current_mouse_y;
 
 	current_mouse_x = window_mouse_get_x();
 	current_mouse_y = window_mouse_get_y();
+}
+
+/// load the current mouse state
+mouse_state_load = function() {
+	mouse_btn_state_load(MouseButtons.Left);
+	mouse_btn_state_load(MouseButtons.Middle);
+	mouse_btn_state_load(MouseButtons.Right);
+	
+	mouse_pos_state_load();
+}
+
+/// returns whether the mouse moved
+mouse_moved = function() {
+	return prev_mouse_x != current_mouse_x || prev_mouse_y != current_mouse_y;
 }
 
 #endregion
@@ -220,55 +261,52 @@ gui_check_input = function() {
 		window_height * gui_container.rel_h
 	);
 
-	if (new_gui_focus == undefined && gui_focused == undefined) {
-		return false;
-	}
-	
-	var click_changed = current_click[MouseButtons.Left] != prev_click[MouseButtons.Left];
+	var lmb = click[MouseButtons.Left][0];
 	
 	if (new_gui_focus == gui_focused) {
 		
-		if (!click_changed || gui_focused == undefined) {
-			return true;
+		if (gui_focused == undefined) {
+			return false;
 		}
 		
-		gui_focused.on_click(current_click[MouseButtons.Left]);
-		
-		return true;
+		switch (lmb) {
+			case ClickState.Pressed: {
+				gui_focused.on_click(true);
+				return true;
+			}
+			
+			case ClickState.Released: {
+				gui_focused.on_click(false);
+				return true;
+			}
+			
+			default: return false;
+		}
 	}
 	
-	if (!click_changed) {
-		// continue a drag click
-		if (current_click[MouseButtons.Left]) {
-			return true;
-		}
-		
-		if (gui_focused != undefined) {
-			gui_focused.on_hover(false);
-		}
-		
-		gui_focused = new_gui_focus;
-	
-		if (gui_focused != undefined) {
-			gui_focused.on_hover(true);
-		}
-		
-		return true;
-	}
+	var absorb_input = false;
 	
 	if (gui_focused != undefined) {
 		gui_focused.on_hover(false);
-		gui_focused.on_click(prev_click[MouseButtons.Left]);
+		
+		if (lmb == ClickState.Released) {
+			gui_focused.on_click(false);
+			absorb_input = true;
+		}
+	}
+	
+	if (new_gui_focus != undefined) {
+		new_gui_focus.on_hover(true);
+		
+		if (lmb == ClickState.Pressed) {
+			new_gui_focus.on_click(true);
+			absorb_input = true;
+		}
 	}
 	
 	gui_focused = new_gui_focus;
 	
-	if (gui_focused != undefined) {
-		gui_focused.on_hover(true);
-		gui_focused.on_click(current_click[MouseButtons.Left]);
-	}
-	
-	return true;
+	return absorb_input;
 	
 }
 
@@ -316,9 +354,21 @@ on_load_canvas = function() {
 	canvas_load_from_file(filepath);
 }
 
-on_pan = function() {
-	canvas_pan_x += current_mouse_x - prev_mouse_x;
-	canvas_pan_y += current_mouse_y - prev_mouse_y;
+/// called on panning the canvas
+on_pan = function(change_x, change_y) {
+	canvas_pan_x += change_x;
+	canvas_pan_y += change_y;
+}
+
+/// called on zooming the canvas
+on_zoom = function(change) {
+	
+}
+
+/// called on viewing the context menu
+on_view_context = function() {
+	state = State.Idle;
+	show_message("view context menu!");
 }
 
 #endregion
