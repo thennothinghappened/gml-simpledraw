@@ -24,10 +24,42 @@ enum State {
 /// What we're currently doing!
 state = State.Idle;
 
-/// figure out what the current state is
-get_current_state = function() {
+handlers = [];
+
+handlers[State.Idle] = function() {
+	
+	if (click[MouseButtons.Right][0] == ClickState.Held) {
+		state = State.Panning;
+		return;
+	}
 	
 }
+
+handlers[State.Panning] = function() {
+	
+	/// min distance before the pan won't open context menu
+	static pan_dist_threshold = 16;
+	
+	if (click[MouseButtons.Right][0] == ClickState.Released) {
+		
+		state = State.Idle;
+		
+		if (point_distance(
+			click[MouseButtons.Right][2],
+			click[MouseButtons.Right][3],
+			current_mouse_x,
+			current_mouse_y) < pan_dist_threshold) {
+				
+			on_view_context();
+		}
+		
+		return;
+	}
+	
+	canvas_pan_x += current_mouse_x - prev_mouse_x;
+	canvas_pan_y += current_mouse_y - prev_mouse_y;
+}
+
 
 #endregion
 
@@ -58,11 +90,11 @@ _clickstatemap[MouseButtons.Left] = mb_left;
 _clickstatemap[MouseButtons.Middle] = mb_middle;
 _clickstatemap[MouseButtons.Right] = mb_right;
 
-/// click state this frame [state, time (for last Held)]
+/// click state this frame [state, time (for last Held), start drag pos_x, start drag pos_y]
 click = [];
-click[MouseButtons.Left]	= [ClickState.None, 0];
-click[MouseButtons.Middle]	= [ClickState.None, 0];
-click[MouseButtons.Right]	= [ClickState.None, 0];
+click[MouseButtons.Left]	= [ClickState.None, 0, current_mouse_x, current_mouse_y];
+click[MouseButtons.Middle]	= [ClickState.None, 0, current_mouse_x, current_mouse_y];
+click[MouseButtons.Right]	= [ClickState.None, 0, current_mouse_x, current_mouse_y];
 
 /// load the current mouse state for a button
 mouse_btn_state_load = function(index) {
@@ -74,6 +106,8 @@ mouse_btn_state_load = function(index) {
 	
 	if (device_mouse_check_button_pressed(0, _clickstatemap[index])) {
 		click[index][0] = ClickState.Pressed;
+		click[index][2] = current_mouse_x;
+		click[index][3] = current_mouse_y;
 		return;
 	}
 	
@@ -104,11 +138,6 @@ mouse_state_load = function() {
 	mouse_btn_state_load(MouseButtons.Right);
 	
 	mouse_pos_state_load();
-}
-
-/// returns whether the mouse moved
-mouse_moved = function() {
-	return prev_mouse_x != current_mouse_x || prev_mouse_y != current_mouse_y;
 }
 
 #endregion
@@ -352,17 +381,6 @@ on_load_canvas = function() {
 	}
 	
 	canvas_load_from_file(filepath);
-}
-
-/// called on panning the canvas
-on_pan = function(change_x, change_y) {
-	canvas_pan_x += change_x;
-	canvas_pan_y += change_y;
-}
-
-/// called on zooming the canvas
-on_zoom = function(change) {
-	
 }
 
 /// called on viewing the context menu

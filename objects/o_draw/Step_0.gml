@@ -5,3 +5,4 @@ if (gui_check_input()) {
 	return;
 }
 
+handlers[state]();
