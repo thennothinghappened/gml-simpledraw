@@ -8,7 +8,7 @@ if (keyboard_check_pressed(vk_f7)) {
 }
 
 if (keyboard_check_pressed(vk_f8)) {
-	return canvas_resize(canvas_width * 2, canvas_height * 2);
+	return on_resize_canvas();
 	
 }
 

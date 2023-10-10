@@ -246,7 +246,7 @@ tools[Tools.Brush] = {
 	icon: s_Brush
 }
 
-tool_ind = Tools.Brush;
+tool_ind = Tools.Pencil;
 
 /// set the brush colour to a colour index
 set_brush_colour = function(colour_ind) {
@@ -425,8 +425,37 @@ canvas_save_to_file = function(filepath) {
 
 /// load the canvas from a file!
 /// @param {string} filepath
+/// @returns {Enum.ImageLoadResult}
 canvas_load_from_file = function(filepath) {
-	throw "Not implemented!";
+	
+	var res = image_load(filepath);
+	
+	if (res.result != ImageLoadResult.Loaded) {
+		return res.result;
+	}
+	
+	canvas_replace(res.img);
+	
+	sprite_delete(res.img);
+	
+	return res.result;
+}
+
+/// replace the canvas with a new image! (i.e. load a new img)
+/// @param {Id.Sprite} img
+canvas_replace = function(img) {
+	canvas_width = sprite_get_width(img);
+	canvas_height = sprite_get_height(img);
+	
+	surface_free(canvas);
+	canvas = surface_create(canvas_width, canvas_height);
+	
+	surface_set_target(canvas);
+	draw_sprite(img, 0, 0, 0);
+	surface_reset_target();
+	
+	canvas_backup();
+	bg_refresh();
 }
 
 #endregion
@@ -447,6 +476,11 @@ bg_ensure_exists = function() {
 	draw_sprite_tiled(bg, 0, 0, 0);
 
 	surface_reset_target();
+}
+
+/// force a refresh of the background
+bg_refresh = function() {
+	surface_free(bg_surface);
 }
 
 /// gui's draw surface
@@ -556,17 +590,19 @@ on_save_canvas = function() {
 	canvas_save_to_file(filepath);
 }
 
+/// called when the user is resizing the canvas
+on_resize_canvas = function() {
+	canvas_resize(canvas_width + 100, canvas_height + 100);
+	bg_refresh();
+}
+
 /// called when the user hits load
 on_load_canvas = function() {
 	if (canvas_unsaved_changes) {
-		var ok = show_question("You have unsaved changes! Are you sure?");
-		
-		if (!ok) {
-			return;
-		}
+		// TODO!
 	}
 	
-	var filepath = get_open_filename("*.png", "Canvas");
+	var filepath = get_open_filename("*", "Canvas");
 	
 	if (filepath == "") {
 		return;

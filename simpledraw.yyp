@@ -11,9 +11,9 @@
   },
   "defaultScriptType": 1,
   "Folders": [
-    {"resourceType":"GMFolder","resourceVersion":"1.0","name":"script","folderPath":"folders/script.yy",},
-    {"resourceType":"GMFolder","resourceVersion":"1.0","name":"img","folderPath":"folders/img.yy",},
     {"resourceType":"GMFolder","resourceVersion":"1.0","name":"gui","folderPath":"folders/gui.yy",},
+    {"resourceType":"GMFolder","resourceVersion":"1.0","name":"img","folderPath":"folders/img.yy",},
+    {"resourceType":"GMFolder","resourceVersion":"1.0","name":"script","folderPath":"folders/script.yy",},
   ],
   "IncludedFiles": [],
   "isEcma": false,
@@ -22,6 +22,7 @@
     "IDEVersion": "2023.8.1.102",
   },
   "resources": [
+    {"id":{"name":"image_load","path":"scripts/image_load/image_load.yy",},},
     {"id":{"name":"surface_buffer_size","path":"scripts/surface_buffer_size/surface_buffer_size.yy",},},
     {"id":{"name":"s_Brush","path":"sprites/s_Brush/s_Brush.yy",},},
     {"id":{"name":"s_Pencil","path":"sprites/s_Pencil/s_Pencil.yy",},},

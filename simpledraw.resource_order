@@ -1,9 +1,10 @@
 {
   "FolderOrderSettings": [
-    {"name":"img","order":6,"path":"folders/img.yy",},
     {"name":"gui","order":7,"path":"folders/gui.yy",},
+    {"name":"img","order":6,"path":"folders/img.yy",},
   ],
   "ResourceOrderSettings": [
+    {"name":"image_load","order":1,"path":"scripts/image_load/image_load.yy",},
     {"name":"s_Brush","order":1,"path":"sprites/s_Brush/s_Brush.yy",},
     {"name":"bg","order":2,"path":"sprites/bg/bg.yy",},
     {"name":"o_draw","order":4,"path":"objects/o_draw/o_draw.yy",},
