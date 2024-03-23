@@ -1,11 +1,13 @@
 {
-  "resourceType": "GMScript",
-  "resourceVersion": "1.0",
-  "name": "surface_buffer_size",
-  "isCompatibility": false,
-  "isDnD": false,
-  "parent": {
-    "name": "script",
-    "path": "folders/script.yy",
+  "$GMScript":"",
+  "%Name":"surface_buffer_size",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"surface_buffer_size",
+  "parent":{
+    "name":"script",
+    "path":"folders/script.yy",
   },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
 }

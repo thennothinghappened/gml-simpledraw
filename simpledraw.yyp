@@ -1,27 +1,27 @@
 {
-  "resourceType": "GMProject",
-  "resourceVersion": "1.7",
-  "name": "simpledraw",
-  "AudioGroups": [
-    {"resourceType":"GMAudioGroup","resourceVersion":"1.3","name":"audiogroup_default","targets":-1,},
+  "$GMProject":"",
+  "%Name":"simpledraw",
+  "AudioGroups":[
+    {"$GMAudioGroup":"","%Name":"audiogroup_default","name":"audiogroup_default","resourceType":"GMAudioGroup","resourceVersion":"2.0","targets":-1,},
   ],
-  "configs": {
-    "children": [],
-    "name": "Default",
+  "configs":{
+    "children":[],
+    "name":"Default",
   },
-  "defaultScriptType": 1,
-  "Folders": [
-    {"resourceType":"GMFolder","resourceVersion":"1.0","name":"gui","folderPath":"folders/gui.yy",},
-    {"resourceType":"GMFolder","resourceVersion":"1.0","name":"img","folderPath":"folders/img.yy",},
-    {"resourceType":"GMFolder","resourceVersion":"1.0","name":"script","folderPath":"folders/script.yy",},
+  "defaultScriptType":1,
+  "Folders":[
+    {"$GMFolder":"","%Name":"gui","folderPath":"folders/gui.yy","name":"gui","resourceType":"GMFolder","resourceVersion":"2.0",},
+    {"$GMFolder":"","%Name":"img","folderPath":"folders/img.yy","name":"img","resourceType":"GMFolder","resourceVersion":"2.0",},
+    {"$GMFolder":"","%Name":"script","folderPath":"folders/script.yy","name":"script","resourceType":"GMFolder","resourceVersion":"2.0",},
   ],
-  "IncludedFiles": [],
-  "isEcma": false,
-  "LibraryEmitters": [],
-  "MetaData": {
-    "IDEVersion": "2023.8.1.102",
+  "IncludedFiles":[],
+  "isEcma":false,
+  "LibraryEmitters":[],
+  "MetaData":{
+    "IDEVersion":"2023.8.1.102",
   },
-  "resources": [
+  "name":"simpledraw",
+  "resources":[
     {"id":{"name":"image_load","path":"scripts/image_load/image_load.yy",},},
     {"id":{"name":"surface_buffer_size","path":"scripts/surface_buffer_size/surface_buffer_size.yy",},},
     {"id":{"name":"s_Brush","path":"sprites/s_Brush/s_Brush.yy",},},
@@ -30,11 +30,13 @@
     {"id":{"name":"o_draw","path":"objects/o_draw/o_draw.yy",},},
     {"id":{"name":"Room","path":"rooms/Room/Room.yy",},},
   ],
-  "RoomOrderNodes": [
+  "resourceType":"GMProject",
+  "resourceVersion":"2.0",
+  "RoomOrderNodes":[
     {"roomId":{"name":"Room","path":"rooms/Room/Room.yy",},},
   ],
-  "templateType": "game",
-  "TextureGroups": [
-    {"resourceType":"GMTextureGroup","resourceVersion":"1.3","name":"Default","autocrop":true,"border":2,"compressFormat":"bz2","directory":"","groupParent":null,"isScaled":true,"loadType":"default","mipsToGenerate":0,"targets":-1,},
+  "templateType":"game",
+  "TextureGroups":[
+    {"$GMTextureGroup":"","%Name":"Default","autocrop":true,"border":2,"compressFormat":"bz2","customOptions":"","directory":"","groupParent":null,"isScaled":true,"loadType":"default","mipsToGenerate":0,"name":"Default","resourceType":"GMTextureGroup","resourceVersion":"2.0","targets":-1,},
   ],
 }
