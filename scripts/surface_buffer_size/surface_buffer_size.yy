@@ -5,8 +5,8 @@
   "isDnD":false,
   "name":"surface_buffer_size",
   "parent":{
-    "name":"script",
-    "path":"folders/script.yy",
+    "name":"Scripts",
+    "path":"folders/Scripts.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

@@ -5,8 +5,8 @@
   "isDnD":false,
   "name":"image_load",
   "parent":{
-    "name":"script",
-    "path":"folders/script.yy",
+    "name":"Scripts",
+    "path":"folders/Scripts.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

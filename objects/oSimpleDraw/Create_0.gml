@@ -235,7 +235,7 @@ tools[Tools.Pencil] = {
 		draw_line(prev_x, prev_y, new_x, new_y);
 		draw_point(new_x, new_y);
 	},
-	icon: s_Pencil
+	icon: sToolPencil
 }
 
 tools[Tools.Brush] = {
@@ -243,7 +243,7 @@ tools[Tools.Brush] = {
 		draw_line_width(prev_x, prev_y, new_x, new_y, o_draw.brush_size);
 		draw_circle(new_x, new_y, o_draw.brush_size / 2, false);
 	},
-	icon: s_Brush
+	icon: sToolBrush
 }
 
 tool_ind = Tools.Pencil;
@@ -473,7 +473,7 @@ bg_ensure_exists = function() {
 	
 	surface_set_target(bg_surface);
 
-	draw_sprite_tiled(bg, 0, 0, 0);
+	draw_sprite_tiled(sCheckerboard, 0, 0, 0);
 
 	surface_reset_target();
 }
