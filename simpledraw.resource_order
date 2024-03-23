@@ -1,12 +1,15 @@
 {
   "FolderOrderSettings":[
+    {"name":"Legacy","order":7,"path":"folders/Legacy.yy",},
+    {"name":"Scripts","order":8,"path":"folders/Scripts.yy",},
     {"name":"Sprites","order":6,"path":"folders/Sprites.yy",},
   ],
   "ResourceOrderSettings":[
-    {"name":"image_load","order":1,"path":"scripts/image_load/image_load.yy",},
-    {"name":"sToolBrush","order":1,"path":"sprites/sToolBrush/sToolBrush.yy",},
-    {"name":"sCheckerboard","order":2,"path":"sprites/sCheckerboard/sCheckerboard.yy",},
-    {"name":"oSimpleDraw","order":4,"path":"objects/oSimpleDraw/oSimpleDraw.yy",},
+    {"name":"__legacy_oSimpleDraw","order":1,"path":"objects/__legacy_oSimpleDraw/__legacy_oSimpleDraw.yy",},
+    {"name":"oCanvas","order":9,"path":"objects/oCanvas/oCanvas.yy",},
     {"name":"Room","order":5,"path":"rooms/Room/Room.yy",},
+    {"name":"__legacy_image_load","order":1,"path":"scripts/__legacy_image_load/__legacy_image_load.yy",},
+    {"name":"sCheckerboard","order":2,"path":"sprites/sCheckerboard/sCheckerboard.yy",},
+    {"name":"sToolBrush","order":1,"path":"sprites/sToolBrush/sToolBrush.yy",},
   ],
 }

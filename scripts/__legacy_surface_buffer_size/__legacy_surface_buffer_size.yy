@@ -1,12 +1,12 @@
 {
   "$GMScript":"",
-  "%Name":"surface_buffer_size",
+  "%Name":"__legacy_surface_buffer_size",
   "isCompatibility":false,
   "isDnD":false,
-  "name":"surface_buffer_size",
+  "name":"__legacy_surface_buffer_size",
   "parent":{
     "name":"Scripts",
-    "path":"folders/Scripts.yy",
+    "path":"folders/Legacy/Scripts.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

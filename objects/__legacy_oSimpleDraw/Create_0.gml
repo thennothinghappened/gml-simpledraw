@@ -285,7 +285,7 @@ canvas_create_backup = function() {
         buffer_delete(canvas_backup_buf);
     }
     
-    canvas_backup_buf = buffer_create(surface_buffer_size(canvas_width, canvas_height), buffer_fixed, 1);
+    canvas_backup_buf = buffer_create(__legacy_surface_buffer_size(canvas_width, canvas_height), buffer_fixed, 1);
     canvas_backup();
 }
 
@@ -428,7 +428,7 @@ canvas_save_to_file = function(filepath) {
 /// @returns {Enum.ImageLoadResult}
 canvas_load_from_file = function(filepath) {
     
-    var res = image_load(filepath);
+    var res = __legacy_image_load(filepath);
     
     if (res.result != ImageLoadResult.Loaded) {
         return res.result;

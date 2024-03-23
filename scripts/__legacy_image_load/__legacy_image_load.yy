@@ -1,12 +1,12 @@
 {
   "$GMScript":"",
-  "%Name":"image_load",
+  "%Name":"__legacy_image_load",
   "isCompatibility":false,
   "isDnD":false,
-  "name":"image_load",
+  "name":"__legacy_image_load",
   "parent":{
     "name":"Scripts",
-    "path":"folders/Scripts.yy",
+    "path":"folders/Legacy/Scripts.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",
