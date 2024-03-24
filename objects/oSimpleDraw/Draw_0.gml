@@ -2,6 +2,7 @@
 
 draw_sprite_tiled(sCheckerboard, 0, 0, 0);
 draw_surface(canvas.__surf, 0, 0);
+
 /// Draw the brush
 
 draw_set_color(c_grey);
