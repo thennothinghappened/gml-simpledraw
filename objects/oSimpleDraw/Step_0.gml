@@ -12,30 +12,24 @@ if (mouse_wheel != 0) {
 
 if (mouse_check_button(mb_middle)) {
 
-    camera.rotation += (real(window_mouse_get_delta_x()) / (2 * pi)) * camera_rotation_speed;
-    camera.update();
+    camera.rotate(window_mouse_get_delta_x() * camera_rotation_speed);
 }
 
 if (mouse_check_button(mb_right)) {
     
-    var s = sin(-camera.rotation);
-    var c = cos(-camera.rotation);
+    camera.pan(
+        window_mouse_get_delta_x() * camera_pan_speed,
+        window_mouse_get_delta_y() * camera_pan_speed
+    );
     
-    var pan_x = real(window_mouse_get_delta_x()) * camera_pan_speed * camera.distance;
-    var pan_y = real(window_mouse_get_delta_y()) * camera_pan_speed * camera.distance;
-
-    camera.pan[X] -= pan_x * c - pan_y * s;
-    camera.pan[Y] -= pan_x * s + pan_y * c;
-    
-    camera.update();
 }
 
 if (mouse_check_button(mb_left)) {
-    canvas.draw(function() {
+    canvas.draw_atomic(function() {
     
         draw_set_color(c_red);
         draw_circle(mouse_worldspace[X], mouse_worldspace[Y], 10, false);
         draw_set_color(c_white);
     
-    });    
+    });
 }

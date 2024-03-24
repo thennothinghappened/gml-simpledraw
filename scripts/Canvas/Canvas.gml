@@ -56,15 +56,15 @@ function Canvas(width, height) constructor {
     /// Clear the canvas!
     static clear = function() {
     
-        self.draw(function() {
+        self.draw_atomic(function() {
             draw_clear_alpha(c_white, 1);
         });
         
     }
     
-    /// Draw on the surface, takes in a method to run for the surface.
+    /// Draw on the surface & immediately save, takes in a method to run for the surface.
     /// @param {Function} block
-    static draw = function(block) {
+    static draw_atomic = function(block) {
         
         var prev_surf = surface_get_target();
         
