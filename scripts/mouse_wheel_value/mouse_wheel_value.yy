@@ -1,0 +1,13 @@
+{
+  "$GMScript":"",
+  "%Name":"mouse_wheel_value",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"mouse_wheel_value",
+  "parent":{
+    "name":"Input",
+    "path":"folders/Scripts/Input.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}
