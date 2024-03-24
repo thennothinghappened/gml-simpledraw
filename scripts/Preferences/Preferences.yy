@@ -1,0 +1,13 @@
+{
+  "$GMScript":"",
+  "%Name":"Preferences",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"Preferences",
+  "parent":{
+    "name":"simpledraw",
+    "path":"simpledraw.yyp",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}
