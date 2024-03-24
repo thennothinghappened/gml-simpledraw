@@ -19,9 +19,11 @@ camera = new Camera(0, [canvas.width / 2, canvas.height / 2], 400);
 /// Current mouse position in world/canvas space.
 mouse_worldspace = [0, 0];
 
+/// Mouse path of the used tool.
+tool_path = [];
+
 /// States!
 enum ActionState {
-
     None,
     ToolActive
 }

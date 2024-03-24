@@ -1,6 +1,7 @@
 {
   "FolderOrderSettings":[
     {"name":"Scripts","order":8,"path":"folders/Scripts.yy",},
+    {"name":"Tools","order":6,"path":"folders/Scripts/Tools.yy",},
     {"name":"Input","order":5,"path":"folders/Scripts/Input.yy",},
     {"name":"Util","order":2,"path":"folders/Scripts/Util.yy",},
     {"name":"Sprites","order":6,"path":"folders/Sprites.yy",},
@@ -13,6 +14,7 @@
     {"name":"MACROS","order":1,"path":"scripts/MACROS/MACROS.yy",},
     {"name":"Preferences","order":10,"path":"scripts/Preferences/Preferences.yy",},
     {"name":"screen_to_world","order":3,"path":"scripts/screen_to_world/screen_to_world.yy",},
+    {"name":"sMissing","order":3,"path":"sprites/sMissing/sMissing.yy",},
     {"name":"sCheckerboard","order":2,"path":"sprites/sCheckerboard/sCheckerboard.yy",},
     {"name":"sToolBrush","order":1,"path":"sprites/sToolBrush/sToolBrush.yy",},
   ],
