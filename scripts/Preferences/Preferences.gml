@@ -18,7 +18,7 @@ function Preferences() constructor {
         camera_distance_max: 1000,
 
         /// Minimum camera distance.
-        camera_distance__min: 1,    };
+        camera_distance_min: 1,    };
     
     /// Attempt to load the preferences file.
     /// @returns {Struct.Err|undefined}
