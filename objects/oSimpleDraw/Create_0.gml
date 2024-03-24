@@ -19,3 +19,7 @@ camera = new Camera(0, [canvas.width / 2, canvas.height / 2], 400);
 /// Current mouse position in world/canvas space.
 mouse_worldspace = [0, 0];
 
+/// States!
+enum State {
+    
+}
