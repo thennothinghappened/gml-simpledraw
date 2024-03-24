@@ -4,19 +4,8 @@
 canvas = new Canvas(800, 600);
 canvas.clear();
 
-/// Camera to view & move canvas!
-camera = camera_create();
-camera_view_mat = matrix_build_identity();
-camera_proj_mat = matrix_build_identity();
-
-/// Distance from camera to the canvas.
-camera_distance = 200;
-
-/// Camera rotation (radians).
-camera_rotation = 0;
-
-/// Camera pan position.
-camera_pan = [canvas.width / 2, canvas.height / 2];
+/// Camera instance to view the canvas!
+camera = new Camera(0, [canvas.width / 2, canvas.height / 2], 400);
 
 /// How fast the camera rotates.
 camera_rotation_speed = 0.01;

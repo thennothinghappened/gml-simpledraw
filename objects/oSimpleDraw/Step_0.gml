@@ -1,22 +1,33 @@
 /// Process user actions.
 
-camera_distance += (real(mouse_wheel_down()) - real(mouse_wheel_up())) * camera_zoom_speed * camera_distance;
-camera_distance = clamp(camera_distance, camera_distance_min, camera_distance_max);
+var mouse_wheel = real(mouse_wheel_down()) - real(mouse_wheel_up());
+
+if (mouse_wheel != 0) {
+
+    camera.distance += mouse_wheel * camera_zoom_speed * camera.distance;
+    camera.distance = clamp(camera.distance, camera_distance_min, camera_distance_max);
+    
+    camera.update();
+}
 
 if (mouse_check_button(mb_middle)) {
-    camera_rotation += (real(window_mouse_get_delta_x()) / (2 * pi)) * camera_rotation_speed;
+
+    camera.rotation += (real(window_mouse_get_delta_x()) / (2 * pi)) * camera_rotation_speed;
+    camera.update();
 }
 
 if (mouse_check_button(mb_right)) {
     
-    var s = sin(-camera_rotation);
-    var c = cos(-camera_rotation);
+    var s = sin(-camera.rotation);
+    var c = cos(-camera.rotation);
     
-    var pan_x = real(window_mouse_get_delta_x()) * camera_pan_speed * camera_distance;
-    var pan_y = real(window_mouse_get_delta_y()) * camera_pan_speed * camera_distance;
+    var pan_x = real(window_mouse_get_delta_x()) * camera_pan_speed * camera.distance;
+    var pan_y = real(window_mouse_get_delta_y()) * camera_pan_speed * camera.distance;
 
-    camera_pan[X] -= pan_x * c - pan_y * s;
-    camera_pan[Y] -= pan_x * s + pan_y * c;
+    camera.pan[X] -= pan_x * c - pan_y * s;
+    camera.pan[Y] -= pan_x * s + pan_y * c;
+    
+    camera.update();
 }
 
 if (mouse_check_button(mb_left)) {
