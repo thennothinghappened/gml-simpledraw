@@ -11,6 +11,14 @@ function Tool() constructor {
     static desc = "Base tool struct for other tool types. This tool doesn't do anything!";
     static icon = sMissing;
     
+    /// Order to place tool's settings in the GUI.
+    static settings_order = [];
+    
+    /// Settings for this tool.
+    self.settings = {       
+         
+    };
+    
     /// Begin a stroke with this tool.
     /// @param {Array<Real>} mouse_canvas_pos Initial position of the mouse on the canvas.
     static stroke_begin = function(mouse_canvas_pos) {
@@ -35,10 +43,18 @@ function Tool() constructor {
     
     }
     
+    /// Draw the tool action to display.
+    /// @param {Array<Real>} mouse_canvas_pos Current position of the mouse on the canvas.
+    /// @param {Real} colour Colour to draw with.
+    static draw = function(mouse_canvas_pos, colour) {     
+           
+    }
+    
     /// Commit modifications to the canvas!
     /// For a pencil tool for example, this will be called after the end of a stroke.
-    /// @param {Struct.Canvas} canvas
-    static commit = function(canvas) {
-        
+    /// @param {Struct.Canvas} canvas Canvas to draw to.
+    /// @param {Real} colour Colour to draw with.
+    static commit = function(canvas, colour) {   
+             
     }
 }

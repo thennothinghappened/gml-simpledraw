@@ -1,0 +1,13 @@
+{
+  "$GMScript":"",
+  "%Name":"IncrementableToolSetting",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"IncrementableToolSetting",
+  "parent":{
+    "name":"Tools",
+    "path":"folders/Scripts/Tools.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

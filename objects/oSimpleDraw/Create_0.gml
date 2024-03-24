@@ -19,13 +19,13 @@ camera = new Camera(0, [canvas.width / 2, canvas.height / 2], 400);
 /// Current mouse position in world/canvas space.
 mouse_worldspace = [0, 0];
 
-/// Mouse path of the used tool.
-tool_path = [];
+/// Whether the mouse has moved since last frame.
+mouse_moved = false;
 
 /// States!
 enum ActionState {
     None,
-    ToolActive
+    ToolStroke
 }
 
 /// Handlers for each state!
@@ -36,6 +36,113 @@ state = ActionState.None;
 
 /// How long we've been in the current state.
 state_duration = 0;
+
+/// Handler for idle/none state, ie no action is going on.
+state_handlers[ActionState.None] = {
+    
+    enter: function() {
+        
+    },
+    
+    /// @param {Real} duration How long we've been in this state.
+    step: function(duration) {
+        
+        // Start tool stroke.
+        if (mouse_check_button(mb_left)) {
+            return ActionState.ToolStroke;
+        }        
+        var mwheel = mouse_wheel_value();
+        
+        if (mwheel != 0) {
+            
+            camera.distance += mwheel * prefs.data.camera_zoom_speed * camera.distance;
+            camera.distance = clamp(camera.distance, prefs.data.camera_distance_min, prefs.data.camera_distance_max);
+    
+            camera.update();            
+        }
+    
+        if (mouse_check_button(mb_middle)) {
+            camera.rotate(window_mouse_get_delta_x() * prefs.data.camera_rotation_speed);
+        }
+
+        if (mouse_check_button(mb_right)) {
+        
+            camera.pan(
+                window_mouse_get_delta_x() * prefs.data.camera_pan_speed,
+                window_mouse_get_delta_y() * prefs.data.camera_pan_speed
+            );
+        }   
+    },
+    
+    leave: function() {
+        
+    }
+    
+};
+
+/// Handler for using a tool!
+state_handlers[ActionState.ToolStroke] = {
+    
+    enter: function() {
+        
+        var tool = tools[tool_current];
+        
+        tool_colour = make_color_hsv(irandom(255), 255, 255);
+        tool.stroke_begin(mouse_worldspace);
+        
+    },
+    
+    /// @param {Real} duration How long we've been in this state.
+    step: function(duration) {
+    
+        var tool = tools[tool_current];
+    
+        if (mouse_check_button_released(mb_left)) {
+        
+            tool.stroke_end(mouse_worldspace);
+            return;
+        }
+        
+        if (mouse_moved) {
+            tool.stroke_update(mouse_worldspace);
+        }
+        
+        var status = tool.update();
+        
+        if (status == ToolUpdateStatus.Commit) {
+            return ActionState.None;
+        }
+    
+    },
+    
+    /// Draw the tool's path as it is now.
+    /// @param {Real} duration How long we've been in this state.
+    draw: function(duration) {
+                var tool = tools[tool_current];
+        tool.draw(mouse_worldspace, tool_colour);
+        
+    },
+    
+    /// Draw the tool path to the canvas.
+    leave: function() {
+    
+        var tool = tools[tool_current];
+        tool.commit(canvas, tool_colour);
+        
+    }
+    
+};
+
+/// List of tools!
+tools = [
+    new BrushTool()
+];
+
+/// Tool index currently selected.
+tool_current = 0;
+
+/// Current tool draw colour.
+tool_colour = c_white;
 
 /// Update the current application state.
 /// This is basically the main loop!
@@ -73,116 +180,6 @@ state_process = function(event) {
     return state_handler[$ event](state_duration);
     
 }
-
-/// Handler for idle/none state, ie no action is going on.
-state_handlers[ActionState.None] = {
-    
-    enter: function() {
-        
-    },
-    
-    /// @param {Real} duration How long we've been in this state.
-    step: function(duration) {
-        
-        // Start tool stroke.
-        if (mouse_check_button(mb_left)) {
-            return ActionState.ToolActive;
-        }        
-        var mwheel = mouse_wheel_value();
-        
-        if (mwheel != 0) {
-            
-            camera.distance += mwheel * prefs.data.camera_zoom_speed * camera.distance;
-            camera.distance = clamp(camera.distance, prefs.data.camera_distance_min, prefs.data.camera_distance_max);
-    
-            camera.update();            
-        }
-    
-        if (mouse_check_button(mb_middle)) {
-            camera.rotate(window_mouse_get_delta_x() * prefs.data.camera_rotation_speed);
-        }
-
-        if (mouse_check_button(mb_right)) {
-        
-            camera.pan(
-                window_mouse_get_delta_x() * prefs.data.camera_pan_speed,
-                window_mouse_get_delta_y() * prefs.data.camera_pan_speed
-            );
-        }   
-    },
-    
-    leave: function() {
-        
-    }
-    
-};
-
-/// Handler for using a tool!
-state_handlers[ActionState.ToolActive] = {
-    
-    enter: function() {
-        tool_path = [mouse_worldspace];
-        tool_colour = make_color_hsv(irandom(255), 255, 255);
-        tool_width = irandom_range(2, 10);
-    },
-    
-    /// @param {Real} duration How long we've been in this state.
-    step: function(duration) {
-    
-        if (mouse_check_button_released(mb_left)) {
-            return ActionState.None;
-        }
-    
-        array_push(tool_path, mouse_worldspace);
-    },
-    
-    /// Draw the tool's path as it is now.
-    /// @param {Real} duration How long we've been in this state.
-    draw: function(duration) {
-        draw_set_color(tool_colour);
-        
-        array_reduce(tool_path, function(prev, curr) {
-            
-            draw_circle(prev[X], prev[Y], tool_width/2, false);
-            draw_line_width(prev[X], prev[Y], curr[X], curr[Y], tool_width);
-                
-            return curr;
-                
-        });
-        
-        var last = array_last(tool_path);
-        draw_circle(last[X], last[Y], tool_width/2, false);            
-        draw_set_color(c_white);        
-    },
-    
-    /// Draw the tool path to the canvas.
-    leave: function() {
-    
-        canvas.draw_atomic(function() {
-    
-            draw_set_color(tool_colour);
-            
-            array_reduce(tool_path, function(prev, curr) {
-                
-                draw_circle(prev[X], prev[Y], tool_width/2, false);
-                draw_line_width(prev[X], prev[Y], curr[X], curr[Y], tool_width);
-                
-                return curr;
-                
-            });
-            
-            var last = array_last(tool_path);
-            draw_circle(last[X], last[Y], tool_width/2, false);
-            
-            draw_set_color(c_white);
-    
-        });        
-        tool_path = [];
-        
-    }
-    
-};
-
 /// Initialize states (change their scope)
 array_foreach(state_handlers, function(state_handler) {
     

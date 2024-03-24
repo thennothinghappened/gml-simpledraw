@@ -9,13 +9,16 @@
   "ResourceOrderSettings":[
     {"name":"oSimpleDraw","order":9,"path":"objects/oSimpleDraw/oSimpleDraw.yy",},
     {"name":"Room","order":5,"path":"rooms/Room/Room.yy",},
+    {"name":"BrushTool","order":1,"path":"scripts/BrushTool/BrushTool.yy",},
     {"name":"Camera","order":4,"path":"scripts/Camera/Camera.yy",},
     {"name":"Canvas","order":1,"path":"scripts/Canvas/Canvas.yy",},
     {"name":"MACROS","order":1,"path":"scripts/MACROS/MACROS.yy",},
     {"name":"Preferences","order":10,"path":"scripts/Preferences/Preferences.yy",},
     {"name":"screen_to_world","order":3,"path":"scripts/screen_to_world/screen_to_world.yy",},
-    {"name":"sMissing","order":3,"path":"sprites/sMissing/sMissing.yy",},
+    {"name":"IncrementableToolSetting","order":3,"path":"scripts/IncrementableToolSetting/IncrementableToolSetting.yy",},
+    {"name":"ToolSetting","order":2,"path":"scripts/ToolSetting/ToolSetting.yy",},
     {"name":"sCheckerboard","order":2,"path":"sprites/sCheckerboard/sCheckerboard.yy",},
+    {"name":"sMissing","order":3,"path":"sprites/sMissing/sMissing.yy",},
     {"name":"sToolBrush","order":1,"path":"sprites/sToolBrush/sToolBrush.yy",},
   ],
 }
