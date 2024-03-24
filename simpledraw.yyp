@@ -32,6 +32,7 @@
     {"id":{"name":"Canvas","path":"scripts/Canvas/Canvas.yy",},},
     {"id":{"name":"Err","path":"scripts/Err/Err.yy",},},
     {"id":{"name":"Preferences","path":"scripts/Preferences/Preferences.yy",},},
+    {"id":{"name":"MACROS","path":"scripts/MACROS/MACROS.yy",},},
     {"id":{"name":"surface_get_buffersize","path":"scripts/surface_get_buffersize/surface_get_buffersize.yy",},},
     {"id":{"name":"sCheckerboard","path":"sprites/sCheckerboard/sCheckerboard.yy",},},
     {"id":{"name":"sToolBrush","path":"sprites/sToolBrush/sToolBrush.yy",},},

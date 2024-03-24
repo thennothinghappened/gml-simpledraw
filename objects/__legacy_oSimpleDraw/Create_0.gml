@@ -3,9 +3,6 @@
 /// of actions after it, in a way that you could literally step through and replay them
 /// to undo and redo.
 
-#macro X 0
-#macro Y 1
-
 #region Initial window setup
 
 application_surface_enable(false);
