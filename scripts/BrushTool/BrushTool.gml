@@ -85,7 +85,9 @@ function BrushTool() : Tool() constructor {
     /// @param {Real} colour Colour to draw with.
     static commit = function(canvas, colour) {
         
-        canvas.draw_atomic(method({ this: other, colour }, function() {
+        var this = self;
+        
+        canvas.draw_atomic(method({ this, colour }, function() {
             this.draw(array_last(this.mouse_path), colour);
         }));
         
