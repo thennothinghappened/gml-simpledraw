@@ -15,6 +15,8 @@
     {"name":"Canvas","order":1,"path":"scripts/Canvas/Canvas.yy",},
     {"name":"EventEmitter","order":8,"path":"scripts/EventEmitter/EventEmitter.yy",},
     {"name":"MACROS","order":1,"path":"scripts/MACROS/MACROS.yy",},
+    {"name":"modwrap","order":2,"path":"scripts/modwrap/modwrap.yy",},
+    {"name":"PixelTool","order":2,"path":"scripts/PixelTool/PixelTool.yy",},
     {"name":"Preferences","order":10,"path":"scripts/Preferences/Preferences.yy",},
     {"name":"screen_to_world","order":3,"path":"scripts/screen_to_world/screen_to_world.yy",},
     {"name":"ToolSettings","order":11,"path":"scripts/ToolSettings/ToolSettings.yy",},

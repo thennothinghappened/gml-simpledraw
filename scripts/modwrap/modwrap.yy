@@ -1,0 +1,13 @@
+{
+  "$GMScript":"",
+  "%Name":"modwrap",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"modwrap",
+  "parent":{
+    "name":"Util",
+    "path":"folders/Scripts/Util.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

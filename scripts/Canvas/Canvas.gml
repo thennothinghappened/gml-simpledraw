@@ -86,6 +86,16 @@ function Canvas(width, height) constructor {
         }        
     }
     
+    /// Destroy & clean up this canvas instance.
+    static destroy = function() {
+        
+        if (surface_exists(self.__surf)) {
+            surface_free(self.__surf);
+        }
+        
+        buffer_delete(self.__buf);
+    }
+    
     /// @ignore
     /// Ensure the surface exists, or recreate from buffer.
     static __ensure_surface = function() {

@@ -47,9 +47,22 @@ state_handlers[ActionState.None] = {
             return ActionState.ToolStroke;
         }
         
+        var status = tool.update();
+        
+        if (status == ToolUpdateStatus.Commit) {
+            tool.commit(canvas);
+        }        
         var mwheel = mouse_wheel_value();
         
         if (mwheel != 0) {
+            
+            if (keyboard_check(vk_shift)) {
+                
+                tool_current = modwrap(tool_current + 1, array_length(tools));
+                tool = tools[tool_current];
+                
+                return;
+            }
             
             camera.distance += mwheel * prefs.data.camera_zoom_speed * camera.distance;
             camera.distance = clamp(camera.distance, prefs.data.camera_distance_min, prefs.data.camera_distance_max);
@@ -74,22 +87,18 @@ state_handlers[ActionState.None] = {
     /// @param {Real} duration How long we've been in this state.
     draw: function(duration) {
         
-        var tool = tools[tool_current];
         tool.draw(mouse_worldspace);
         
     },    
     leave: function() {
         
-    }
-    
+    }    
 };
 
 /// Handler for using a tool!
 state_handlers[ActionState.ToolStroke] = {
     
     enter: function() {
-        
-        var tool = tools[tool_current];
         
         ts.colour = make_color_hsv(irandom(255), 255, 255);
         tool.stroke_begin(mouse_worldspace);
@@ -98,52 +107,39 @@ state_handlers[ActionState.ToolStroke] = {
     
     /// @param {Real} duration How long we've been in this state.
     step: function(duration) {
-    
-        var tool = tools[tool_current];
         
         if (mouse_check_button_released(mb_left)) {
-            
-            tool.stroke_end(mouse_worldspace);
-            
-        } else {
-            if (mouse_moved) {
-                tool.stroke_update(mouse_worldspace);
-            }        }
-        
-        var status = tool.update();
-        
-        if (status == ToolUpdateStatus.Commit) {
             return ActionState.None;
         }
-    
+        
+        if (mouse_moved) {
+            tool.stroke_update(mouse_worldspace);
+        }    
     },
     
     /// Draw the tool's path as it is now.
     /// @param {Real} duration How long we've been in this state.
     draw: function(duration) {
-        
-        var tool = tools[tool_current];
         tool.draw(mouse_worldspace);
-        
     },
     
-    /// Draw the tool path to the canvas.
+    /// Complete the stroke.
     leave: function() {
-    
-        var tool = tools[tool_current];
-        tool.commit(canvas);
-        
+        tool.stroke_end(mouse_worldspace);
     }
-    
-};
 
+};
 /// List of tools!
 tools = [
-    new BrushTool()
+    new BrushTool(),
+    new PixelTool()
 ];
 
 /// Tool index currently selected.
-tool_current = 0;
+tool_current = 1;
+
+/// Current tool.
+tool = tools[tool_current];
 
 /// Update the current application state.
 /// This is basically the main loop!

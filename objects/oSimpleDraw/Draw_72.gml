@@ -5,8 +5,8 @@ var mouse_worldspace_old = mouse_worldspace;
 mouse_moved = false;
 
 mouse_worldspace = [
-    ray[X + 3] + ray[X] * camera.distance,
-    ray[Y + 3] + ray[Y] * camera.distance 
+    ray[X + 3] + ray[X] * camera.distance - 1,
+    ray[Y + 3] + ray[Y] * camera.distance - 1 
 ];
 
 if (mouse_worldspace[X] != mouse_worldspace_old[X] || mouse_worldspace[Y] != mouse_worldspace_old[Y]) {
