@@ -124,4 +124,3 @@ function __window_get() {
 }
 
 #macro window __window_get()
-window.init();

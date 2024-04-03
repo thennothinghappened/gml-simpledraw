@@ -18,7 +18,18 @@ function Preferences() constructor {
         camera_distance_max: 1000,
 
         /// Minimum camera distance.
-        camera_distance_min: 1,    };
+        camera_distance_min: 1,    
+    };
+    
+    /// Setup preferences.
+    static init = function() {
+        
+        var prefs_load_result = self.load();
+
+        if (is_instanceof(prefs_load_result, Err)) {
+            show_message($"Failed to load preferences, using defaults:\n{prefs_load_result}");
+        }
+    }
     
     /// Attempt to load the preferences file.
     /// @returns {Struct.Err|undefined}
@@ -101,3 +112,11 @@ function Preferences() constructor {
     
 }
 
+function __preferences_get() {
+    
+    static __preferences = new Preferences();
+    return __preferences;
+    
+}
+
+#macro prefs __preferences_get()
