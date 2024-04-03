@@ -1,0 +1,13 @@
+{
+  "$GMScript":"",
+  "%Name":"surface_drawto",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"surface_drawto",
+  "parent":{
+    "name":"Util",
+    "path":"folders/Scripts/Util.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

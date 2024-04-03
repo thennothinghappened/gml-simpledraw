@@ -19,6 +19,7 @@
     {"name":"PixelTool","order":2,"path":"scripts/PixelTool/PixelTool.yy",},
     {"name":"Preferences","order":10,"path":"scripts/Preferences/Preferences.yy",},
     {"name":"screen_to_world","order":3,"path":"scripts/screen_to_world/screen_to_world.yy",},
+    {"name":"surface_drawto","order":3,"path":"scripts/surface_drawto/surface_drawto.yy",},
     {"name":"ToolSettings","order":11,"path":"scripts/ToolSettings/ToolSettings.yy",},
     {"name":"sCheckerboard","order":2,"path":"sprites/sCheckerboard/sCheckerboard.yy",},
     {"name":"sMissing","order":3,"path":"sprites/sMissing/sMissing.yy",},

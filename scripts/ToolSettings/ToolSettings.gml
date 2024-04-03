@@ -7,8 +7,6 @@ function ToolSettings() constructor {
     /// Current brush width.
     self.brush_width = 5;
     
-    /// Current draw blendmode.
-    self.blendmode = bm_subtract;
 }
 
 function __tool_settings_get() {

@@ -66,24 +66,12 @@ function Canvas(width, height) constructor {
     /// @param {Function} block
     static draw_atomic = function(block) {
         
-        var prev_surf = surface_get_target();
-        
-        
-        if (surface_exists(prev_surf)) {
-            surface_reset_target();
-        }
-        
         self.__ensure_surface();
-        surface_set_target(self.__surf);
         
-            block();
+        surface_drawto(self.__surf, block);
         
-        surface_reset_target();
         self.__save_surface();
         
-        if (surface_exists(prev_surf)) {
-            surface_set_target(prev_surf);
-        }        
     }
     
     /// Destroy & clean up this canvas instance.

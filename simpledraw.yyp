@@ -38,6 +38,7 @@
     {"id":{"name":"PixelTool","path":"scripts/PixelTool/PixelTool.yy",},},
     {"id":{"name":"Preferences","path":"scripts/Preferences/Preferences.yy",},},
     {"id":{"name":"screen_to_world","path":"scripts/screen_to_world/screen_to_world.yy",},},
+    {"id":{"name":"surface_drawto","path":"scripts/surface_drawto/surface_drawto.yy",},},
     {"id":{"name":"surface_get_buffersize","path":"scripts/surface_get_buffersize/surface_get_buffersize.yy",},},
     {"id":{"name":"Tool","path":"scripts/Tool/Tool.yy",},},
     {"id":{"name":"ToolSettings","path":"scripts/ToolSettings/ToolSettings.yy",},},
