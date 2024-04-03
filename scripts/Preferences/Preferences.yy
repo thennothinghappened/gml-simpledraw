@@ -5,8 +5,8 @@
   "isDnD":false,
   "name":"Preferences",
   "parent":{
-    "name":"simpledraw",
-    "path":"simpledraw.yyp",
+    "name":"Scripts",
+    "path":"folders/Scripts.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

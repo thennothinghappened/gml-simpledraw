@@ -5,8 +5,8 @@
   "isDnD":false,
   "name":"surface_drawto",
   "parent":{
-    "name":"Util",
-    "path":"folders/Scripts/Util.yy",
+    "name":"Surface",
+    "path":"folders/Scripts/Drawing/Surface.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

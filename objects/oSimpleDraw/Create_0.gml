@@ -135,11 +135,8 @@ tools = [
     new PixelTool()
 ];
 
-/// Tool index currently selected.
-tool_current = 1;
-
 /// Current tool.
-tool = tools[tool_current];
+tool = tools[0];
 
 /// Update the current application state.
 /// This is basically the main loop!

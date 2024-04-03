@@ -5,8 +5,8 @@
   "isDnD":false,
   "name":"modwrap",
   "parent":{
-    "name":"Util",
-    "path":"folders/Scripts/Util.yy",
+    "name":"Math",
+    "path":"folders/Scripts/Math.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",
