@@ -3,7 +3,7 @@
 function PixelTool() : Tool() constructor {
     
     static name = "Pixel";
-    static desc = "Pixel tool draws single pixels at the mouse position..";
+    static desc = "Draw single pixels at the mouse position.";
     static icon = sToolPencil;
     
     self.mouse_path = [];
@@ -64,7 +64,7 @@ function PixelTool() : Tool() constructor {
         
         array_reduce(self.mouse_path, function(prev, curr) {
             
-            draw_rectangle(prev[X], prev[Y], prev[X] + real(IS_GMRT), prev[Y] + real(IS_GMRT), false);
+            draw_rectangle(prev[X] - real(IS_GMRT), prev[Y] - real(IS_GMRT), prev[X], prev[Y], false);
             draw_line_width(prev[X], prev[Y], curr[X], curr[Y], 1);
             
             return curr;
@@ -88,7 +88,7 @@ function PixelTool() : Tool() constructor {
         
         /// Draw the mouse overlay.
         gpu_set_blendmode(bm_subtract);
-        draw_rectangle(floored[X], floored[Y], floored[X] + real(IS_GMRT), floored[Y] + real(IS_GMRT), true);
+        draw_rectangle(floored[X] - real(IS_GMRT), floored[Y] - real(IS_GMRT), floored[X], floored[Y], true);
         gpu_set_blendmode(bm_normal);
         
     }

@@ -3,7 +3,7 @@
 function BrushTool() : Tool() constructor {
     
     static name = "Brush";
-    static desc = "Brush tool simply draws a stroke where the mouse has been.";
+    static desc = "Draw a brush stroke with a width.";
     static icon = sToolBrush;
     
     self.mouse_path = [];

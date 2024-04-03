@@ -5,6 +5,9 @@ function Mouse() constructor {
     /// The mouse position in screenspace.
     self.screenspace = [0, 0];
     
+    /// The movement from the last screenspace positon of the mouse.
+    self.screenspace_delta = [0, 0];
+    
     /// Whether the mouse has moved since last position.
     self.screenspace_moved = false;    
     /// The mouse position in worldspace (canvas space).
@@ -23,8 +26,13 @@ function Mouse() constructor {
         var screenspace_old = array_clone(self.screenspace);
         
         self.screenspace = [
-            window_mouse_get_x(),
-            window_mouse_get_y()
+            device_mouse_x(0),
+            device_mouse_y(0)
+        ];
+        
+        self.screenspace_delta = [
+            self.screenspace[X] - screenspace_old[X],
+            self.screenspace[Y] - screenspace_old[Y],
         ];
         
         self.screenspace_moved = !array_equals(self.screenspace, screenspace_old);
@@ -34,8 +42,8 @@ function Mouse() constructor {
         var worldspace_old = array_clone(self.worldspace);
         
         self.worldspace = [
-            ray[X + 3] + ray[X] * camera.distance - 1,
-            ray[Y + 3] + ray[Y] * camera.distance - 1 
+            ray[X + 3] + ray[X] * camera.distance - real(!IS_GMRT),
+            ray[Y + 3] + ray[Y] * camera.distance - real(!IS_GMRT) 
         ];
         
         self.worldspace_moved = !array_equals(self.worldspace, worldspace_old);

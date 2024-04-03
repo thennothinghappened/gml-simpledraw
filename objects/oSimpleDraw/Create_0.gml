@@ -74,8 +74,8 @@ state_handlers[ActionState.None] = {
         if (mouse_check_button(mb_right)) {
         
             camera.pan(
-                window_mouse_get_delta_x() * prefs.data.camera_pan_speed,
-                window_mouse_get_delta_y() * prefs.data.camera_pan_speed
+                mouse.screenspace_delta[X] * prefs.data.camera_pan_speed,
+                mouse.screenspace_delta[Y] * prefs.data.camera_pan_speed
             );
         }
     },
@@ -126,6 +126,7 @@ state_handlers[ActionState.ToolStroke] = {
     }
 
 };
+
 /// List of tools!
 tools = [
     new BrushTool(),
@@ -171,6 +172,7 @@ state_process = function(event) {
     return state_handler[$ event](state_duration);
     
 }
+
 /// Initialize states (change their scope)
 array_foreach(state_handlers, function(state_handler) {
     

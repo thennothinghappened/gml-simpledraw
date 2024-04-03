@@ -27,6 +27,7 @@
   },
   "name":"simpledraw",
   "resources":[
+    {"id":{"name":"fntMain","path":"fonts/fntMain/fntMain.yy",},},
     {"id":{"name":"oSimpleDraw","path":"objects/oSimpleDraw/oSimpleDraw.yy",},},
     {"id":{"name":"Room","path":"rooms/Room/Room.yy",},},
     {"id":{"name":"AppWindow","path":"scripts/AppWindow/AppWindow.yy",},},
