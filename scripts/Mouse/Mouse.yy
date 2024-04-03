@@ -1,12 +1,12 @@
 {
   "$GMScript":"",
-  "%Name":"EventEmitter",
+  "%Name":"Mouse",
   "isCompatibility":false,
   "isDnD":false,
-  "name":"EventEmitter",
+  "name":"Mouse",
   "parent":{
-    "name":"Util",
-    "path":"folders/Scripts/Util.yy",
+    "name":"Scripts",
+    "path":"folders/Scripts.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

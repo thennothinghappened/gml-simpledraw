@@ -1,9 +1,9 @@
 {
   "$GMScript":"",
-  "%Name":"EventEmitter",
+  "%Name":"array_clone",
   "isCompatibility":false,
   "isDnD":false,
-  "name":"EventEmitter",
+  "name":"array_clone",
   "parent":{
     "name":"Util",
     "path":"folders/Scripts/Util.yy",

@@ -94,9 +94,7 @@ function BrushTool() : Tool() constructor {
     static commit = function(canvas) {
         
         canvas.draw_atomic(function() {
-            gpu_set_blendmode(ts.blendmode);
             self.draw_canvas_path(array_last(self.mouse_path));
-            gpu_set_blendmode(bm_normal);
         });
         
         self.mouse_path = [];

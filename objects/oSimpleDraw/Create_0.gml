@@ -11,12 +11,6 @@ canvas.clear();
 /// Camera instance to view the canvas!
 camera = new Camera(0, [canvas.width / 2, canvas.height / 2], 400);
 
-/// Current mouse position in world/canvas space.
-mouse_worldspace = [0, 0];
-
-/// Whether the mouse has moved since last frame.
-mouse_moved = false;
-
 /// States!
 enum ActionState {
     None,
@@ -51,20 +45,23 @@ state_handlers[ActionState.None] = {
         
         if (status == ToolUpdateStatus.Commit) {
             tool.commit(canvas);
-        }        
-        var mwheel = mouse_wheel_value();
+        }
         
-        if (mwheel != 0) {
+        if (mouse.wheel != 0) {
             
             if (keyboard_check(vk_shift)) {
                 
-                tool_current = modwrap(tool_current + 1, array_length(tools));
-                tool = tools[tool_current];
+                var tool_index = array_find_index(tools, function(tool) {
+                    return tool == self.tool;
+                })
+                
+                tool_index = modwrap(tool_index + mouse.wheel, array_length(tools));
+                tool = tools[tool_index];
                 
                 return;
             }
             
-            camera.distance += mwheel * prefs.data.camera_zoom_speed * camera.distance;
+            camera.distance += mouse.wheel * prefs.data.camera_zoom_speed * camera.distance;
             camera.distance = clamp(camera.distance, prefs.data.camera_distance_min, prefs.data.camera_distance_max);
     
             camera.update();            
@@ -87,7 +84,7 @@ state_handlers[ActionState.None] = {
     /// @param {Real} duration How long we've been in this state.
     draw: function(duration) {
         
-        tool.draw(mouse_worldspace);
+        tool.draw(mouse.worldspace);
         
     },    
     leave: function() {
@@ -101,7 +98,7 @@ state_handlers[ActionState.ToolStroke] = {
     enter: function() {
         
         ts.colour = make_color_hsv(irandom(255), 255, 255);
-        tool.stroke_begin(mouse_worldspace);
+        tool.stroke_begin(mouse.worldspace);
         
     },
     
@@ -112,20 +109,20 @@ state_handlers[ActionState.ToolStroke] = {
             return ActionState.None;
         }
         
-        if (mouse_moved) {
-            tool.stroke_update(mouse_worldspace);
+        if (mouse.worldspace_moved) {
+            tool.stroke_update(mouse.worldspace);
         }    
     },
     
     /// Draw the tool's path as it is now.
     /// @param {Real} duration How long we've been in this state.
     draw: function(duration) {
-        tool.draw(mouse_worldspace);
+        tool.draw(mouse.worldspace);
     },
     
     /// Complete the stroke.
     leave: function() {
-        tool.stroke_end(mouse_worldspace);
+        tool.stroke_end(mouse.worldspace);
     }
 
 };
