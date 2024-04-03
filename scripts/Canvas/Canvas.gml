@@ -18,7 +18,7 @@ function Canvas(width, height) constructor {
     
     self.width = width;
     self.height = height;
-	
+    
     /// @ignore
     self.__surf = surface_create(width, height);
     

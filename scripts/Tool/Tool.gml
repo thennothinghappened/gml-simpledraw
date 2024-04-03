@@ -11,14 +11,6 @@ function Tool() constructor {
     static desc = "Base tool struct for other tool types. This tool doesn't do anything!";
     static icon = sMissing;
     
-    /// Order to place tool's settings in the GUI.
-    static settings_order = [];
-    
-    /// Settings for this tool.
-    self.settings = {       
-         
-    };
-    
     /// Begin a stroke with this tool.
     /// @param {Array<Real>} mouse_canvas_pos Initial position of the mouse on the canvas.
     static stroke_begin = function(mouse_canvas_pos) {

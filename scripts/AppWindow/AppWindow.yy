@@ -1,12 +1,12 @@
 {
   "$GMScript":"",
-  "%Name":"ToolSetting",
+  "%Name":"AppWindow",
   "isCompatibility":false,
   "isDnD":false,
-  "name":"ToolSetting",
+  "name":"AppWindow",
   "parent":{
-    "name":"Tools",
-    "path":"folders/Scripts/Tools.yy",
+    "name":"Scripts",
+    "path":"folders/Scripts.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

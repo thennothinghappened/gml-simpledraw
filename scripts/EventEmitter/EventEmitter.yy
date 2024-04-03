@@ -1,12 +1,12 @@
 {
   "$GMScript":"",
-  "%Name":"IncrementableToolSetting",
+  "%Name":"EventEmitter",
   "isCompatibility":false,
   "isDnD":false,
-  "name":"IncrementableToolSetting",
+  "name":"EventEmitter",
   "parent":{
-    "name":"Tools",
-    "path":"folders/Scripts/Tools.yy",
+    "name":"Scripts",
+    "path":"folders/Scripts.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

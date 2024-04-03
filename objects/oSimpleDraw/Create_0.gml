@@ -9,6 +9,9 @@ if (is_instanceof(prefs_load_result, Err)) {
     show_message($"Failed to load preferences, using defaults:\n{prefs_load_result}");
 }
 
+/// Application window init!
+window.init();
+
 /// Current drawing canvas instance.
 canvas = new Canvas(800, 600);
 canvas.clear();

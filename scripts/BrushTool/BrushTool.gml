@@ -6,20 +6,6 @@ function BrushTool() : Tool() constructor {
     static desc = "Brush tool simply draws a stroke where the mouse has been.";
     static icon = sToolBrush;
     
-    /// Order to place tool's settings in the GUI.
-    static settings_order = ["width"];
-    
-    /// Settings for this tool.
-    self.settings = {
-        width: new IncrementableToolSetting(
-            "Width",
-            "Width of the brush stroke",
-            5,
-            1,
-            500
-        )
-    };
-    
     self.mouse_path = [];
     self.stroke_finished = false;
     
