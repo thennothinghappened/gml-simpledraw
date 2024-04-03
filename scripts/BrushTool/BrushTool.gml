@@ -45,21 +45,20 @@ function BrushTool() : Tool() constructor {
     
     /// Draw the tool action to display.
     /// @param {Array<Real>} mouse_canvas_pos Current position of the mouse on the canvas.
-    /// @param {Real} colour Colour to draw with.
-    static draw = function(mouse_canvas_pos, colour) {
+    static draw = function(mouse_canvas_pos) {
         
-        draw_set_color(colour);
+        draw_set_color(ts.colour);
         
         array_reduce(self.mouse_path, function(prev, curr) {
             
-            draw_circle(prev[X], prev[Y], self.settings.width.value / 2, false);
-            draw_line_width(prev[X], prev[Y], curr[X], curr[Y], self.settings.width.value);
+            draw_circle(prev[X], prev[Y], ts.brush_width / 2, false);
+            draw_line_width(prev[X], prev[Y], curr[X], curr[Y], ts.brush_width);
             
             return curr;
             
         });
         
-        draw_circle(mouse_canvas_pos[X], mouse_canvas_pos[Y], self.settings.width.value / 2, false);
+        draw_circle(mouse_canvas_pos[X], mouse_canvas_pos[Y], ts.brush_width / 2, false);
         
         draw_set_color(c_white);
         
@@ -68,14 +67,11 @@ function BrushTool() : Tool() constructor {
     /// Commit modifications to the canvas!
     /// For a pencil tool for example, this will be called after the end of a stroke.
     /// @param {Struct.Canvas} canvas Canvas to draw to.
-    /// @param {Real} colour Colour to draw with.
-    static commit = function(canvas, colour) {
+    static commit = function(canvas) {
         
-        var this = self;
-        
-        canvas.draw_atomic(method({ this, colour }, function() {
-            this.draw(array_last(this.mouse_path), colour);
-        }));
+        canvas.draw_atomic(function() {
+            self.draw(array_last(self.mouse_path));
+        });
         
     }
 }

@@ -25,7 +25,6 @@
   "name":"simpledraw",
   "resources":[
     {"id":{"name":"oSimpleDraw","path":"objects/oSimpleDraw/oSimpleDraw.yy",},},
-    {"id":{"name":"oToolSettings","path":"objects/oToolSettings/oToolSettings.yy",},},
     {"id":{"name":"Room","path":"rooms/Room/Room.yy",},},
     {"id":{"name":"AppWindow","path":"scripts/AppWindow/AppWindow.yy",},},
     {"id":{"name":"BrushTool","path":"scripts/BrushTool/BrushTool.yy",},},
@@ -39,6 +38,7 @@
     {"id":{"name":"screen_to_world","path":"scripts/screen_to_world/screen_to_world.yy",},},
     {"id":{"name":"surface_get_buffersize","path":"scripts/surface_get_buffersize/surface_get_buffersize.yy",},},
     {"id":{"name":"Tool","path":"scripts/Tool/Tool.yy",},},
+    {"id":{"name":"ToolSettings","path":"scripts/ToolSettings/ToolSettings.yy",},},
     {"id":{"name":"sCheckerboard","path":"sprites/sCheckerboard/sCheckerboard.yy",},},
     {"id":{"name":"sMissing","path":"sprites/sMissing/sMissing.yy",},},
     {"id":{"name":"sToolBrush","path":"sprites/sToolBrush/sToolBrush.yy",},},

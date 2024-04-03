@@ -82,7 +82,7 @@ state_handlers[ActionState.ToolStroke] = {
         
         var tool = tools[tool_current];
         
-        tool_colour = make_color_hsv(irandom(255), 255, 255);
+        ts.colour = make_color_hsv(irandom(255), 255, 255);
         tool.stroke_begin(mouse_worldspace);
         
     },
@@ -113,8 +113,9 @@ state_handlers[ActionState.ToolStroke] = {
     /// Draw the tool's path as it is now.
     /// @param {Real} duration How long we've been in this state.
     draw: function(duration) {
-                var tool = tools[tool_current];
-        tool.draw(mouse_worldspace, tool_colour);
+        
+        var tool = tools[tool_current];
+        tool.draw(mouse_worldspace);
         
     },
     
@@ -122,7 +123,7 @@ state_handlers[ActionState.ToolStroke] = {
     leave: function() {
     
         var tool = tools[tool_current];
-        tool.commit(canvas, tool_colour);
+        tool.commit(canvas);
         
     }
     
@@ -135,9 +136,6 @@ tools = [
 
 /// Tool index currently selected.
 tool_current = 0;
-
-/// Current tool draw colour.
-tool_colour = c_white;
 
 /// Update the current application state.
 /// This is basically the main loop!
