@@ -4,6 +4,13 @@ enum ToolUpdateStatus {
     Commit
 }
 
+enum ToolStrokeState {
+    None,
+    StrokeBegin,
+    Stroke,
+    StrokeEnd
+}
+
 /// Base class for a tool that can modify the canvas!
 function Tool() constructor {
     

@@ -7,18 +7,20 @@ function BrushTool() : Tool() constructor {
     static icon = sToolBrush;
     
     self.mouse_path = [];
-    self.stroke_finished = false;
+    self.state = ToolStrokeState.None;
     
     /// Begin a stroke with this tool.
     /// @param {Array<Real>} mouse_canvas_pos Initial position of the mouse on the canvas.
     static stroke_begin = function(mouse_canvas_pos) {
         self.mouse_path = [mouse_canvas_pos];
+        self.state = ToolStrokeState.StrokeBegin;
     }
     
     /// Update stroke with a new mouse position, if it has moved.
     /// @param {Array<Real>} mouse_canvas_pos New position of the mouse on the canvas.
     static stroke_update = function(mouse_canvas_pos) {
         array_push(self.mouse_path, mouse_canvas_pos);
+        self.state = ToolStrokeState.Stroke;
     }
     
     /// End a stroke with this tool.
@@ -26,7 +28,7 @@ function BrushTool() : Tool() constructor {
     static stroke_end = function(mouse_canvas_pos) {
     
         array_push(self.mouse_path, mouse_canvas_pos);
-        self.stroke_finished = true;
+        self.state = ToolStrokeState.StrokeEnd;
         
     }
     
@@ -34,18 +36,26 @@ function BrushTool() : Tool() constructor {
     /// @returns {Enum.ToolUpdateStatus} What action should occur.
     static update = function() {
         
-        if (!self.stroke_finished) {
-            return ToolUpdateStatus.None;
+        switch (self.state) {
+            
+            case ToolStrokeState.StrokeEnd: {
+                return ToolUpdateStatus.Commit;
+            }
+            
+            default: {
+                return ToolUpdateStatus.None;
+            }
+            
         }
-        
-        self.stroke_finished = false;
-        return ToolUpdateStatus.Commit;
         
     }
     
-    /// Draw the tool action to display.
-    /// @param {Array<Real>} mouse_canvas_pos Current position of the mouse on the canvas.
-    static draw = function(mouse_canvas_pos) {
+    /// Draw the path of the brush on the canvas.
+    /// @param {Array<Real>} mouse_canvas_pos Final position of the mouse on the canvas.
+    static draw_canvas_path = function(mouse_canvas_pos) {
+        if (array_length(self.mouse_path) == 0) {
+            return;
+        }
         
         draw_set_color(ts.colour);
         
@@ -60,9 +70,23 @@ function BrushTool() : Tool() constructor {
         
         draw_circle(mouse_canvas_pos[X], mouse_canvas_pos[Y], ts.brush_width / 2, false);
         
-        draw_set_color(c_white);
+        draw_set_color(c_white);        
+    }
+    
+    /// Draw the tool action to display.
+    /// @param {Array<Real>} mouse_canvas_pos Current position of the mouse on the canvas.
+    static draw = function(mouse_canvas_pos) {
+
+        if (self.state != ToolStrokeState.None) {
+            self.draw_canvas_path(mouse_canvas_pos);
+        }
         
-    }    
+        /// Draw the mouse overlay.
+        gpu_set_blendmode(bm_subtract);
+        draw_circle(mouse_canvas_pos[X], mouse_canvas_pos[Y], ts.brush_width / 2, true);
+        gpu_set_blendmode(bm_normal);
+        
+    }
     
     /// Commit modifications to the canvas!
     /// For a pencil tool for example, this will be called after the end of a stroke.
@@ -70,8 +94,10 @@ function BrushTool() : Tool() constructor {
     static commit = function(canvas) {
         
         canvas.draw_atomic(function() {
-            self.draw(array_last(self.mouse_path));
+            self.draw_canvas_path(array_last(self.mouse_path));
         });
+        
+        self.mouse_path = [];
         
     }
 }

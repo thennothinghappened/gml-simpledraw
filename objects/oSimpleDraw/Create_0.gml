@@ -45,7 +45,8 @@ state_handlers[ActionState.None] = {
         // Start tool stroke.
         if (mouse_check_button(mb_left)) {
             return ActionState.ToolStroke;
-        }        
+        }
+        
         var mwheel = mouse_wheel_value();
         
         if (mwheel != 0) {
@@ -66,9 +67,17 @@ state_handlers[ActionState.None] = {
                 window_mouse_get_delta_x() * prefs.data.camera_pan_speed,
                 window_mouse_get_delta_y() * prefs.data.camera_pan_speed
             );
-        }   
+        }
     },
-    
+
+    /// Draw the tool's path as it is now.
+    /// @param {Real} duration How long we've been in this state.
+    draw: function(duration) {
+        
+        var tool = tools[tool_current];
+        tool.draw(mouse_worldspace);
+        
+    },    
     leave: function() {
         
     }
@@ -91,16 +100,15 @@ state_handlers[ActionState.ToolStroke] = {
     step: function(duration) {
     
         var tool = tools[tool_current];
-    
+        
         if (mouse_check_button_released(mb_left)) {
-        
+            
             tool.stroke_end(mouse_worldspace);
-            return;
-        }
-        
-        if (mouse_moved) {
-            tool.stroke_update(mouse_worldspace);
-        }
+            
+        } else {
+            if (mouse_moved) {
+                tool.stroke_update(mouse_worldspace);
+            }        }
         
         var status = tool.update();
         
