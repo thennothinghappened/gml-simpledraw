@@ -61,14 +61,14 @@ function BrushTool() : Tool() constructor {
 		
 		array_reduce(self.mouse_path, function(prev, curr) {
 			
-			draw_circle(prev[X], prev[Y], ts.brush_width / 2, false);
-			draw_line_width(prev[X], prev[Y], curr[X], curr[Y], ts.brush_width);
+			draw_circle(prev[X] - real(!IS_GMRT), prev[Y] - real(!IS_GMRT), ts.brush_width / 2, false);
+			draw_line_width(prev[X] - real(!IS_GMRT), prev[Y] - real(!IS_GMRT), curr[X] - real(!IS_GMRT), curr[Y] - real(!IS_GMRT), ts.brush_width);
 			
 			return curr;
 			
 		});
 		
-		draw_circle(mouse_canvas_pos[X], mouse_canvas_pos[Y], ts.brush_width / 2, false);
+		draw_circle(mouse_canvas_pos[X] - real(!IS_GMRT), mouse_canvas_pos[Y] - real(!IS_GMRT), ts.brush_width / 2, false);
 		
 		draw_set_color(c_white);
 	}
@@ -83,7 +83,7 @@ function BrushTool() : Tool() constructor {
 		
 		/// Draw the mouse overlay.
 		gpu_set_blendmode(bm_subtract);
-		draw_circle(mouse_canvas_pos[X], mouse_canvas_pos[Y], ts.brush_width / 2, true);
+		draw_circle(mouse_canvas_pos[X] - real(!IS_GMRT), mouse_canvas_pos[Y] - real(!IS_GMRT), ts.brush_width / 2, true);
 		gpu_set_blendmode(bm_normal);
 		
 	}
