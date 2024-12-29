@@ -1,5 +1,5 @@
 {
-  "$GMScript":"",
+  "$GMScript":"v1",
   "%Name":"BrushTool",
   "isCompatibility":false,
   "isDnD":false,

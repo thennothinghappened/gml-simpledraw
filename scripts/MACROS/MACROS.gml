@@ -11,8 +11,9 @@ function __is_gmrt() {
 	
 	// In GMRT the root context (`other` in a script) has `global` as a child
 	// where in the current runtime global is a negative sentinel value.
-	static val = variable_instance_exists(other, "global");
-	return val;
+	//static val = variable_instance_exists(other, "global");
+	//return val;
+	return true;
 	
 }
 __is_gmrt();

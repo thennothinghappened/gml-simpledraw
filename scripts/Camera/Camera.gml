@@ -1,68 +1,127 @@
 
-/// Camera struct for viewing the canvas!
-/// @param {Real} rotation (Radians) Camera rotation angle
-/// @param {Array<Real>} pan_value Camera pan position as `[x,y]`.
-/// @param {Real} distance Camera `z` distance.
-function Camera(rotation, pan_value, distance) constructor {
-
-    self.rotation = rotation;
-    self.pan_value = pan_value;
-    self.distance = distance;
-    
-    /// @ignore
-    /// Whether the camera needs to rebuild matricies.
-    self.__update = true;
-    
-    /// @ignore
-    self.__camera = camera_create();
-    
-    self.view_mat = matrix_build_identity();
-    self.proj_mat = matrix_build_identity();    
-    /// Mark the camera as needing to update matricies.
-    static update = function() {
-        self.__update = true;
-    }
-    
-    /// Pan the camera position from window space.
-    /// @param {Real} delta_x Amount in the x axis to move by.
-    /// @param {Real} delta_y Amount in the y axis to move by.
-    static pan = function(delta_x, delta_y) {
-        
-        var s = sin(-self.rotation);
-        var c = cos(-self.rotation);
-        
-        var pan_x = delta_x * self.distance;
-        var pan_y = delta_y * self.distance;
-        
-        self.pan_value[X] -= pan_x * c - pan_y * s;
-        self.pan_value[Y] -= pan_x * s + pan_y * c;
-        
-        self.update();
-        
-    }    
-    /// Rotate the camera.
-    /// @param {Real} amount Amount to rotate by.
-    static rotate = function(amount) {
-        
-        self.rotation += (amount / (2 * pi));
-        self.update();
-        
-    }    
-    /// Apply this camera.
-    static apply = function() {
-    
-        if (self.__update) {
-            
-            self.view_mat = matrix_build_lookat(self.pan_value[X], self.pan_value[Y], -self.distance, self.pan_value[X], self.pan_value[Y], 0, sin(self.rotation), cos(self.rotation), 0);
-            self.proj_mat = matrix_build_projection_perspective_fov(90, window_get_width()/window_get_height(), 1, 1000);            
-            camera_set_view_mat(self.__camera, self.view_mat);
-            camera_set_proj_mat(self.__camera, self.proj_mat)
-            
-            self.__update = false;
-            
-        }
-    
-        camera_apply(self.__camera);
-    }
-    
+/**
+ * Wrapper for a camera that behaves how we're wanting for viewing the canvas.
+ */
+function Camera(x, y, zoom = 1, rot = pi / 2) constructor {
+	
+	self.camera = camera_create();
+	
+	self.x = x;
+	self.y = y;
+	self.zoom = zoom;
+	self.rot = rot;
+	
+	self.recalculateViewMat();
+	self.recalculateProjMat();
+	
+	/**
+	 * Move to the given coordinates in worldspace.
+	 * 
+	 * @param {Real} x
+	 * @param {Real} y
+	 */
+	static setPosition = function(x, y) {
+		self.x = x;
+		self.y = y;
+		self.recalculateViewMat();
+	};
+	
+	/**
+	 * Pan by the given deltas in worldspace.
+	 * 
+	 * @param {Real} deltaX
+	 * @param {Real} deltaY
+	 */
+	static pan = function(deltaX, deltaY) {
+		self.setPosition(self.x + deltaX, self.y + deltaY);
+	};
+	
+	/**
+	 * Set the camera rotation.
+	 * 
+	 * @param {Real} radians
+	 */
+	static setRotation = function(radians) {
+		self.rot = eucmod(radians, 2*pi);
+		self.recalculateViewMat();
+	};
+	
+	/**
+	 * Rotate the camera by the given amount.
+	 * 
+	 * @param {Real} radians
+	 */
+	static rotateBy = function(radians) {
+		self.setRotation(self.rot + radians);
+	};
+	
+	/**
+	 * Set the zoom amount.
+	 * 
+	 * @param {Real} zoom
+	 */
+	static setZoom = function(zoom) {
+		self.zoom = clamp(zoom, prefs.data.camZoomMin, prefs.data.camZoomMax);
+		self.recalculateProjMat();
+	};
+	
+	/**
+	 * Zoom in or out by the given amount.
+	 * 
+	 * @param {Real} amount
+	 */
+	static zoomBy = function(amount) {
+		self.setZoom(self.zoom + amount);
+	};
+	
+	/**
+	 * Recalculate the view matrix for this camera.
+	 */
+	static recalculateViewMat = function() {
+		camera_set_view_mat(self.camera, matrix_build_lookat(
+			self.x, self.y, -1,
+			self.x, self.y, 0,
+			cos(self.rot), sin(self.rot), 0
+		));
+	};
+	
+	/**
+	 * Recalculate the projection matrix for this camera.
+	 */
+	static recalculateProjMat = function() {
+		camera_set_proj_mat(self.camera, matrix_build_projection_ortho(
+			window.width / self.zoom, window.height / self.zoom,
+			0.1, 10
+		));
+	};
+	
+	/**
+	 * Convert the given screen-space position to a position on the canvas.
+	 * 
+	 * @param {Real} screenX X coordinate of the position on the screen.
+	 * @param {Real} screenY Y coordinate of the position on the screen.
+	 * @param {Bool} [relative] Whether the position should be relative to the camera.
+	 * @returns {Array<Real>}
+	 */
+	static fromScreen = function(screenX, screenY, relative = false) {
+		
+		var worldX = (-screenX * sin(pi*2 - self.rot) + screenY * cos(self.rot)) / self.zoom;
+		var worldY = (-screenX * cos(pi*2 - self.rot) + screenY * sin(self.rot)) / self.zoom;
+		
+		if (!relative) {
+			worldX += self.x;
+			worldY += self.y;
+		}
+		
+		return [worldX, worldY];
+		
+	}
+	
+	/**
+	 * Apply this camera.
+	 */ 
+	static apply = function() {
+		camera_apply(self.camera);
+	}
+	
 }

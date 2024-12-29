@@ -6,19 +6,16 @@ function Preferences() constructor {
     /// Preferences data.
     self.data = {
         /// How fast the camera rotates.
-        camera_rotation_speed: 0.01,
+        camRotSpeed: 0.01,
 
         /// How fast the camera zooms.
-        camera_zoom_speed: 0.1,
-
-        /// How fast the camera pans.
-        camera_pan_speed: 0.005,
+        camZoomSpeed: 0.1,
 
         /// Maximum camera distance.
-        camera_distance_max: 1000,
+        camZoomMax: 100,
 
         /// Minimum camera distance.
-        camera_distance_min: 1,    
+        camZoomMin: 0.1,
     };
     
     /// Setup preferences.

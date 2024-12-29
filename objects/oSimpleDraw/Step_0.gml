@@ -1,3 +1,3 @@
 /// Process user actions.
-mouse.update(camera);
+mouse.update();
 state_update();

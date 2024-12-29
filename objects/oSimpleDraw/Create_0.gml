@@ -9,7 +9,7 @@ canvas = new Canvas(800, 600);
 canvas.clear();
 
 /// Camera instance to view the canvas!
-camera = new Camera(0, [canvas.width / 2, canvas.height / 2], 400);
+camera = new Camera(canvas.width / 2, canvas.height / 2);
 
 /// States!
 enum ActionState {
@@ -33,7 +33,10 @@ state_handlers[ActionState.None] = {
         
     },
     
-    /// @param {Real} duration How long we've been in this state.
+	/**
+     * @param {Real} duration How long we've been in this state.
+	 * @returns {Enum.ActionState|undefined}
+	 */
     step: function(duration) {
         
         // Start tool stroke.
@@ -55,28 +58,40 @@ state_handlers[ActionState.None] = {
                     return tool == self.tool;
                 })
                 
-                tool_index = modwrap(tool_index + mouse.wheel, array_length(tools));
+                tool_index = eucmod(tool_index + mouse.wheel, array_length(tools));
                 tool = tools[tool_index];
                 
                 return;
             }
-            
-            camera.distance += mouse.wheel * prefs.data.camera_zoom_speed * camera.distance;
-            camera.distance = clamp(camera.distance, prefs.data.camera_distance_min, prefs.data.camera_distance_max);
-    
-            camera.update();            
+			
+			var mouseCanvasPosBefore = self.camera.fromScreen(
+				mouse.pos[X],
+				mouse.pos[Y],
+				true
+			);
+			
+			camera.zoomBy(mouse.wheel * prefs.data.camZoomSpeed * camera.zoom);
+			
+			var mouseCanvasPosAfter = self.camera.fromScreen(
+				mouse.pos[X],
+				mouse.pos[Y],
+				true
+			);
+			
+			self.camera.pan(
+				mouseCanvasPosBefore[X] - mouseCanvasPosAfter[X],
+				mouseCanvasPosBefore[Y] - mouseCanvasPosAfter[Y]
+			);
+			
         }
     
         if (mouse_check_button(mb_middle)) {
-            camera.rotate(window_mouse_get_delta_x() * prefs.data.camera_rotation_speed);
+            self.camera.rotateBy(mouse.delta[X] * prefs.data.camRotSpeed);
         }
 
         if (mouse_check_button(mb_right)) {
-        
-            camera.pan(
-                mouse.screenspace_delta[X] * prefs.data.camera_pan_speed,
-                mouse.screenspace_delta[Y] * prefs.data.camera_pan_speed
-            );
+			var panDelta = self.camera.fromScreen(mouse.delta[X], mouse.delta[Y], true);
+            self.camera.pan(panDelta[X], panDelta[Y]);
         }
     },
 
@@ -84,7 +99,7 @@ state_handlers[ActionState.None] = {
     /// @param {Real} duration How long we've been in this state.
     draw: function(duration) {
         
-        tool.draw(mouse.worldspace);
+        tool.draw(self.camera.fromScreen(mouse.pos[X], mouse.pos[Y]));
         
     },    
     leave: function() {
@@ -98,8 +113,8 @@ state_handlers[ActionState.ToolStroke] = {
     enter: function() {
         
         ts.colour = make_color_hsv(irandom(255), 255, 255);
-        tool.stroke_begin(mouse.worldspace);
-        
+        tool.stroke_begin(self.camera.fromScreen(mouse.pos[X], mouse.pos[Y]));
+		
     },
     
     /// @param {Real} duration How long we've been in this state.
@@ -109,20 +124,20 @@ state_handlers[ActionState.ToolStroke] = {
             return ActionState.None;
         }
         
-        if (mouse.worldspace_moved) {
-            tool.stroke_update(mouse.worldspace);
-        }    
+        if (mouse.moved) {
+            tool.stroke_update(self.camera.fromScreen(mouse.pos[X], mouse.pos[Y]));
+        }
     },
     
     /// Draw the tool's path as it is now.
     /// @param {Real} duration How long we've been in this state.
     draw: function(duration) {
-        tool.draw(mouse.worldspace);
+        tool.draw(self.camera.fromScreen(mouse.pos[X], mouse.pos[Y]));
     },
     
     /// Complete the stroke.
     leave: function() {
-        tool.stroke_end(mouse.worldspace);
+        tool.stroke_end(self.camera.fromScreen(mouse.pos[X], mouse.pos[Y]));
     }
 
 };

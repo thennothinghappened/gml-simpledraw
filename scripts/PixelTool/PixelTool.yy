@@ -1,5 +1,5 @@
 {
-  "$GMScript":"",
+  "$GMScript":"v1",
   "%Name":"PixelTool",
   "isCompatibility":false,
   "isDnD":false,

@@ -2,53 +2,33 @@
 /// Handler for the application mouse.
 function Mouse() constructor {
     
-    /// The mouse position in screenspace.
-    self.screenspace = [0, 0];
+    /// The mouse position in pos.
+    self.pos = [0, 0];
     
-    /// The movement from the last screenspace positon of the mouse.
-    self.screenspace_delta = [0, 0];
+    /// The movement from the last pos positon of the mouse.
+    self.delta = [0, 0];
     
     /// Whether the mouse has moved since last position.
-    self.screenspace_moved = false;    
-    /// The mouse position in worldspace (canvas space).
-    self.worldspace = [0, 0];
-    
-    /// Whether the mouse has moved in worldspace (can be from camera motion).
-    self.worldspace_moved = false;
+    self.moved = false;    
     
     /// What amount the mouse scrolled this frame.
     self.wheel = 0;
     
     /// Update the mouse position.
-    /// @param {Struct.Camera} camera
-    static update = function(camera) {
+    static update = function() {
 
-        var screenspace_old = array_clone(self.screenspace);
+        var pos_old = self.pos;
         
-        self.screenspace = [
-            device_mouse_x(0),
-            device_mouse_y(0)
+        self.pos = [
+            window_mouse_get_x() - window.width / 2,
+            window_mouse_get_y() - window.height / 2
         ];
         
-        self.screenspace_delta = [
-            self.screenspace[X] - screenspace_old[X],
-            self.screenspace[Y] - screenspace_old[Y],
-        ];
+		self.delta[X] = pos_old[X] - self.pos[X];
+		self.delta[Y] = pos_old[Y] - self.pos[Y];
+        self.moved = point_distance(0, 0, self.delta[X], self.delta[Y]) > 0;
         
-        self.screenspace_moved = !array_equals(self.screenspace, screenspace_old);
-        
-        var ray = screen_to_world(self.screenspace[X], self.screenspace[Y], camera.view_mat, camera.proj_mat);
-        
-        var worldspace_old = array_clone(self.worldspace);
-        
-        self.worldspace = [
-            ray[X + 3] + ray[X] * camera.distance - real(!IS_GMRT),
-            ray[Y + 3] + ray[Y] * camera.distance - real(!IS_GMRT) 
-        ];
-        
-        self.worldspace_moved = !array_equals(self.worldspace, worldspace_old);
-        
-        self.wheel = mouse_wheel_value();
+        self.wheel = real(mouse_wheel_up()) - real(mouse_wheel_down());
         
     }
     

@@ -70,12 +70,14 @@ function BrushTool() : Tool() constructor {
         
         draw_circle(mouse_canvas_pos[X], mouse_canvas_pos[Y], ts.brush_width / 2, false);
         
-        draw_set_color(c_white);        
+        draw_set_color(c_white);
     }
     
     /// Draw the tool action to display.
     /// @param {Array<Real>} mouse_canvas_pos Current position of the mouse on the canvas.
     static draw = function(mouse_canvas_pos) {
+		
+		show_debug_message(mouse_canvas_pos)
 
         if (self.state != ToolStrokeState.None) {
             self.draw_canvas_path(mouse_canvas_pos);

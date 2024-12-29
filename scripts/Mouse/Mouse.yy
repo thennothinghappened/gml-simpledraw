@@ -1,5 +1,5 @@
 {
-  "$GMScript":"",
+  "$GMScript":"v1",
   "%Name":"Mouse",
   "isCompatibility":false,
   "isDnD":false,

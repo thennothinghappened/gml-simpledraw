@@ -1,9 +1,9 @@
 {
-  "$GMScript":"",
-  "%Name":"modwrap",
+  "$GMScript":"v1",
+  "%Name":"eucmod",
   "isCompatibility":false,
   "isDnD":false,
-  "name":"modwrap",
+  "name":"eucmod",
   "parent":{
     "name":"Math",
     "path":"folders/Scripts/Math.yy",

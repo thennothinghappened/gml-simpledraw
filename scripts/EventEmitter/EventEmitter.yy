@@ -1,5 +1,5 @@
 {
-  "$GMScript":"",
+  "$GMScript":"v1",
   "%Name":"EventEmitter",
   "isCompatibility":false,
   "isDnD":false,

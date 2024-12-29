@@ -1,5 +1,5 @@
 {
-  "$GMScript":"",
+  "$GMScript":"v1",
   "%Name":"surface_get_buffersize",
   "isCompatibility":false,
   "isDnD":false,

@@ -1,5 +1,5 @@
 {
-  "$GMScript":"",
+  "$GMScript":"v1",
   "%Name":"AppWindow",
   "isCompatibility":false,
   "isDnD":false,
