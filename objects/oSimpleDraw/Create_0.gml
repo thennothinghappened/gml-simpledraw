@@ -11,6 +11,10 @@ canvas.clear();
 /// Camera instance to view the canvas!
 camera = new Camera(canvas.width / 2, canvas.height / 2);
 
+window.on("resize", function() {
+	self.camera.recalculateProjMat();
+});
+
 /// States!
 enum ActionState {
 	None,
