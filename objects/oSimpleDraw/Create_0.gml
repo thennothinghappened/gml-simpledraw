@@ -167,7 +167,8 @@ state_handlers[ActionState.ToolStroke] = {
 /// List of tools!
 tools = [
 	new BrushTool(),
-	new PixelTool()
+	new PixelTool(),
+	new StampTool()
 ];
 
 /// Current tool.
