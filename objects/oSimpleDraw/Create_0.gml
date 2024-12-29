@@ -76,7 +76,7 @@ state_handlers[ActionState.None] = {
 				true
 			);
 			
-			camera.zoomBy(mouse.wheel * prefs.data.camZoomSpeed * camera.zoom);
+			self.camera.zoomBy(mouse.wheel * prefs.data.camZoomSpeed * camera.zoom);
 			
 			var mouseCanvasPosAfter = self.camera.fromScreen(
 				mouse.pos[X],
@@ -89,6 +89,8 @@ state_handlers[ActionState.None] = {
 				mouseCanvasPosBefore[Y] - mouseCanvasPosAfter[Y]
 			);
 			
+			return;
+			
 		}
 	
 		if (mouse_check_button(mb_middle)) {
@@ -96,9 +98,16 @@ state_handlers[ActionState.None] = {
 		}
 
 		if (mouse_check_button(mb_right)) {
+			
+			if (keyboard_check(vk_control)) {
+				self.camera.zoomBy(mouse.delta[Y] * prefs.data.camZoomSpeed * camera.zoom * -0.1);
+				return;
+			}
+			
 			var panDelta = self.camera.fromScreen(mouse.delta[X], mouse.delta[Y], true);
 			self.camera.pan(panDelta[X], panDelta[Y]);
 		}
+		
 	},
 
 	/// Draw the tool's path as it is now.
