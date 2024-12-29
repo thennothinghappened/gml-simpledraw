@@ -135,7 +135,14 @@ state_handlers[ActionState.ToolStroke] = {
 	/// @param {Real} duration How long we've been in this state.
 	step: function(duration) {
 		
-		if (mouse_check_button_released(mb_left)) {
+		if (mouse_check_button_released(mb_right)) {
+			tool.stroke_end(self.camera.fromScreen(mouse.pos[X], mouse.pos[Y]));
+			return ActionState.None;
+		}
+		
+		// Workaround for drawing tablet weirdly not sending the release event??
+		if (!mouse_check_button(mb_left)) {
+			tool.stroke_end();
 			return ActionState.None;
 		}
 		
@@ -152,7 +159,7 @@ state_handlers[ActionState.ToolStroke] = {
 	
 	/// Complete the stroke.
 	leave: function() {
-		tool.stroke_end(self.camera.fromScreen(mouse.pos[X], mouse.pos[Y]));
+		
 	}
 
 };
