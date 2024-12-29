@@ -4,6 +4,8 @@
 prefs.init();
 window.init();
 
+window.fps_foreground = prefs.data.frameRate;
+
 /// Current drawing canvas instance.
 canvas = new Canvas(800, 600);
 canvas.clear();

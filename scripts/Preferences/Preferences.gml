@@ -16,6 +16,9 @@ function Preferences() constructor {
 
 		/// Minimum camera distance.
 		camZoomMin: 0.1,
+		
+		/// The frame rate to use... duh.
+		frameRate: 170
 	};
 	
 	/// Setup preferences.
