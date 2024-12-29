@@ -13,7 +13,7 @@ function PixelTool() : Tool() constructor {
 	/// @param {Array<Real>} mouse_canvas_pos Initial position of the mouse on the canvas.
 	static stroke_begin = function(mouse_canvas_pos) {
 
-		self.mouse_path = [array_map(mouse_canvas_pos, ceil)];
+		self.mouse_path = [array_map(mouse_canvas_pos, floor)];
 		self.state = ToolStrokeState.StrokeBegin;
 	}
 	
@@ -21,7 +21,7 @@ function PixelTool() : Tool() constructor {
 	/// @param {Array<Real>} mouse_canvas_pos New position of the mouse on the canvas.
 	static stroke_update = function(mouse_canvas_pos) {
 
-		array_push(self.mouse_path, array_map(mouse_canvas_pos, ceil));
+		array_push(self.mouse_path, array_map(mouse_canvas_pos, floor));
 		self.state = ToolStrokeState.Stroke;
 	}
 	
@@ -29,7 +29,7 @@ function PixelTool() : Tool() constructor {
 	/// @param {Array<Real>} mouse_canvas_pos Final position of the mouse on the canvas.
 	static stroke_end = function(mouse_canvas_pos) {
 	
-		array_push(self.mouse_path, array_map(mouse_canvas_pos, ceil));
+		array_push(self.mouse_path, array_map(mouse_canvas_pos, floor));
 		self.state = ToolStrokeState.StrokeEnd;
 		
 	}
@@ -65,22 +65,21 @@ function PixelTool() : Tool() constructor {
 		array_reduce(self.mouse_path, function(prev, curr) {
 			
 			draw_rectangle(prev[X] - real(IS_GMRT), prev[Y] - real(IS_GMRT), prev[X], prev[Y], false);
-			draw_line_width(prev[X], prev[Y], curr[X], curr[Y], 1);
+			draw_line_width(prev[X] - 0.5, prev[Y] - 0.5, curr[X] - 0.5, curr[Y] - 0.5, 1);
 			
 			return curr;
 			
 		});
 		
-		draw_point(floor(mouse_canvas_pos[X]), floor(mouse_canvas_pos[Y]));
-		
-		draw_set_color(c_white);		
+		draw_point(mouse_canvas_pos[X], mouse_canvas_pos[Y]);
+		draw_set_color(c_white);
 	}
 	
 	/// Draw the tool action to display.
 	/// @param {Array<Real>} mouse_canvas_pos Current position of the mouse on the canvas.
 	static draw = function(mouse_canvas_pos) {
 
-		var floored = array_map(mouse_canvas_pos, ceil);
+		var floored = array_map(mouse_canvas_pos, floor);
 
 		if (self.state != ToolStrokeState.None) {
 			self.draw_canvas_path(floored);
