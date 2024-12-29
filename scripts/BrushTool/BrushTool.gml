@@ -76,8 +76,6 @@ function BrushTool() : Tool() constructor {
 	/// Draw the tool action to display.
 	/// @param {Array<Real>} mouse_canvas_pos Current position of the mouse on the canvas.
 	static draw = function(mouse_canvas_pos) {
-		
-		show_debug_message(mouse_canvas_pos)
 
 		if (self.state != ToolStrokeState.None) {
 			self.draw_canvas_path(mouse_canvas_pos);
