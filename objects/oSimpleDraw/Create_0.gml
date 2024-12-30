@@ -71,14 +71,11 @@ fsm.state("none", {
 });
 
 fsm.state("cameraMove", {
-	
 	step: function() {
-
 		if (self.camera.fsm.run("step") == "none") {
 			return "none";
 		}
 	}
-	
 });
 
 fsm.state("toolStroke", {
