@@ -66,22 +66,17 @@ function FSM(initialStateName) constructor {
 			return;
 		}
 		
-		var newStateName = event(self.timeInState ++);
-		
-		if (is_undefined(newStateName)) {
-			return;
-		}
-		
-		self.change(newStateName);
+		event(self.timeInState ++);
 		
 	};
 	
 	/**
 	 * Change to a new state.
 	 * 
-	 * @param {String} newStateName
+	 * @param {String} newStateName Name of the state to change to.
+	 * @param {Function|undefined} betweenFunc Optional function to be executed between the `leave` and `enter` functions.
 	 */
-	static change = function(newStateName) {
+	static change = function(newStateName, betweenFunc = undefined) {
 		
 		if (newStateName == self.currentStateName) {
 			return;
@@ -96,6 +91,10 @@ function FSM(initialStateName) constructor {
 		
 		if (!is_undefined(leave)) {
 			leave();
+		}
+		
+		if (!is_undefined(betweenFunc)) {
+			betweenFunc();
 		}
 		
 		var newState = self.states[$ self.currentStateName];
