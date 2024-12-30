@@ -18,3 +18,5 @@ function __isGMRT() {
 __isGMRT();
 
 #macro IsGMRT __isGMRT()
+
+#macro FEATHERHINT if (false)

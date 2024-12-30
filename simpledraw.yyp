@@ -29,11 +29,12 @@
   "name":"simpledraw",
   "resources":[
     {"id":{"name":"fntMain","path":"fonts/fntMain/fntMain.yy",},},
-    {"id":{"name":"oCamera","path":"objects/oCamera/oCamera.yy",},},
+    {"id":{"name":"oCameraCtrl","path":"objects/oCameraCtrl/oCameraCtrl.yy",},},
     {"id":{"name":"oSimpleDraw","path":"objects/oSimpleDraw/oSimpleDraw.yy",},},
     {"id":{"name":"Room","path":"rooms/Room/Room.yy",},},
     {"id":{"name":"AppWindow","path":"scripts/AppWindow/AppWindow.yy",},},
     {"id":{"name":"BrushTool","path":"scripts/BrushTool/BrushTool.yy",},},
+    {"id":{"name":"Camera","path":"scripts/Camera/Camera.yy",},},
     {"id":{"name":"Canvas","path":"scripts/Canvas/Canvas.yy",},},
     {"id":{"name":"Err","path":"scripts/Err/Err.yy",},},
     {"id":{"name":"eucmod","path":"scripts/eucmod/eucmod.yy",},},

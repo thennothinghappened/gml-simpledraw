@@ -17,9 +17,6 @@ font_enable_effects(fntMain, true, {
 canvas = new Canvas(800, 600);
 canvas.clear();
 
-/// Camera instance to view the canvas!
-camera = instance_create_depth(canvas.width / 2, canvas.height / 2, 0, oCamera);
-
 /// List of tools!
 tools = [
 	new BrushTool(),
@@ -63,7 +60,7 @@ fsm.state("none", {
 			return;
 		}
 		
-		if (self.camera.fsm.run("step") != "none") {
+		if (oCameraCtrl.fsm.run("step") != "none") {
 			return "cameraMove";
 		}
 		
@@ -72,14 +69,14 @@ fsm.state("none", {
 	/// Draw the tool's path as it is now.
 	/// @param {Real} duration How long we've been in this state.
 	draw: function(duration) {
-		tool.draw(self.camera.fromScreen(mouse.pos[X], mouse.pos[Y]));
+		tool.draw(oCameraCtrl.camera.fromScreen(mouse.pos[X], mouse.pos[Y]));
 	}
 	
 });
 
 fsm.state("cameraMove", {
 	step: function() {
-		if (self.camera.fsm.run("step") == "none") {
+		if (oCameraCtrl.fsm.run("step") == "none") {
 			return "none";
 		}
 	}
@@ -89,7 +86,7 @@ fsm.state("toolStroke", {
 	
 	enter: function() {
 		ts.colour = make_color_hsv(irandom(255), 255, 255);
-		tool.beginStroke(self.camera.fromScreen(mouse.pos[X], mouse.pos[Y]));
+		tool.beginStroke(oCameraCtrl.camera.fromScreen(mouse.pos[X], mouse.pos[Y]));
 	},
 	
 	/**
@@ -102,14 +99,14 @@ fsm.state("toolStroke", {
 		}
 		
 		if (mouse.moved) {
-			tool.updateStroke(self.camera.fromScreen(mouse.pos[X], mouse.pos[Y]));
+			tool.updateStroke(oCameraCtrl.camera.fromScreen(mouse.pos[X], mouse.pos[Y]));
 		}
 	},
 	
 	/// Draw the tool's path as it is now.
 	/// @param {Real} duration How long we've been in this state.
 	draw: function(duration) {
-		tool.draw(self.camera.fromScreen(mouse.pos[X], mouse.pos[Y]));
+		tool.draw(oCameraCtrl.camera.fromScreen(mouse.pos[X], mouse.pos[Y]));
 	},
 	
 	/// Complete the stroke.
@@ -118,3 +115,5 @@ fsm.state("toolStroke", {
 	}
 
 });
+
+instance_create_depth(canvas.width / 2, canvas.height / 2, 0, oCameraCtrl);

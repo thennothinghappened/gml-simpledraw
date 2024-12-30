@@ -1,12 +1,12 @@
 {
   "$GMObject":"",
-  "%Name":"oCamera",
+  "%Name":"oCameraCtrl",
   "eventList":[
     {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":0,"eventType":0,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
     {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":72,"eventType":8,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
   ],
   "managed":true,
-  "name":"oCamera",
+  "name":"oCameraCtrl",
   "overriddenProperties":[],
   "parent":{
     "name":"Objects",
@@ -27,8 +27,7 @@
   "physicsShapePoints":[],
   "physicsStartAwake":true,
   "properties":[
-    {"$GMObjectProperty":"v1","%Name":"zoom","filters":[],"listItems":[],"multiselect":false,"name":"zoom","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"1","varType":0,},
-    {"$GMObjectProperty":"v1","%Name":"rot","filters":[],"listItems":[],"multiselect":false,"name":"rot","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"pi/2","varType":4,},
+    {"$GMObjectProperty":"v1","%Name":"camera","filters":[],"listItems":[],"multiselect":false,"name":"camera","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"new Camera(self.x, self.y)","varType":4,},
   ],
   "resourceType":"GMObject",
   "resourceVersion":"2.0",

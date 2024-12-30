@@ -2,4 +2,4 @@
  * @desc Apply the camera.
  */
 
-self.apply();
+self.camera.apply();
