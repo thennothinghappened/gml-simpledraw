@@ -20,19 +20,19 @@ function Tool() constructor {
 	
 	/// Begin a stroke with this tool.
 	/// @param {Array<Real>} mouse_canvas_pos Initial position of the mouse on the canvas.
-	static stroke_begin = function(mouse_canvas_pos) {
+	static beginStroke = function(mouse_canvas_pos) {
 	
 	}
 	
 	/// Update stroke with a new mouse position, if it has moved.
 	/// @param {Array<Real>} mouse_canvas_pos New position of the mouse on the canvas.
-	static stroke_update = function(mouse_canvas_pos) {
+	static updateStroke = function(mouse_canvas_pos) {
 		
 	}
 	
 	/// End a stroke with this tool.
 	/// @param {Array<Real>} mouse_canvas_pos Final position of the mouse on the canvas.
-	static stroke_end = function(mouse_canvas_pos) {
+	static endStroke = function(mouse_canvas_pos) {
 	
 	}
 	

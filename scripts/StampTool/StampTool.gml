@@ -13,7 +13,7 @@ function StampTool() : Tool() constructor {
 	
 	/// Begin a stroke with this tool.
 	/// @param {Array<Real>} mouse_canvas_pos Initial position of the mouse on the canvas.
-	static stroke_begin = function(mouse_canvas_pos) {
+	static beginStroke = function(mouse_canvas_pos) {
 		
 		self.position = mouse_canvas_pos;
 		self.rotation = 0;
@@ -41,7 +41,7 @@ function StampTool() : Tool() constructor {
 	
 	/// Update stroke with a new mouse position, if it has moved.
 	/// @param {Array<Real>} mouse_canvas_pos New position of the mouse on the canvas.
-	static stroke_update = function(mouse_canvas_pos) {
+	static updateStroke = function(mouse_canvas_pos) {
 		if (self.state != ToolStrokeState.None) {
 			self.rotation = toRadians(point_direction(self.position[X], self.position[Y], mouse_canvas_pos[X], mouse_canvas_pos[Y]));
 			self.state = ToolStrokeState.Stroke;
@@ -50,7 +50,7 @@ function StampTool() : Tool() constructor {
 	
 	/// End a stroke with this tool.
 	/// @param {Array<Real>|undefined} mouse_canvas_pos Final position of the mouse on the canvas.
-	static stroke_end = function(mouse_canvas_pos) {
+	static endStroke = function(mouse_canvas_pos) {
 		if (self.state != ToolStrokeState.None) {
 			self.state = ToolStrokeState.StrokeEnd;
 		}
@@ -96,7 +96,7 @@ function StampTool() : Tool() constructor {
 	/// @param {Struct.Canvas} canvas Canvas to draw to.
 	static commit = function(canvas) {
 		
-		canvas.draw_atomic(function() {
+		canvas.drawAtomic(function() {
 			self.draw(self.position);
 		});
 		

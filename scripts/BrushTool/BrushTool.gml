@@ -11,21 +11,21 @@ function BrushTool() : Tool() constructor {
 	
 	/// Begin a stroke with this tool.
 	/// @param {Array<Real>} mouse_canvas_pos Initial position of the mouse on the canvas.
-	static stroke_begin = function(mouse_canvas_pos) {
+	static beginStroke = function(mouse_canvas_pos) {
 		self.mouse_path = [mouse_canvas_pos];
 		self.state = ToolStrokeState.StrokeBegin;
 	}
 	
 	/// Update stroke with a new mouse position, if it has moved.
 	/// @param {Array<Real>} mouse_canvas_pos New position of the mouse on the canvas.
-	static stroke_update = function(mouse_canvas_pos) {
+	static updateStroke = function(mouse_canvas_pos) {
 		array_push(self.mouse_path, mouse_canvas_pos);
 		self.state = ToolStrokeState.Stroke;
 	}
 	
 	/// End a stroke with this tool.
 	/// @param {Array<Real>|undefined} mouse_canvas_pos Final position of the mouse on the canvas.
-	static stroke_end = function(mouse_canvas_pos) {
+	static endStroke = function(mouse_canvas_pos) {
 	
 		if (mouse_canvas_pos != undefined) {
 			array_push(self.mouse_path, mouse_canvas_pos);
@@ -55,7 +55,7 @@ function BrushTool() : Tool() constructor {
 	
 	/// Draw the path of the brush on the canvas.
 	/// @param {Array<Real>} mouse_canvas_pos Final position of the mouse on the canvas.
-	static draw_canvas_path = function(mouse_canvas_pos) {
+	static drawCanvasPath = function(mouse_canvas_pos) {
 		if (array_length(self.mouse_path) == 0) {
 			return;
 		}
@@ -64,14 +64,14 @@ function BrushTool() : Tool() constructor {
 		
 		array_reduce(self.mouse_path, function(prev, curr) {
 			
-			draw_circle(prev[X] - real(!IS_GMRT), prev[Y] - real(!IS_GMRT), ts.brush_width / 2, false);
-			draw_line_width(prev[X] - real(!IS_GMRT), prev[Y] - real(!IS_GMRT), curr[X] - real(!IS_GMRT), curr[Y] - real(!IS_GMRT), ts.brush_width);
+			draw_circle(prev[X] - real(!IsGMRT), prev[Y] - real(!IsGMRT), ts.brush_width / 2, false);
+			draw_line_width(prev[X] - real(!IsGMRT), prev[Y] - real(!IsGMRT), curr[X] - real(!IsGMRT), curr[Y] - real(!IsGMRT), ts.brush_width);
 			
 			return curr;
 			
 		});
 		
-		draw_circle(mouse_canvas_pos[X] - real(!IS_GMRT), mouse_canvas_pos[Y] - real(!IS_GMRT), ts.brush_width / 2, false);
+		draw_circle(mouse_canvas_pos[X] - real(!IsGMRT), mouse_canvas_pos[Y] - real(!IsGMRT), ts.brush_width / 2, false);
 		
 		draw_set_color(c_white);
 	}
@@ -81,12 +81,12 @@ function BrushTool() : Tool() constructor {
 	static draw = function(mouse_canvas_pos) {
 
 		if (self.state != ToolStrokeState.None) {
-			self.draw_canvas_path(mouse_canvas_pos);
+			self.drawCanvasPath(mouse_canvas_pos);
 		}
 		
 		/// Draw the mouse overlay.
 		gpu_set_blendmode(bm_subtract);
-		draw_circle(mouse_canvas_pos[X] - real(!IS_GMRT), mouse_canvas_pos[Y] - real(!IS_GMRT), ts.brush_width / 2, true);
+		draw_circle(mouse_canvas_pos[X] - real(!IsGMRT), mouse_canvas_pos[Y] - real(!IsGMRT), ts.brush_width / 2, true);
 		gpu_set_blendmode(bm_normal);
 		
 	}
@@ -96,8 +96,8 @@ function BrushTool() : Tool() constructor {
 	/// @param {Struct.Canvas} canvas Canvas to draw to.
 	static commit = function(canvas) {
 		
-		canvas.draw_atomic(function() {
-			self.draw_canvas_path(array_last(self.mouse_path));
+		canvas.drawAtomic(function() {
+			self.drawCanvasPath(array_last(self.mouse_path));
 		});
 		
 		self.mouse_path = [];

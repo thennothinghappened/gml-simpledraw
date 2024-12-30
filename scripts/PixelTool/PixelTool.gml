@@ -11,7 +11,7 @@ function PixelTool() : Tool() constructor {
 	
 	/// Begin a stroke with this tool.
 	/// @param {Array<Real>} mouse_canvas_pos Initial position of the mouse on the canvas.
-	static stroke_begin = function(mouse_canvas_pos) {
+	static beginStroke = function(mouse_canvas_pos) {
 
 		self.mouse_path = [array_map(mouse_canvas_pos, floor)];
 		self.state = ToolStrokeState.StrokeBegin;
@@ -19,7 +19,7 @@ function PixelTool() : Tool() constructor {
 	
 	/// Update stroke with a new mouse position, if it has moved.
 	/// @param {Array<Real>} mouse_canvas_pos New position of the mouse on the canvas.
-	static stroke_update = function(mouse_canvas_pos) {
+	static updateStroke = function(mouse_canvas_pos) {
 
 		array_push(self.mouse_path, array_map(mouse_canvas_pos, floor));
 		self.state = ToolStrokeState.Stroke;
@@ -27,7 +27,7 @@ function PixelTool() : Tool() constructor {
 	
 	/// End a stroke with this tool.
 	/// @param {Array<Real>|undefined} mouse_canvas_pos Final position of the mouse on the canvas.
-	static stroke_end = function(mouse_canvas_pos) {
+	static endStroke = function(mouse_canvas_pos) {
 		
 		if (mouse_canvas_pos != undefined) {
 			array_push(self.mouse_path, array_map(mouse_canvas_pos, floor));
@@ -57,7 +57,7 @@ function PixelTool() : Tool() constructor {
 	
 	/// Draw the path of the brush on the canvas.
 	/// @param {Array<Real>} mouse_canvas_pos Final position of the mouse on the canvas.
-	static draw_canvas_path = function(mouse_canvas_pos) {
+	static drawCanvasPath = function(mouse_canvas_pos) {
 
 		if (array_length(self.mouse_path) == 0) {
 			return;
@@ -67,7 +67,7 @@ function PixelTool() : Tool() constructor {
 		
 		array_reduce(self.mouse_path, function(prev, curr) {
 			
-			draw_rectangle(prev[X] - real(IS_GMRT), prev[Y] - real(IS_GMRT), prev[X], prev[Y], false);
+			draw_rectangle(prev[X] - real(IsGMRT), prev[Y] - real(IsGMRT), prev[X], prev[Y], false);
 			draw_line_width(prev[X] - 0.5, prev[Y] - 0.5, curr[X] - 0.5, curr[Y] - 0.5, 1);
 			
 			return curr;
@@ -85,12 +85,12 @@ function PixelTool() : Tool() constructor {
 		var floored = array_map(mouse_canvas_pos, floor);
 
 		if (self.state != ToolStrokeState.None) {
-			self.draw_canvas_path(floored);
+			self.drawCanvasPath(floored);
 		}
 		
 		/// Draw the mouse overlay.
 		gpu_set_blendmode(bm_subtract);
-		draw_rectangle(floored[X] - real(IS_GMRT), floored[Y] - real(IS_GMRT), floored[X], floored[Y], true);
+		draw_rectangle(floored[X] - real(IsGMRT), floored[Y] - real(IsGMRT), floored[X], floored[Y], true);
 		gpu_set_blendmode(bm_normal);
 		
 	}
@@ -100,8 +100,8 @@ function PixelTool() : Tool() constructor {
 	/// @param {Struct.Canvas} canvas Canvas to draw to.
 	static commit = function(canvas) {
 		
-		canvas.draw_atomic(function() {
-			self.draw_canvas_path(array_last(self.mouse_path));
+		canvas.drawAtomic(function() {
+			self.drawCanvasPath(array_last(self.mouse_path));
 		});
 		
 		self.mouse_path = [];

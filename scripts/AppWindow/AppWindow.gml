@@ -4,19 +4,19 @@
  */
 function AppWindow() : EventEmitter(["resize", "focuschange"]) constructor {
 	
-	self.fps_background = 5;
-	self.fps_foreground = game_get_speed(gamespeed_fps);
+	self.fpsBackground = 5;
+	self.fpsForeground = game_get_speed(gamespeed_fps);
 	
 	self.focused = window_has_focus();
 	self.width = window_get_width();
 	self.height = window_get_height();
-	self.aspect_ratio = width / height;
+	self.aspectRatio = width / height;
 	
 	/**
 	 * @ignore
 	 * @pure
 	 */
-	__window_get_width = function() {
+	__getWidth = function() {
 		
 		if (os_browser != browser_not_a_browser) {
 			return browser_width;
@@ -34,7 +34,7 @@ function AppWindow() : EventEmitter(["resize", "focuschange"]) constructor {
 	 * @ignore
 	 * @pure
 	 */
-	__window_get_height = function() {
+	__getHeight = function() {
 		
 		if (os_browser != browser_not_a_browser) {
 			return browser_height;
@@ -55,15 +55,15 @@ function AppWindow() : EventEmitter(["resize", "focuschange"]) constructor {
 		
 		// Set framerate on focus changed
 		self.on("focuschange", function(params) {
-			game_set_speed(params.focused ? fps_foreground : fps_background, gamespeed_fps);
+			game_set_speed(params.focused ? fpsForeground : fpsBackground, gamespeed_fps);
 		});
 		
 		// Resize app surface & GUI.
-		self.on("resize", self.__on_resize);
+		self.on("resize", self.__onResize);
 		
 		// On Android we want to be the full screen size at startup.
 		if (os_type == os_android) {
-			self.resize(self.__window_get_width(), self.__window_get_height());
+			self.resize(self.__getWidth(), self.__getHeight());
 		}
 		
 	}
@@ -83,8 +83,8 @@ function AppWindow() : EventEmitter(["resize", "focuschange"]) constructor {
 		var old_width = self.width;
 		var old_height = self.height;
 		
-		self.width = self.__window_get_width();
-		self.height = self.__window_get_height();
+		self.width = self.__getWidth();
+		self.height = self.__getHeight();
 		
 		if (self.width != old_width || self.height != old_height) {
 			self.emit("resize", { width, height });
@@ -96,9 +96,9 @@ function AppWindow() : EventEmitter(["resize", "focuschange"]) constructor {
 	 * 
 	 * @param {Struct} params
 	 */
-	__on_resize = function(params) {
+	__onResize = function(params) {
 		
-		self.aspect_ratio = params.width / params.height;
+		self.aspectRatio = params.width / params.height;
 		
 		// The browser requires we also resize the window itself
 		if (os_browser != browser_not_a_browser) {

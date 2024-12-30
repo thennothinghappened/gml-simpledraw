@@ -30,7 +30,7 @@ function Canvas(width, height) constructor {
 	/// @param {Real} height
 	/// @param {Enum.CanvasAnchorHorizontal} [anchor_horizontal]
 	/// @param {Enum.CanvasAnchorVertical} [anchor_vertical]
-	static resize_canvas = function(
+	static resize = function(
 		width,
 		height,
 		anchor_horizontal = CanvasAnchorHorizontal.Left,
@@ -43,7 +43,7 @@ function Canvas(width, height) constructor {
 		
 		surface_set_target(surf_temp);
 		
-			self.__ensure_surface();
+			self.__ensureSurface();
 			draw_surface(self.__surf, 0, 0);
 		
 		surface_reset_target();
@@ -56,7 +56,7 @@ function Canvas(width, height) constructor {
 	/// Clear the canvas!
 	static clear = function() {
 	
-		self.draw_atomic(function() {
+		self.drawAtomic(function() {
 			draw_clear_alpha(c_white, 1);
 		});
 		
@@ -64,13 +64,13 @@ function Canvas(width, height) constructor {
 	
 	/// Draw on the surface & immediately save, takes in a method to run for the surface.
 	/// @param {Function} block
-	static draw_atomic = function(block) {
+	static drawAtomic = function(block) {
 		
-		self.__ensure_surface();
+		self.__ensureSurface();
 		
 		surface_drawto(self.__surf, block);
 		
-		self.__save_surface();
+		self.__saveSurface();
 		
 	}
 	
@@ -86,7 +86,7 @@ function Canvas(width, height) constructor {
 	
 	/// @ignore
 	/// Ensure the surface exists, or recreate from buffer.
-	static __ensure_surface = function() {
+	static __ensureSurface = function() {
 		
 		if (surface_exists(self.__surf)) {
 			return;
@@ -99,7 +99,7 @@ function Canvas(width, height) constructor {
 	
 	/// @ignore
 	/// Save surface to the buffer.
-	static __save_surface = function() {
+	static __saveSurface = function() {
 		buffer_get_surface(self.__buf, self.__surf, 0);
 	}
 	
