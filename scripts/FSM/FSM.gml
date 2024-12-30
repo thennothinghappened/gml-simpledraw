@@ -68,7 +68,7 @@ function FSM(initialStateName) constructor {
 		
 		var newStateName = event(self.timeInState ++);
 		
-		if (is_undefined(newStateName) || newStateName == self.currentStateName) {
+		if (is_undefined(newStateName)) {
 			return;
 		}
 		
@@ -82,6 +82,10 @@ function FSM(initialStateName) constructor {
 	 * @param {String} newStateName
 	 */
 	static change = function(newStateName) {
+		
+		if (newStateName == self.currentStateName) {
+			return;
+		}
 		
 		var currentState = self.states[$ self.currentStateName];
 		
