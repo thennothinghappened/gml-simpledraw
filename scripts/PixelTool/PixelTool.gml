@@ -26,15 +26,8 @@ function PixelTool() : Tool() constructor {
 	}
 	
 	/// End a stroke with this tool.
-	/// @param {Array<Real>|undefined} mouse_canvas_pos Final position of the mouse on the canvas.
 	static endStroke = function(mouse_canvas_pos) {
-		
-		if (mouse_canvas_pos != undefined) {
-			array_push(self.mouse_path, array_map(mouse_canvas_pos, floor));
-		}
-		
 		self.state = ToolStrokeState.StrokeEnd;
-		
 	}
 	
 	/// General update function for this tool.

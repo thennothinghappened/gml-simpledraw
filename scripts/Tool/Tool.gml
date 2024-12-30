@@ -31,8 +31,7 @@ function Tool() constructor {
 	}
 	
 	/// End a stroke with this tool.
-	/// @param {Array<Real>} mouse_canvas_pos Final position of the mouse on the canvas.
-	static endStroke = function(mouse_canvas_pos) {
+	static endStroke = function() {
 	
 	}
 	

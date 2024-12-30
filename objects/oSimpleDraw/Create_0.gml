@@ -113,15 +113,11 @@ fsm.state("toolStroke", {
 		tool.beginStroke(self.camera.fromScreen(mouse.pos[X], mouse.pos[Y]));
 	},
 	
-	/// @param {Real} duration How long we've been in this state.
+	/**
+	 * @param {Real} duration How long we've been in this state.
+	 */
 	step: function(duration) {
 		
-		if (mouse_check_button_released(mb_right)) {
-			tool.endStroke(self.camera.fromScreen(mouse.pos[X], mouse.pos[Y]));
-			return "none";
-		}
-		
-		// Workaround for drawing tablet weirdly not sending the release event??
 		if (!mouse_check_button(mb_left)) {
 			tool.endStroke();
 			return "none";

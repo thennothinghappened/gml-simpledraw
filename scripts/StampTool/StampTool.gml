@@ -49,8 +49,7 @@ function StampTool() : Tool() constructor {
 	}
 	
 	/// End a stroke with this tool.
-	/// @param {Array<Real>|undefined} mouse_canvas_pos Final position of the mouse on the canvas.
-	static endStroke = function(mouse_canvas_pos) {
+	static endStroke = function() {
 		if (self.state != ToolStrokeState.None) {
 			self.state = ToolStrokeState.StrokeEnd;
 		}
