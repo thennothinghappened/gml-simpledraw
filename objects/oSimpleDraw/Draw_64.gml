@@ -2,7 +2,6 @@
 
 draw_set_font(fntMain);
 
-//gpu_set_blendmode(bm_subtract);
-draw_text(0, 0, $"{tool.name} - {tool.desc}");
-//gpu_set_blendmode(bm_normal);
-
+var toolIcon = tool.icon;
+draw_sprite(toolIcon, 0, 0, 0);
+draw_text(sprite_get_width(toolIcon), 0, $"{tool.name} - {tool.desc}");
