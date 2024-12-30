@@ -91,7 +91,7 @@ self.fsm.state("rightClickZoom", {
 			return "none";
 		}
 		
-		self.zoomBy(mouse.delta[Y] * prefs.data.camZoomSpeed * self.camera.zoom * -0.1);
+		self.camera.zoomBy(mouse.delta[Y] * prefs.data.camZoomSpeed * self.camera.zoom * -0.1);
 		
 	}
 	
