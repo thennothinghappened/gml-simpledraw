@@ -119,7 +119,6 @@ fsm.state("toolStroke", {
 	step: function(duration) {
 		
 		if (!mouse_check_button(mb_left)) {
-			tool.endStroke();
 			return "none";
 		}
 		
@@ -136,7 +135,7 @@ fsm.state("toolStroke", {
 	
 	/// Complete the stroke.
 	leave: function() {
-		
+		tool.endStroke();
 	}
 
 });
