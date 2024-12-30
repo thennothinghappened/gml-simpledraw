@@ -50,6 +50,11 @@ function Canvas(width, height) constructor {
 		
 		surface_free(self.__surf);
 		self.__surf = surf_temp;
+		self.width = width;
+		self.height = height;
+		
+		buffer_resize(self.__buf, surface_get_buffersize(width, height));
+		self.__saveSurface();
 		
 	}
 	
