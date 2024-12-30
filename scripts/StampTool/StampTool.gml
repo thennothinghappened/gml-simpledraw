@@ -6,7 +6,7 @@ function StampTool() : Tool() constructor {
 	
 	static name = "Stamp";
 	static desc = "Import images and stamp them onto the page!";
-	static icon = sToolBrush;
+	static icon = sToolStamp;
 	
 	self.state = ToolStrokeState.None;
 	self.image = undefined;

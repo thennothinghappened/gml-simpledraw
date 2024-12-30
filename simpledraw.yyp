@@ -54,6 +54,7 @@
     {"id":{"name":"sMissing","path":"sprites/sMissing/sMissing.yy",},},
     {"id":{"name":"sToolBrush","path":"sprites/sToolBrush/sToolBrush.yy",},},
     {"id":{"name":"sToolPencil","path":"sprites/sToolPencil/sToolPencil.yy",},},
+    {"id":{"name":"sToolStamp","path":"sprites/sToolStamp/sToolStamp.yy",},},
   ],
   "resourceType":"GMProject",
   "resourceVersion":"2.0",
