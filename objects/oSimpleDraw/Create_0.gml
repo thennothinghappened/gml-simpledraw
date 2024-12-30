@@ -11,43 +11,31 @@ canvas = new Canvas(800, 600);
 canvas.clear();
 
 /// Camera instance to view the canvas!
-camera = new Camera(canvas.width / 2, canvas.height / 2);
+camera = instance_create_depth(canvas.width / 2, canvas.height / 2, 0, oCamera);
 
-window.on("resize", function() {
-	self.camera.recalculateProjMat();
-});
+/// List of tools!
+tools = [
+	new BrushTool(),
+	new PixelTool(),
+	new StampTool()
+];
 
-/// States!
-enum ActionState {
-	None,
-	ToolStroke
-}
+/// Current tool.
+tool = tools[0];
 
-/// Handlers for each state!
-stateHandlers = [];
+fsm = new FSM("none");
 
-/// Current state
-state = ActionState.None;
-
-/// How long we've been in the current state.
-stateDuration = 0;
-
-/// Handler for idle/none state, ie no action is going on.
-stateHandlers[ActionState.None] = {
-	
-	enter: function() {
-		
-	},
+fsm.state("none", {
 	
 	/**
-	* @param {Real} duration How long we've been in this state.
-	* @returns {Enum.ActionState|undefined}
-	*/
+	 * @param {Real} duration How long we've been in this state.
+	 * @returns {String|undefined}
+	 */
 	step: function(duration) {
 		
 		// Start tool stroke.
 		if (mouse_check_button(mb_left)) {
-			return ActionState.ToolStroke;
+			return "toolStroke";
 		}
 		
 		var status = tool.update();
@@ -113,23 +101,16 @@ stateHandlers[ActionState.None] = {
 	/// Draw the tool's path as it is now.
 	/// @param {Real} duration How long we've been in this state.
 	draw: function(duration) {
-		
 		tool.draw(self.camera.fromScreen(mouse.pos[X], mouse.pos[Y]));
-		
-	},	
-	leave: function() {
-		
-	}	
-};
+	}
+	
+});
 
-/// Handler for using a tool!
-stateHandlers[ActionState.ToolStroke] = {
+fsm.state("toolStroke", {
 	
 	enter: function() {
-		
 		ts.colour = make_color_hsv(irandom(255), 255, 255);
 		tool.beginStroke(self.camera.fromScreen(mouse.pos[X], mouse.pos[Y]));
-		
 	},
 	
 	/// @param {Real} duration How long we've been in this state.
@@ -137,13 +118,13 @@ stateHandlers[ActionState.ToolStroke] = {
 		
 		if (mouse_check_button_released(mb_right)) {
 			tool.endStroke(self.camera.fromScreen(mouse.pos[X], mouse.pos[Y]));
-			return ActionState.None;
+			return "none";
 		}
 		
 		// Workaround for drawing tablet weirdly not sending the release event??
 		if (!mouse_check_button(mb_left)) {
 			tool.endStroke();
-			return ActionState.None;
+			return "none";
 		}
 		
 		if (mouse.moved) {
@@ -162,64 +143,4 @@ stateHandlers[ActionState.ToolStroke] = {
 		
 	}
 
-};
-
-/// List of tools!
-tools = [
-	new BrushTool(),
-	new PixelTool(),
-	new StampTool()
-];
-
-/// Current tool.
-tool = tools[0];
-
-/// Update the current application state.
-/// This is basically the main loop!
-stateUpdate = function() {
-	
-	var state_handler = stateHandlers[state];
-	var new_state = state_handler.step(stateDuration);
-
-	if (new_state == undefined) {
-		stateDuration ++;
-		return;
-	}
-	
-	stateDuration = 0;
-	
-	state_handler.leave();
-	
-	state = new_state;
-	state_handler = stateHandlers[state];
-	
-	state_handler.enter();
-	
-}
-
-/// Process the given event name for the current state, or none.
-/// @param {String} event
-stateRunEvent = function(event) {
-	
-	var state_handler = stateHandlers[state];
-	
-	if (!struct_exists(state_handler, event)) {
-		return;
-	}
-	
-	return state_handler[$ event](stateDuration);
-	
-}
-
-/// Initialize states (change their scope)
-array_foreach(stateHandlers, function(state_handler) {
-	
-	var keys = struct_get_names(state_handler);
-	
-	for (var i = 0; i < array_length(keys); i ++) {
-	
-		var key = keys[i];
-		state_handler[$ key] = method(self, state_handler[$ key]);
-	}
-	
 });

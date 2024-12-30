@@ -5,8 +5,8 @@
   "isDnD":false,
   "name":"AppWindow",
   "parent":{
-    "name":"Drawing",
-    "path":"folders/Scripts/Drawing.yy",
+    "name":"Singletons",
+    "path":"folders/Scripts/Singletons.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

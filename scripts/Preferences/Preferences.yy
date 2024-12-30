@@ -5,8 +5,8 @@
   "isDnD":false,
   "name":"Preferences",
   "parent":{
-    "name":"Scripts",
-    "path":"folders/Scripts.yy",
+    "name":"Singletons",
+    "path":"folders/Scripts/Singletons.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",
