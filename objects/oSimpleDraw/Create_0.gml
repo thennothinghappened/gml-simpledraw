@@ -29,12 +29,13 @@ fsm.state("none", {
 	
 	/**
 	 * @param {Real} duration How long we've been in this state.
+	 * @returns {String|undefined}
 	 */
 	step: function(duration) {
 		
 		// Start tool stroke.
 		if (mouse_check_button(mb_left)) {
-			return fsm.change("toolStroke");
+			return "toolStroke";
 		}
 		
 		var status = tool.update();
@@ -105,10 +106,6 @@ fsm.state("none", {
 	
 });
 
-fsm.state("zoom", {
-	
-});
-
 fsm.state("toolStroke", {
 	
 	enter: function() {
@@ -122,7 +119,7 @@ fsm.state("toolStroke", {
 	step: function(duration) {
 		
 		if (!mouse_check_button(mb_left)) {
-			return fsm.change("none");
+			return "none";
 		}
 		
 		if (mouse.moved) {
