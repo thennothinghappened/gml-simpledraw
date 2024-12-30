@@ -4,6 +4,9 @@
  */
 function FSM(initialStateName) constructor {
 	
+	/**
+	 * @ignore
+	 */
 	self.states = {};
 	self.currentStateName = initialStateName;
 	
@@ -63,16 +66,16 @@ function FSM(initialStateName) constructor {
 		var event = currentState[$ name];
 		
 		if (is_undefined(event)) {
-			return;
+			return self.currentStateName;
 		}
 		
 		var newStateName = event(self.timeInState ++);
 		
 		if (is_undefined(newStateName)) {
-			return;
+			return self.currentStateName;
 		}
 		
-		self.change(newStateName);
+		return self.change(newStateName);
 		
 	};
 	
@@ -84,7 +87,7 @@ function FSM(initialStateName) constructor {
 	static change = function(newStateName) {
 		
 		if (newStateName == self.currentStateName) {
-			return;
+			return self.currentStateName;
 		}
 		
 		var currentState = self.states[$ self.currentStateName];
@@ -104,6 +107,8 @@ function FSM(initialStateName) constructor {
 		if (!is_undefined(enter)) {
 			enter();
 		}
+		
+		return newStateName;
 		
 	}
 	

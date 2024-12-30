@@ -1,9 +1,14 @@
 /**
  * @desc Wrapper for a camera that behaves how we're wanting for viewing the canvas.
  */
-
 	
 self.camera = camera_create();
+
+/**
+ * State machine for the camera. Owner of this camera instance is expected to update
+ * the state machine.
+ */
+self.fsm = new FSM("none");
 
 /**
  * Move to the given coordinates in worldspace.
@@ -119,3 +124,107 @@ self.recalculateViewMat();
 self.recalculateProjMat();
 
 window.on("resize", self.recalculateProjMat);
+
+self.fsm.state("none", {
+	
+	step: function() {
+
+		if (mouse_check_button(mb_middle)) {
+			return "rotate";
+		}
+		
+		if (mouse.wheel != 0) {
+			return "zoom";
+		}
+
+		if (mouse_check_button(mb_right)) {
+			
+			if (keyboard_check(vk_control)) {
+				return "rightClickZoom";
+			}
+			
+			return "pan";
+		}
+		
+	}
+	
+});
+
+self.fsm.state("rotate", {
+	
+	step: function() {
+		
+		if (!mouse_check_button(mb_middle)) {
+			return "none";
+		}
+		
+		self.rotateBy(mouse.delta[X] * prefs.data.camRotSpeed);
+		
+	},
+	
+});
+
+self.fsm.state("zoom", {
+	
+	enter: function() {
+		// Cheating a bit so we don't lose a singular scroll input.
+		self.fsm.run("step");
+	},
+	
+	step: function() {
+
+		if (mouse.wheel == 0) {
+			return "none";
+		}
+
+		var mouseCanvasPosBefore = self.fromScreen(
+			mouse.pos[X],
+			mouse.pos[Y],
+			true
+		);
+		
+		self.zoomBy(mouse.wheel * prefs.data.camZoomSpeed * self.zoom);
+		
+		var mouseCanvasPosAfter = self.fromScreen(
+			mouse.pos[X],
+			mouse.pos[Y],
+			true
+		);
+		
+		self.pan(
+			mouseCanvasPosBefore[X] - mouseCanvasPosAfter[X],
+			mouseCanvasPosBefore[Y] - mouseCanvasPosAfter[Y]
+		);
+		
+	}
+	
+});
+
+self.fsm.state("rightClickZoom", {
+	
+	step: function() {
+
+		if (!mouse_check_button(mb_right) || !keyboard_check(vk_control)) {
+			return "none";
+		}
+		
+		self.zoomBy(mouse.delta[Y] * prefs.data.camZoomSpeed * self.zoom * -0.1);
+		
+	}
+	
+});
+
+self.fsm.state("pan", {
+	
+	step: function() {
+
+		if (!mouse_check_button(mb_right)) {
+			return "none";
+		}
+
+		var panDelta = self.fromScreen(mouse.delta[X], mouse.delta[Y], true);
+		self.pan(panDelta[X], panDelta[Y]);
+		
+	}
+	
+});

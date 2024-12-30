@@ -1,5 +1,5 @@
 /**
- * @desc Apply our camera.
+ * @desc Apply the camera.
  */
 
 self.apply();

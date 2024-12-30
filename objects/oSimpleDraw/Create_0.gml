@@ -33,67 +33,31 @@ fsm.state("none", {
 	 */
 	step: function(duration) {
 		
-		// Start tool stroke.
-		if (mouse_check_button(mb_left)) {
-			return "toolStroke";
-		}
-		
 		var status = tool.update();
 		
 		if (status == ToolUpdateStatus.Commit) {
 			tool.commit(canvas);
 		}
 		
-		if (mouse.wheel != 0) {
+		// Start tool stroke.
+		if (mouse_check_button(mb_left)) {
+			return "toolStroke";
+		}
+		
+		if ((mouse.wheel != 0) && keyboard_check(vk_shift)) {
 			
-			if (keyboard_check(vk_shift)) {
-				
-				var tool_index = array_find_index(tools, function(tool) {
-					return tool == self.tool;
-				})
-				
-				tool_index = eucmod(tool_index + mouse.wheel, array_length(tools));
-				tool = tools[tool_index];
-				
-				return;
-			}
+			var tool_index = array_find_index(tools, function(tool) {
+				return tool == self.tool;
+			})
 			
-			var mouseCanvasPosBefore = self.camera.fromScreen(
-				mouse.pos[X],
-				mouse.pos[Y],
-				true
-			);
-			
-			self.camera.zoomBy(mouse.wheel * prefs.data.camZoomSpeed * camera.zoom);
-			
-			var mouseCanvasPosAfter = self.camera.fromScreen(
-				mouse.pos[X],
-				mouse.pos[Y],
-				true
-			);
-			
-			self.camera.pan(
-				mouseCanvasPosBefore[X] - mouseCanvasPosAfter[X],
-				mouseCanvasPosBefore[Y] - mouseCanvasPosAfter[Y]
-			);
+			tool_index = eucmod(tool_index + mouse.wheel, array_length(tools));
+			tool = tools[tool_index];
 			
 			return;
-			
 		}
-	
-		if (mouse_check_button(mb_middle)) {
-			self.camera.rotateBy(mouse.delta[X] * prefs.data.camRotSpeed);
-		}
-
-		if (mouse_check_button(mb_right)) {
-			
-			if (keyboard_check(vk_control)) {
-				self.camera.zoomBy(mouse.delta[Y] * prefs.data.camZoomSpeed * camera.zoom * -0.1);
-				return;
-			}
-			
-			var panDelta = self.camera.fromScreen(mouse.delta[X], mouse.delta[Y], true);
-			self.camera.pan(panDelta[X], panDelta[Y]);
+		
+		if (self.camera.fsm.run("step") != "none") {
+			return "cameraMove";
 		}
 		
 	},
@@ -102,6 +66,17 @@ fsm.state("none", {
 	/// @param {Real} duration How long we've been in this state.
 	draw: function(duration) {
 		tool.draw(self.camera.fromScreen(mouse.pos[X], mouse.pos[Y]));
+	}
+	
+});
+
+fsm.state("cameraMove", {
+	
+	step: function() {
+
+		if (self.camera.fsm.run("step") == "none") {
+			return "none";
+		}
 	}
 	
 });
