@@ -2,3 +2,6 @@
 game.ios
 game.yydebug
 Build/
+cache/
+**/.DS_Store
+
