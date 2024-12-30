@@ -35,15 +35,38 @@ self.fsm.state("none", {
 
 self.fsm.state("rotate", {
 	
+	enter: function() {
+		self.rotateStartPos = mouse.pos[X];
+		self.initialRotation = self.camera.rot;
+	},
+	
 	step: function() {
 		
 		if (!mouse_check_button(mb_middle)) {
 			return "none";
 		}
 		
-		self.camera.rotateBy(mouse.delta[X] * prefs.data.camRotSpeed);
+		if (keyboard_check_pressed(vk_shift)) {
+			self.rotateStartPos = mouse.pos[X];
+			self.initialRotation = self.camera.rot;
+		}
+		
+		if (!keyboard_check(vk_shift)) {
+			return self.camera.rotateBy(mouse.delta[X] * prefs.data.camRotSpeed);
+		}
+		
+		// Anchor to 8-directional rotation from the start position.
+		var diff = (self.rotateStartPos - mouse.pos[X]) * prefs.data.camRotSpeed;
+		var newRot = round((self.initialRotation + diff) * 4 / pi) / 4 * pi;
+		
+		self.camera.setRotation(newRot);
 		
 	},
+	
+	leave: function() {
+		self.rotateStartPos = undefined;
+		self.initialRotation = undefined;
+	}
 	
 });
 
