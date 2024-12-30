@@ -43,7 +43,14 @@ fsm.state("none", {
 			tool.commit(canvas);
 		}
 		
-		// Start tool stroke.
+		if (keyboard_check_pressed(ord("S"))) {
+			return "saveImage";
+		}
+		
+		if (keyboard_check_pressed(ord("L"))) {
+			return "loadImage";
+		}
+		
 		if (mouse_check_button(mb_left)) {
 			return "toolStroke";
 		}
@@ -112,6 +119,62 @@ fsm.state("toolStroke", {
 	/// Complete the stroke.
 	leave: function() {
 		tool.endStroke();
+	}
+
+});
+
+fsm.state("saveImage", {
+	
+	enter: function() {
+		
+		var path = get_save_filename("*.png", $"{self.canvas.width}x{self.canvas.height} Canvas.png");
+		
+		if (string_length(path) == 0) {
+			return;
+		}
+		
+		self.canvas.__ensureSurface();
+		surface_save(self.canvas.__surf, path);
+		
+	},
+	
+	step: function() {
+		return "none";
+	}
+
+});
+
+fsm.state("loadImage", {
+	
+	enter: function() {
+		
+		var path = get_open_filename("*.png", "");
+		
+		if (string_length(path) == 0) {
+			return;
+		}
+		
+		var image = sprite_add(path, 0, false, false, 0, 0);
+		
+		if (!sprite_exists(image)) {
+			return;
+		}
+		
+		canvas.resize(sprite_get_width(image), sprite_get_height(image));
+		canvas.drawAtomic(method({ image }, function() {
+			draw_sprite(image, 0, 0, 0);
+		}));
+		
+		sprite_delete(image);
+		
+	},
+	
+	step: function() {
+		return "none";
+	},
+	
+	leave: function() {
+		
 	}
 
 });
