@@ -27,6 +27,15 @@ tools = [
 /// Current tool.
 tool = tools[0];
 
+/**
+ * Path to the current document on disk.
+ */
+self.filePath = undefined;
+
+FEATHERHINT {
+	self.filePath = "";
+}
+
 fsm = new FSM("none");
 
 fsm.state("none", {
@@ -43,12 +52,21 @@ fsm.state("none", {
 			tool.commit(canvas);
 		}
 		
-		if (keyboard_check_pressed(ord("S"))) {
-			return "saveImage";
-		}
-		
-		if (keyboard_check_pressed(ord("L"))) {
-			return "loadImage";
+		if (keyboard_check(vk_control)) {
+			
+			if (keyboard_check_pressed(ord("S"))) {
+				
+				if (keyboard_check(vk_shift)) {
+					self.filePath = undefined;
+				}
+				
+				return "saveImage";
+			}
+			
+			if (keyboard_check_pressed(ord("L"))) {
+				return "loadImage";
+			}
+			
 		}
 		
 		if (mouse_check_button(mb_left)) {
@@ -135,15 +153,33 @@ fsm.state("toolStroke", {
 fsm.state("saveImage", {
 	
 	enter: function() {
+
+		var path = "";
 		
-		var path = get_save_filename("*.png", $"{self.canvas.width}x{self.canvas.height} Canvas.png");
+		if (is_undefined(self.filePath)) {
+			
+			path = get_save_filename(".png|*.png", $"{self.canvas.width}x{self.canvas.height} Canvas.png");
+			
+		} else if (filename_ext(self.filePath) != ".png") {
+			
+			show_message("GameMaker can only save PNGs!");
+			path = get_save_filename(".png|*.png", filename_change_ext(self.filePath, ".png"));
+			
+		} else {
+			
+			path = self.filePath;
+			
+		}
 		
 		if (string_length(path) == 0) {
 			return;
 		}
 		
+		self.filePath = path;
+		window_set_caption($"{game_display_name} - {self.filePath}");
+		
 		self.canvas.__ensureSurface();
-		surface_save(self.canvas.__surf, path);
+		surface_save(self.canvas.__surf, self.filePath);
 		
 	},
 	
@@ -157,13 +193,15 @@ fsm.state("loadImage", {
 	
 	enter: function() {
 		
-		var path = get_open_filename("*.png", "");
+		self.filePath = get_open_filename("*.png", "");
 		
-		if (string_length(path) == 0) {
+		if (string_length(self.filePath) == 0) {
 			return;
 		}
 		
-		var image = sprite_add(path, 0, false, false, 0, 0);
+		window_set_caption($"{game_display_name} - {self.filePath}");
+		
+		var image = sprite_add(self.filePath, 0, false, false, 0, 0);
 		
 		if (!sprite_exists(image)) {
 			return;
