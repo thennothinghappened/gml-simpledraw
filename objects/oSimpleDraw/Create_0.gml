@@ -205,7 +205,7 @@ loadImage = function() {
 	
 	self.promptToSaveIfModified();
 
-	var path = get_open_filename("*.png", "");
+	var path = get_open_filename("Supported Image Type|*.png;*.jpg;*.jpeg;*.gif|PNG|*.png|JPEG|*.jpg;*.jpeg|GIF|*.gif", "");
 	
 	if (string_length(path) == 0) {
 		return;
