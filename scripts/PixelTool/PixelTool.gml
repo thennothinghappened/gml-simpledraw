@@ -60,8 +60,10 @@ function PixelTool() : Tool() constructor {
 		
 		array_reduce(self.mouse_path, function(prev, curr) {
 			
-			draw_rectangle(prev[X] - real(IsGMRT), prev[Y] - real(IsGMRT), prev[X], prev[Y], false);
-			draw_line_width(prev[X] - 0.5, prev[Y] - 0.5, curr[X] - 0.5, curr[Y] - 0.5, 1);
+			static osOffset = (IsWindowsCR ? -0.5 : 0.5);
+			
+			draw_rectangle(prev[X], prev[Y], prev[X], prev[Y], false);
+			draw_line_width(prev[X] + osOffset, prev[Y] + osOffset, curr[X] + osOffset, curr[Y] + osOffset, 1);
 			
 			return curr;
 			
@@ -83,7 +85,7 @@ function PixelTool() : Tool() constructor {
 		
 		/// Draw the mouse overlay.
 		gpu_set_blendmode(bm_subtract);
-		draw_rectangle(floored[X] - real(IsGMRT), floored[Y] - real(IsGMRT), floored[X], floored[Y], true);
+		draw_rectangle(floored[X], floored[Y], floored[X] + real(!IsWindowsCR), floored[Y] + real(!IsWindowsCR), true);
 		gpu_set_blendmode(bm_normal);
 		
 	}
