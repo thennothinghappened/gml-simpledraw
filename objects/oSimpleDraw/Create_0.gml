@@ -28,6 +28,11 @@ tools = [
 tool = tools[0];
 
 /**
+ * Whether the image has changed since it was last saved.
+ */
+self.changedSinceWrite = false;
+
+/**
  * Path to the current document on disk.
  */
 self.filePath = undefined;
@@ -50,6 +55,9 @@ fsm.state("none", {
 		
 		if (status == ToolUpdateStatus.Commit) {
 			tool.commit(canvas);
+			
+			self.changedSinceWrite = true;
+			self.updateWindowCaption();
 		}
 		
 		if (keyboard_check(vk_control)) {
@@ -60,11 +68,11 @@ fsm.state("none", {
 					self.filePath = undefined;
 				}
 				
-				return "saveImage";
+				return saveImage();
 			}
 			
 			if (keyboard_check_pressed(ord("L"))) {
-				return "loadImage";
+				return loadImage();
 			}
 			
 		}
@@ -150,80 +158,76 @@ fsm.state("toolStroke", {
 
 });
 
-fsm.state("saveImage", {
+saveImage = function() {
 	
-	enter: function() {
-
-		var path = "";
-		
-		if (is_undefined(self.filePath)) {
-			
-			path = get_save_filename(".png|*.png", $"{self.canvas.width}x{self.canvas.height} Canvas.png");
-			
-		} else if (filename_ext(self.filePath) != ".png") {
-			
-			show_message("GameMaker can only save PNGs!");
-			path = get_save_filename(".png|*.png", filename_change_ext(self.filePath, ".png"));
-			
-		} else {
-			
-			path = self.filePath;
-			
-		}
-		
-		if (string_length(path) == 0) {
-			return;
-		}
-		
-		self.filePath = path;
-		window_set_caption($"{game_display_name} - {self.filePath}");
-		
-		self.canvas.__ensureSurface();
-		surface_save(self.canvas.__surf, self.filePath);
-		
-	},
+	var path = "";
 	
-	step: function() {
-		return "none";
-	}
-
-});
-
-fsm.state("loadImage", {
-	
-	enter: function() {
+	if (is_undefined(self.filePath)) {
 		
-		self.filePath = get_open_filename("*.png", "");
+		path = get_save_filename(".png|*.png", $"{self.canvas.width}x{self.canvas.height} Canvas.png");
 		
-		if (string_length(self.filePath) == 0) {
-			return;
-		}
+	} else if (filename_ext(self.filePath) != ".png") {
 		
-		window_set_caption($"{game_display_name} - {self.filePath}");
+		show_message("GameMaker can only save PNGs!");
+		path = get_save_filename(".png|*.png", filename_change_ext(self.filePath, ".png"));
 		
-		var image = sprite_add(self.filePath, 0, false, false, 0, 0);
+	} else {
 		
-		if (!sprite_exists(image)) {
-			return;
-		}
-		
-		canvas.resize(sprite_get_width(image), sprite_get_height(image));
-		canvas.drawAtomic(method({ image }, function() {
-			draw_sprite(image, 0, 0, 0);
-		}));
-		
-		sprite_delete(image);
-		
-	},
-	
-	step: function() {
-		return "none";
-	},
-	
-	leave: function() {
+		path = self.filePath;
 		
 	}
+	
+	if (string_length(path) == 0) {
+		return;
+	}
+	
+	self.filePath = path;
+	self.changedSinceWrite = false;
+	self.updateWindowCaption();
+	
+	self.canvas.__ensureSurface();
+	surface_save(self.canvas.__surf, self.filePath);
+	
+};
 
-});
+loadImage = function() {
+	
+	if (self.changedSinceWrite) {
+		if (show_question("The canvas has been modified. Do you want to save it first?")) {
+			saveImage();
+		}
+	}
+
+	var path = get_open_filename("*.png", "");
+	
+	if (string_length(path) == 0) {
+		return;
+	}
+	
+	self.filePath = path;
+	self.changedSinceWrite = false;
+	self.updateWindowCaption();
+	
+	var image = sprite_add(self.filePath, 0, false, false, 0, 0);
+	
+	if (!sprite_exists(image)) {
+		return;
+	}
+	
+	canvas.resize(sprite_get_width(image), sprite_get_height(image));
+	canvas.drawAtomic(method({ image }, function() {
+		draw_sprite(image, 0, 0, 0);
+	}));
+	
+	sprite_delete(image);
+	
+};
+
+/**
+ * Update the window caption to reflect current status.
+ */
+updateWindowCaption = function() {
+	window_set_caption(game_display_name + (!is_undefined(self.filePath) ? $" - {self.filePath}" : "") + (self.changedSinceWrite ? " *" : ""));
+};
 
 instance_create_depth(canvas.width / 2, canvas.height / 2, 0, oCameraCtrl);
