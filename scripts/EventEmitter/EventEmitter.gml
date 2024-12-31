@@ -1,23 +1,23 @@
 
 /**
-* Abstract class for something that emits subscribable events.
-* 
-* @param {Array<String>} event_names List of event names to register
-*/
+ * Abstract class for something that emits subscribable events.
+ * 
+ * @param {Array<String>} event_names List of event names to register
+ */
 function EventEmitter(event_names) constructor {
 	
 	self.events = {};
 	
 	/**
-	* Subscribe to an event as a listener.
-	* 
-	* ### Exceptions
-	* 
-	* Throws if the given event name is invalid.
-	* 
-	* @param {String} event Event to listen to.
-	* @param {Function} listener Callback to listen with.
-	*/
+	 * Subscribe to an event as a listener.
+	 * 
+	 * ### Exceptions
+	 * 
+	 * Throws if the given event name is invalid.
+	 * 
+	 * @param {String} event Event to listen to.
+	 * @param {Function} listener Callback to listen with.
+	 */
 	static on = function(event, listener) {
 		
 		if (!struct_exists(self.events, event)) {
@@ -28,18 +28,18 @@ function EventEmitter(event_names) constructor {
 	}
 	
 	/**
-	* Remove a subscription to an event.
-	* 
-	* Returns whether the subscription was removed. If this is false, no such subscription existed.
-	* 
-	* ### Exceptions
-	* 
-	* Throws if the given event name is invalid.
-	* 
-	* @param {String} event Event listening to.
-	* @param {Function} listener Callback to remove from the list.
-	* @returns {Bool}
-	*/
+	 * Remove a subscription to an event.
+	 * 
+	 * Returns whether the subscription was removed. If this is false, no such subscription existed.
+	 * 
+	 * ### Exceptions
+	 * 
+	 * Throws if the given event name is invalid.
+	 * 
+	 * @param {String} event Event listening to.
+	 * @param {Function} listener Callback to remove from the list.
+	 * @returns {Bool}
+	 */
 	static off = function(event, listener) {
 		
 		var listeners = self.events[$ event];
@@ -62,15 +62,15 @@ function EventEmitter(event_names) constructor {
 	}
 	
 	/**
-	* **[Protected]** Emit a given event name to all listeners.
-	* 
-	* ### Exceptions
-	* 
-	* Throws if the given event name is invalid.
-	* 
-	* @param {String} event Event name to emit.
-	* @param {Struct|undefined} [params] Parameters to send
-	*/
+	 * **[Protected]** Emit a given event name to all listeners.
+	 * 
+	 * ### Exceptions
+	 * 
+	 * Throws if the given event name is invalid.
+	 * 
+	 * @param {String} event Event name to emit.
+	 * @param {Struct|undefined} [params] Parameters to send
+	 */
 	static emit = function(event, params = undefined) {
 		
 		if (!struct_exists(self.events, event)) {
@@ -83,15 +83,15 @@ function EventEmitter(event_names) constructor {
 	}
 	
 	/**
-	* **[Protected]** Add an event name to the list of events.
-	* 
-	* ### Exceptions
-	* 
-	* Throws if the given event name is already registered.
-	* 
-	* @param {String} event Event name to add.
-	* @returns {Enum.EventAddResult}
-	*/
+	 * **[Protected]** Add an event name to the list of events.
+	 * 
+	 * ### Exceptions
+	 * 
+	 * Throws if the given event name is already registered.
+	 * 
+	 * @param {String} event Event name to add.
+	 * @returns {Enum.EventAddResult}
+	 */
 	static register = function(event) {
 		
 		if (struct_exists(self.events, event)) {
