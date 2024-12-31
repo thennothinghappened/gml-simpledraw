@@ -20,3 +20,6 @@ __isGMRT();
 #macro IsGMRT __isGMRT()
 
 #macro FEATHERHINT if (false)
+
+#macro IsWindows (os_type == os_windows)
+#macro IsWindowsCR (IsWindows && !IsGMRT)
