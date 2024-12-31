@@ -11,21 +11,12 @@ self.fsm = new FSM("none");
 self.fsm.state("none", {
 	
 	step: function() {
-
-		if (mouse_check_button(mb_middle)) {
-			return "rotate";
-		}
 		
 		if (mouse.wheel != 0) {
 			return "zoom";
 		}
 
-		if (mouse_check_button(mb_right)) {
-			
-			if (keyboard_check(vk_control)) {
-				return "rightClickZoom";
-			}
-			
+		if (mouse_check_button(mb_middle)) {
 			return "pan";
 		}
 		
@@ -42,7 +33,7 @@ self.fsm.state("rotate", {
 	
 	step: function() {
 		
-		if (!mouse_check_button(mb_middle)) {
+		if (!mouse_check_button(mb_middle) || !keyboard_check(vk_alt)) {
 			return "none";
 		}
 		
@@ -106,11 +97,11 @@ self.fsm.state("zoom", {
 	
 });
 
-self.fsm.state("rightClickZoom", {
+self.fsm.state("middleClickZoom", {
 	
 	step: function() {
 
-		if (!mouse_check_button(mb_right) || !keyboard_check(vk_control)) {
+		if (!mouse_check_button(mb_middle) || !keyboard_check(vk_control)) {
 			return "none";
 		}
 		
@@ -124,10 +115,18 @@ self.fsm.state("pan", {
 	
 	step: function() {
 
-		if (!mouse_check_button(mb_right)) {
+		if (!mouse_check_button(mb_middle)) {
 			return "none";
 		}
-
+		
+		if (keyboard_check(vk_alt)) {
+			return "rotate";
+		}
+		
+		if (keyboard_check(vk_control)) {
+			return "middleClickZoom";
+		}
+		
 		var panDelta = self.camera.fromScreen(mouse.delta[X], mouse.delta[Y], true);
 		self.camera.pan(panDelta[X], panDelta[Y]);
 		
