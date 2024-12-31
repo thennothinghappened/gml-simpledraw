@@ -6,7 +6,7 @@
 */
 function EventEmitter(event_names) constructor {
 	
-	events = {};
+	self.events = {};
 	
 	/**
 	* Subscribe to an event as a listener.
@@ -19,12 +19,12 @@ function EventEmitter(event_names) constructor {
 	* @param {Function} listener Callback to listen with.
 	*/
 	static on = function(event, listener) {
-	
-		if (!struct_exists(events, event)) {
+		
+		if (!struct_exists(self.events, event)) {
 			throw new Err($"Cannot subscribe to non-registered event `{event}`");
 		}
 		
-		array_push(events[$ event], listener);
+		array_push(self.events[$ event], listener);
 	}
 	
 	/**
@@ -42,7 +42,7 @@ function EventEmitter(event_names) constructor {
 	*/
 	static off = function(event, listener) {
 		
-		var listeners = events[$ event];
+		var listeners = self.events[$ event];
 		
 		if (is_undefined(listeners)) {
 			throw new Err($"Cannot unsubscribe from non-registered event `{event}`");
@@ -73,11 +73,11 @@ function EventEmitter(event_names) constructor {
 	*/
 	static emit = function(event, params = undefined) {
 		
-		if (!struct_exists(events, event)) {
+		if (!struct_exists(self.events, event)) {
 			throw new Err($"Cannot emit non-registered event `{event}`");
 		}
 		
-		array_foreach(events[$ event], method({ params }, function(listener) {
+		array_foreach(self.events[$ event], method({ params }, function(listener) {
 			listener(params);
 		}));
 	}
@@ -94,15 +94,15 @@ function EventEmitter(event_names) constructor {
 	*/
 	static register = function(event) {
 		
-		if (struct_exists(events, event)) {
+		if (struct_exists(self.events, event)) {
 			throw new Err($"Event name `{event}` is already registered");
 		}
 		
-		events[$ event] = [];
+		self.events[$ event] = [];
 	}
 	
 	// Register the passed in events immediately
-	array_foreach(event_names, register);
+	array_foreach(event_names, self.register);
 	
 }
 
