@@ -94,6 +94,7 @@ function BrushTool() : Tool() constructor {
 		});
 		
 		self.mouse_path = [];
+		self.state = ToolStrokeState.None;
 		
 	}
 }

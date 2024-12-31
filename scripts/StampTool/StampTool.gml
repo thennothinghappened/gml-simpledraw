@@ -62,7 +62,6 @@ function StampTool() : Tool() constructor {
 		switch (self.state) {
 			
 			case ToolStrokeState.StrokeEnd: {
-				self.state = ToolStrokeState.None;
 				return ToolUpdateStatus.Commit;
 			}
 			
@@ -100,6 +99,7 @@ function StampTool() : Tool() constructor {
 		});
 		
 		sprite_delete(self.image);
+		self.state = ToolStrokeState.None;
 		
 	}
 }

@@ -105,6 +105,7 @@ function PixelTool() : Tool() constructor {
 		});
 		
 		self.mouse_path = [];
+		self.state = ToolStrokeState.None;
 		
 	}
 }
