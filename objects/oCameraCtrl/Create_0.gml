@@ -33,16 +33,16 @@ self.fsm.state("rotate", {
 	
 	step: function() {
 		
-		if (!mouse_check_button(mb_middle) || !keyboard_check(vk_alt)) {
+		if (!mouse_check_button(mb_middle) || !keyboard_check(vk_shift)) {
 			return "none";
 		}
 		
-		if (keyboard_check_pressed(vk_shift)) {
+		if (keyboard_check_pressed(vk_alt)) {
 			self.rotateStartPos = mouse.pos[X];
 			self.initialRotation = self.camera.rot;
 		}
 		
-		if (!keyboard_check(vk_shift)) {
+		if (!keyboard_check(vk_alt)) {
 			return self.camera.rotateBy(mouse.delta[X] * prefs.data.camRotSpeed);
 		}
 		
@@ -119,7 +119,7 @@ self.fsm.state("pan", {
 			return "none";
 		}
 		
-		if (keyboard_check(vk_alt)) {
+		if (keyboard_check(vk_shift)) {
 			return "rotate";
 		}
 		
