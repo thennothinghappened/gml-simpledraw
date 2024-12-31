@@ -20,8 +20,13 @@ function PixelTool() : Tool() constructor {
 	/// Update stroke with a new mouse position, if it has moved.
 	/// @param {Array<Real>} mouse_canvas_pos New position of the mouse on the canvas.
 	static updateStroke = function(mouse_canvas_pos) {
-
-		array_push(self.mouse_path, array_map(mouse_canvas_pos, floor));
+		
+		var nextPos = array_map(mouse_canvas_pos, floor);
+		
+		if (!array_equals(array_last(self.mouse_path), nextPos)) {
+			array_push(self.mouse_path, nextPos);
+		}
+		
 		self.state = ToolStrokeState.Stroke;
 	}
 	
