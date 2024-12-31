@@ -6,7 +6,7 @@ function ToolSettings() constructor {
 	self.colour = c_gray;	
 	
 	/// Current brush width.
-	self.brush_width = 5;
+	self.brushWidth = 5;
 	
 }
 

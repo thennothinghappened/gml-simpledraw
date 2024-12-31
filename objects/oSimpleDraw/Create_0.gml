@@ -55,16 +55,25 @@ fsm.state("none", {
 			return "toolStroke";
 		}
 		
-		if ((mouse.wheel != 0) && keyboard_check(vk_shift)) {
+		if (mouse.wheel != 0) {
 			
-			var tool_index = array_find_index(tools, function(tool) {
-				return tool == self.tool;
-			})
+			if (keyboard_check(vk_shift)) {
+				
+				var tool_index = array_find_index(tools, function(tool) {
+					return tool == self.tool;
+				})
+				
+				tool_index = eucmod(tool_index + mouse.wheel, array_length(tools));
+				tool = tools[tool_index];
+				
+				return;
+			}
 			
-			tool_index = eucmod(tool_index + mouse.wheel, array_length(tools));
-			tool = tools[tool_index];
+			if (keyboard_check(vk_control)) {
+				ts.brushWidth = max(ts.brushWidth + mouse.wheel, 1);
+				return;
+			}
 			
-			return;
 		}
 		
 		if (oCameraCtrl.fsm.run("step") != "none") {
