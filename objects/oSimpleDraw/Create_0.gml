@@ -190,13 +190,20 @@ saveImage = function() {
 	
 };
 
-loadImage = function() {
-	
+/**
+ * Prompt the user to save their canvas if it has been modified since last write.
+ */
+promptToSaveIfModified = function() {
 	if (self.changedSinceWrite) {
 		if (show_question("The canvas has been modified. Do you want to save it first?")) {
 			saveImage();
 		}
 	}
+};
+
+loadImage = function() {
+	
+	self.promptToSaveIfModified();
 
 	var path = get_open_filename("*.png", "");
 	
