@@ -17,8 +17,8 @@
   ],
   "name":"rmUndoTest",
   "parent":{
-    "name":"simpledraw",
-    "path":"simpledraw.yyp",
+    "name":"UndoTest",
+    "path":"folders/UndoTest.yy",
   },
   "parentRoom":null,
   "physicsSettings":{

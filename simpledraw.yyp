@@ -10,6 +10,7 @@
   },
   "defaultScriptType":1,
   "Folders":[
+    {"$GMFolder":"","%Name":"UndoTest","folderPath":"folders/UndoTest.yy","name":"UndoTest","resourceType":"GMFolder","resourceVersion":"2.0",},
     {"$GMFolder":"","%Name":"Objects","folderPath":"folders/Objects.yy","name":"Objects","resourceType":"GMFolder","resourceVersion":"2.0",},
     {"$GMFolder":"","%Name":"Scripts","folderPath":"folders/Scripts.yy","name":"Scripts","resourceType":"GMFolder","resourceVersion":"2.0",},
     {"$GMFolder":"","%Name":"Drawing","folderPath":"folders/Scripts/Drawing.yy","name":"Drawing","resourceType":"GMFolder","resourceVersion":"2.0",},
@@ -38,6 +39,7 @@
     {"id":{"name":"BrushTool","path":"scripts/BrushTool/BrushTool.yy",},},
     {"id":{"name":"Camera","path":"scripts/Camera/Camera.yy",},},
     {"id":{"name":"Canvas","path":"scripts/Canvas/Canvas.yy",},},
+    {"id":{"name":"Draw","path":"scripts/Draw/Draw.yy",},},
     {"id":{"name":"Err","path":"scripts/Err/Err.yy",},},
     {"id":{"name":"eucmod","path":"scripts/eucmod/eucmod.yy",},},
     {"id":{"name":"EventEmitter","path":"scripts/EventEmitter/EventEmitter.yy",},},

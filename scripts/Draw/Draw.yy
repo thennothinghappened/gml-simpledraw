@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"Draw",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"Draw",
+  "parent":{
+    "name":"UndoTest",
+    "path":"folders/UndoTest.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}
