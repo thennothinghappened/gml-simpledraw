@@ -1,0 +1,12 @@
+{
+  "$GMShader":"",
+  "%Name":"shdCanvas",
+  "name":"shdCanvas",
+  "parent":{
+    "name":"simpledraw",
+    "path":"simpledraw.yyp",
+  },
+  "resourceType":"GMShader",
+  "resourceVersion":"2.0",
+  "type":1,
+}

@@ -24,7 +24,7 @@ function StampTool() : Tool() constructor {
 		}
 		
 		var url = get_open_filename("*.png", "");
-					
+		
 		if (string_length(url) == 0) {
 			return;
 		}

@@ -51,6 +51,7 @@
     {"id":{"name":"Tool","path":"scripts/Tool/Tool.yy",},},
     {"id":{"name":"ToolSettings","path":"scripts/ToolSettings/ToolSettings.yy",},},
     {"id":{"name":"toRadians","path":"scripts/toRadians/toRadians.yy",},},
+    {"id":{"name":"shdCanvas","path":"shaders/shdCanvas/shdCanvas.yy",},},
     {"id":{"name":"sCheckerboard","path":"sprites/sCheckerboard/sCheckerboard.yy",},},
     {"id":{"name":"sMissing","path":"sprites/sMissing/sMissing.yy",},},
     {"id":{"name":"sToolBrush","path":"sprites/sToolBrush/sToolBrush.yy",},},

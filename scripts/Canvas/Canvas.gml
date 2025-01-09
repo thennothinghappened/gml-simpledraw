@@ -62,18 +62,26 @@ function Canvas(width, height) constructor {
 	static clear = function() {
 	
 		self.drawAtomic(function() {
-			draw_clear_alpha(c_white, 1);
+			draw_clear_alpha(c_black, 0);
 		});
 		
 	}
 	
-	/// Draw on the surface & immediately save, takes in a method to run for the surface.
-	/// @param {Function} block
-	static drawAtomic = function(block) {
+	/**
+	 * Draw on the surface & immediately save, takes in a method to run for the surface.
+	 * 
+	 * @param {Function} block
+	 * @param {Bool} [blend] Whether alpha-blending should be used. If enabled, we are drawing atop the canvas, not replacing.
+	 */
+	static drawAtomic = function(block, blend = true) {
+		
+		var oldBlendMode = gpu_get_blendmode_ext_sepalpha();
 		
 		self.__ensureSurface();
 		
-		surface_drawto(self.__surf, block);
+		gpu_set_blendmode_ext_sepalpha(bm_src_alpha, bm_inv_src_alpha, bm_one, bm_one);
+			surface_drawto(self.__surf, block);
+		gpu_set_blendmode_ext_sepalpha(oldBlendMode);
 		
 		self.__saveSurface();
 		
