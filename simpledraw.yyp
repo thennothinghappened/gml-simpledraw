@@ -31,7 +31,7 @@
     {"id":{"name":"fntMain","path":"fonts/fntMain/fntMain.yy",},},
     {"id":{"name":"oCameraCtrl","path":"objects/oCameraCtrl/oCameraCtrl.yy",},},
     {"id":{"name":"oSimpleDraw","path":"objects/oSimpleDraw/oSimpleDraw.yy",},},
-    {"id":{"name":"Room","path":"rooms/Room/Room.yy",},},
+    {"id":{"name":"rmMain","path":"rooms/rmMain/rmMain.yy",},},
     {"id":{"name":"AppWindow","path":"scripts/AppWindow/AppWindow.yy",},},
     {"id":{"name":"BrushTool","path":"scripts/BrushTool/BrushTool.yy",},},
     {"id":{"name":"Camera","path":"scripts/Camera/Camera.yy",},},
@@ -40,6 +40,7 @@
     {"id":{"name":"eucmod","path":"scripts/eucmod/eucmod.yy",},},
     {"id":{"name":"EventEmitter","path":"scripts/EventEmitter/EventEmitter.yy",},},
     {"id":{"name":"FSM","path":"scripts/FSM/FSM.yy",},},
+    {"id":{"name":"initialise","path":"scripts/initialise/initialise.yy",},},
     {"id":{"name":"MACROS","path":"scripts/MACROS/MACROS.yy",},},
     {"id":{"name":"Mouse","path":"scripts/Mouse/Mouse.yy",},},
     {"id":{"name":"PixelTool","path":"scripts/PixelTool/PixelTool.yy",},},
@@ -61,7 +62,7 @@
   "resourceType":"GMProject",
   "resourceVersion":"2.0",
   "RoomOrderNodes":[
-    {"roomId":{"name":"Room","path":"rooms/Room/Room.yy",},},
+    {"roomId":{"name":"rmMain","path":"rooms/rmMain/rmMain.yy",},},
   ],
   "templateType":"game",
   "TextureGroups":[

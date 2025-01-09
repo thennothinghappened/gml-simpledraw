@@ -1,18 +1,5 @@
 /// Main controlling instance for gml-simpledraw.
 
-/// "Pre-Initialise"
-prefs.init();
-window.init();
-window.fpsForeground = prefs.data.frameRate;
-
-draw_set_font(fntMain);
-
-font_enable_effects(fntMain, true, {
-	outlineEnable: true,
-	outlineDistance: 1,
-	outlineColour: c_black
-});
-
 /// Current drawing canvas instance.
 canvas = new Canvas(800, 600);
 canvas.clear();
