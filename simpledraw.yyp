@@ -31,7 +31,9 @@
     {"id":{"name":"fntMain","path":"fonts/fntMain/fntMain.yy",},},
     {"id":{"name":"oCameraCtrl","path":"objects/oCameraCtrl/oCameraCtrl.yy",},},
     {"id":{"name":"oSimpleDraw","path":"objects/oSimpleDraw/oSimpleDraw.yy",},},
+    {"id":{"name":"oUndoTest","path":"objects/oUndoTest/oUndoTest.yy",},},
     {"id":{"name":"rmMain","path":"rooms/rmMain/rmMain.yy",},},
+    {"id":{"name":"rmUndoTest","path":"rooms/rmUndoTest/rmUndoTest.yy",},},
     {"id":{"name":"AppWindow","path":"scripts/AppWindow/AppWindow.yy",},},
     {"id":{"name":"BrushTool","path":"scripts/BrushTool/BrushTool.yy",},},
     {"id":{"name":"Camera","path":"scripts/Camera/Camera.yy",},},
@@ -62,6 +64,7 @@
   "resourceType":"GMProject",
   "resourceVersion":"2.0",
   "RoomOrderNodes":[
+    {"roomId":{"name":"rmUndoTest","path":"rooms/rmUndoTest/rmUndoTest.yy",},},
     {"roomId":{"name":"rmMain","path":"rooms/rmMain/rmMain.yy",},},
   ],
   "templateType":"game",
