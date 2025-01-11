@@ -65,7 +65,7 @@ ensureCanvas = function() {
  * This function expects that `self.canvas` is already at an equivalent state to the base. If
  * this is not true, unexpected results will occur.
  * 
- * @param {Real} offset Offset into the command list to begin from. Increase to only execute a sub-portion.
+ * @param {Real} [offset] Offset into the command list to begin from. Increase to only execute a sub-portion.
  */
 applyCommands = function(offset = 0) {
 	
