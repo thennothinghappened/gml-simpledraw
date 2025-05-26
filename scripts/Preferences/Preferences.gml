@@ -120,3 +120,4 @@ function __preferences_get() {
 }
 
 #macro prefs __preferences_get()
+#macro PrefsData prefs.data

@@ -12,7 +12,7 @@ self.fsm.state("none", {
 	
 	step: function() {
 		
-		if (mouse.wheel != 0) {
+		if (Mouse.wheel != 0) {
 			return "zoom";
 		}
 
@@ -27,7 +27,7 @@ self.fsm.state("none", {
 self.fsm.state("rotate", {
 	
 	enter: function() {
-		self.rotateStartPos = mouse.pos[X];
+		self.rotateStartPos = Mouse.x;
 		self.initialRotation = self.camera.rot;
 	},
 	
@@ -38,16 +38,16 @@ self.fsm.state("rotate", {
 		}
 		
 		if (keyboard_check_pressed(vk_alt)) {
-			self.rotateStartPos = mouse.pos[X];
+			self.rotateStartPos = Mouse.x;
 			self.initialRotation = self.camera.rot;
 		}
 		
 		if (!keyboard_check(vk_alt)) {
-			return self.camera.rotateBy(mouse.delta[X] * prefs.data.camRotSpeed);
+			return self.camera.rotateBy(Mouse.deltaX * PrefsData.camRotSpeed);
 		}
 		
 		// Anchor to 8-directional rotation from the start position.
-		var diff = (self.rotateStartPos - mouse.pos[X]) * prefs.data.camRotSpeed;
+		var diff = (self.rotateStartPos - Mouse.x) * PrefsData.camRotSpeed;
 		var newRot = round((self.initialRotation + diff) * 4 / pi) / 4 * pi;
 		
 		self.camera.setRotation(newRot);
@@ -70,21 +70,21 @@ self.fsm.state("zoom", {
 	
 	step: function() {
 
-		if (mouse.wheel == 0) {
+		if (Mouse.wheel == 0) {
 			return "none";
 		}
 
 		var mouseCanvasPosBefore = self.camera.fromScreen(
-			mouse.pos[X],
-			mouse.pos[Y],
+			Mouse.x,
+			Mouse.y,
 			true
 		);
 		
-		self.camera.zoomBy(mouse.wheel * prefs.data.camZoomSpeed * self.camera.zoom);
+		self.camera.zoomBy(Mouse.wheel * PrefsData.camZoomSpeed * self.camera.zoom);
 		
 		var mouseCanvasPosAfter = self.camera.fromScreen(
-			mouse.pos[X],
-			mouse.pos[Y],
+			Mouse.x,
+			Mouse.y,
 			true
 		);
 		
@@ -105,7 +105,7 @@ self.fsm.state("middleClickZoom", {
 			return "none";
 		}
 		
-		self.camera.zoomBy(mouse.delta[Y] * prefs.data.camZoomSpeed * self.camera.zoom * -0.1);
+		self.camera.zoomBy(Mouse.deltaX * PrefsData.camZoomSpeed * self.camera.zoom * -0.1);
 		
 	}
 	
@@ -127,7 +127,7 @@ self.fsm.state("pan", {
 			return "middleClickZoom";
 		}
 		
-		var panDelta = self.camera.fromScreen(mouse.delta[X], mouse.delta[Y], true);
+		var panDelta = self.camera.fromScreen(Mouse.deltaX, Mouse.deltaY, true);
 		self.camera.pan(panDelta[X], panDelta[Y]);
 		
 	}

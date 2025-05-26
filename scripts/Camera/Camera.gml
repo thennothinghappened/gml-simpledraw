@@ -60,7 +60,7 @@ function Camera(x, y, zoom = 1, rot = pi / 2) constructor {
 	 * @param {Real} zoom
 	 */
 	static setZoom = function(zoom) {
-		self.zoom = clamp(zoom, prefs.data.camZoomMin, prefs.data.camZoomMax);
+		self.zoom = clamp(zoom, PrefsData.camZoomMin, PrefsData.camZoomMax);
 		self.recalculateProjMat();
 	};
 	

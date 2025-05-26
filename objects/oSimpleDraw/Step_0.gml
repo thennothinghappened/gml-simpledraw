@@ -1,3 +1,3 @@
 /// Process user actions.
-mouse.update();
+Mouse.update();
 fsm.run("step");

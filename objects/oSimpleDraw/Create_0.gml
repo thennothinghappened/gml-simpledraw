@@ -3,7 +3,7 @@
 /// "Pre-Initialise"
 prefs.init();
 window.init();
-window.fpsForeground = prefs.data.frameRate;
+window.fpsForeground = PrefsData.frameRate;
 
 draw_set_font(fntMain);
 
@@ -81,7 +81,7 @@ fsm.state("none", {
 			return "toolStroke";
 		}
 		
-		if (mouse.wheel != 0) {
+		if (Mouse.wheel != 0) {
 			
 			if (keyboard_check(vk_shift)) {
 				
@@ -89,14 +89,14 @@ fsm.state("none", {
 					return tool == self.tool;
 				})
 				
-				tool_index = eucmod(tool_index + mouse.wheel, array_length(tools));
+				tool_index = eucmod(tool_index + Mouse.wheel, array_length(tools));
 				tool = tools[tool_index];
 				
 				return;
 			}
 			
 			if (keyboard_check(vk_control)) {
-				ts.brushWidth = max(ts.brushWidth + mouse.wheel, 1);
+				ts.brushWidth = max(ts.brushWidth + Mouse.wheel, 1);
 				return;
 			}
 			
@@ -111,7 +111,7 @@ fsm.state("none", {
 	/// Draw the tool's path as it is now.
 	/// @param {Real} duration How long we've been in this state.
 	draw: function(duration) {
-		tool.draw(oCameraCtrl.camera.fromScreen(mouse.pos[X], mouse.pos[Y]));
+		tool.draw(oCameraCtrl.camera.fromScreen(Mouse.x, Mouse.y));
 	}
 	
 });
@@ -128,7 +128,7 @@ fsm.state("toolStroke", {
 	
 	enter: function() {
 		ts.colour = make_color_hsv(irandom(255), 255, 255);
-		tool.beginStroke(oCameraCtrl.camera.fromScreen(mouse.pos[X], mouse.pos[Y]));
+		tool.beginStroke(oCameraCtrl.camera.fromScreen(Mouse.x, Mouse.y));
 	},
 	
 	/**
@@ -140,15 +140,15 @@ fsm.state("toolStroke", {
 			return "none";
 		}
 		
-		if (mouse.moved) {
-			tool.updateStroke(oCameraCtrl.camera.fromScreen(mouse.pos[X], mouse.pos[Y]));
+		if (Mouse.moved) {
+			tool.updateStroke(oCameraCtrl.camera.fromScreen(Mouse.x, Mouse.y));
 		}
 	},
 	
 	/// Draw the tool's path as it is now.
 	/// @param {Real} duration How long we've been in this state.
 	draw: function(duration) {
-		tool.draw(oCameraCtrl.camera.fromScreen(mouse.pos[X], mouse.pos[Y]));
+		tool.draw(oCameraCtrl.camera.fromScreen(Mouse.x, Mouse.y));
 	},
 	
 	/// Complete the stroke.
