@@ -2,10 +2,9 @@
  * @desc Camera controller state-machine thingy! Singleton that works in tandem with the "main game object".
  */
 
-FEATHERHINT {
-	self.camera = new Camera(self.x, self.y);
-}
+FEATHERHINT self.prefsData = new PrefsData();
 
+self.camera = new Camera(self.x, self.y, self.prefsData.camZoomMin, self.prefsData.camZoomMax);
 self.fsm = new FSM("none");
 
 self.fsm.state("none", {
@@ -43,11 +42,11 @@ self.fsm.state("rotate", {
 		}
 		
 		if (!keyboard_check(vk_alt)) {
-			return self.camera.rotateBy(Mouse.deltaX * PrefsData.camRotSpeed);
+			return self.camera.rotateBy(Mouse.deltaX * self.prefsData.camRotSpeed);
 		}
 		
 		// Anchor to 8-directional rotation from the start position.
-		var diff = (self.rotateStartPos - Mouse.x) * PrefsData.camRotSpeed;
+		var diff = (self.rotateStartPos - Mouse.x) * self.prefsData.camRotSpeed;
 		var newRot = round((self.initialRotation + diff) * 4 / pi) / 4 * pi;
 		
 		self.camera.setRotation(newRot);
@@ -80,7 +79,7 @@ self.fsm.state("zoom", {
 			true
 		);
 		
-		self.camera.zoomBy(Mouse.wheel * PrefsData.camZoomSpeed * self.camera.zoom);
+		self.camera.zoomBy(Mouse.wheel * self.prefsData.camZoomSpeed * self.camera.zoom);
 		
 		var mouseCanvasPosAfter = self.camera.fromScreen(
 			Mouse.x,
@@ -105,7 +104,7 @@ self.fsm.state("middleClickZoom", {
 			return "none";
 		}
 		
-		self.camera.zoomBy(Mouse.deltaX * PrefsData.camZoomSpeed * self.camera.zoom * -0.1);
+		self.camera.zoomBy(Mouse.deltaX * self.prefsData.camZoomSpeed * self.camera.zoom * -0.1);
 		
 	}
 	

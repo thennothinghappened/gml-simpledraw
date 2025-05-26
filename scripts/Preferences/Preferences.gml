@@ -4,22 +4,7 @@ function Preferences() constructor {
 	static filename = "preferences.json";
 	
 	/// Preferences data.
-	self.data = {
-		/// How fast the camera rotates.
-		camRotSpeed: 0.01,
-
-		/// How fast the camera zooms.
-		camZoomSpeed: 0.1,
-
-		/// Maximum camera distance.
-		camZoomMax: 100,
-
-		/// Minimum camera distance.
-		camZoomMin: 0.1,
-		
-		/// The frame rate to use... duh.
-		frameRate: 170
-	};
+	self.data = new PrefsData();
 	
 	/// Setup preferences.
 	static init = function() {
@@ -112,12 +97,27 @@ function Preferences() constructor {
 	
 }
 
-function __preferences_get() {
+function PrefsData(
+	camRotSpeed = 0.01,
+	camZoomSpeed = 0.1,
+	camZoomMax = 100,
+	camZoomMin = 0.1,
+	frameRate = 170
+) constructor {
 	
-	static __preferences = new Preferences();
-	return __preferences;
+	/// How fast the camera rotates.
+	self.camRotSpeed = camRotSpeed;
+
+	/// How fast the camera zooms.
+	self.camZoomSpeed = camZoomSpeed;
+
+	/// Maximum camera distance.
+	self.camZoomMax = camZoomMax;
+
+	/// Minimum camera distance.
+	self.camZoomMin = camZoomMin;
+	
+	/// The frame rate to use... duh.
+	self.frameRate = frameRate;
 	
 }
-
-#macro prefs __preferences_get()
-#macro PrefsData prefs.data

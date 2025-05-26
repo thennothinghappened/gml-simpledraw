@@ -27,7 +27,7 @@
   "physicsShapePoints":[],
   "physicsStartAwake":true,
   "properties":[
-    {"$GMObjectProperty":"v1","%Name":"camera","filters":[],"listItems":[],"multiselect":false,"name":"camera","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"new Camera(self.x, self.y)","varType":4,},
+    {"$GMObjectProperty":"v1","%Name":"prefsData","filters":[],"listItems":[],"multiselect":false,"name":"prefsData","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"new PrefsData()","varType":4,},
   ],
   "resourceType":"GMObject",
   "resourceVersion":"2.0",

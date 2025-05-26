@@ -1,9 +1,11 @@
 /// Main controlling instance for gml-simpledraw.
 
 /// "Pre-Initialise"
-prefs.init();
+self.prefs = new Preferences();
+self.prefs.init();
+
 window.init();
-window.fpsForeground = PrefsData.frameRate;
+window.fpsForeground = self.prefs.data.frameRate;
 
 draw_set_font(fntMain);
 
@@ -237,4 +239,5 @@ updateWindowCaption = function() {
 	window_set_caption(game_display_name + (!is_undefined(self.filePath) ? $" - {self.filePath}" : "") + (self.changedSinceWrite ? " *" : ""));
 };
 
-instance_create_depth(canvas.width / 2, canvas.height / 2, 0, oCameraCtrl);
+var this = self;
+instance_create_depth(canvas.width / 2, canvas.height / 2, 0, oCameraCtrl, { prefsData: this.prefs.data });

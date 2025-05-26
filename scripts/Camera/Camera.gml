@@ -1,14 +1,18 @@
 /**
  * Wrapper for a camera that behaves how we're wanting for viewing the canvas.
  */
-function Camera(x, y, zoom = 1, rot = pi / 2) constructor {
+function Camera(x, y, zoomMin, zoomMax, initialZoom = 1, initialRotation = pi / 2) constructor {
 	
 	self.camera = camera_create();
 	
 	self.x = x;
 	self.y = y;
-	self.zoom = zoom;
-	self.rot = rot;
+	
+	self.zoom = initialZoom;
+	self.zoomMin = zoomMin;
+	self.zoomMax = zoomMax;
+	
+	self.rot = initialRotation;
 	
 	self.recalculateViewMat();
 	self.recalculateProjMat();
@@ -60,7 +64,7 @@ function Camera(x, y, zoom = 1, rot = pi / 2) constructor {
 	 * @param {Real} zoom
 	 */
 	static setZoom = function(zoom) {
-		self.zoom = clamp(zoom, PrefsData.camZoomMin, PrefsData.camZoomMax);
+		self.zoom = clamp(zoom, self.zoomMin, self.zoomMax);
 		self.recalculateProjMat();
 	};
 	
