@@ -23,3 +23,10 @@ __isGMRT();
 
 #macro IsWindows (os_type == os_windows)
 #macro IsWindowsCR (IsWindows && !IsGMRT)
+
+/**
+ * Pointless function that fixes Feather's confusion with FSM function binding.
+ */
+function ident(func) {
+	return method(self, func);
+}

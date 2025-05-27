@@ -2,38 +2,46 @@
  * @desc Camera controller state-machine thingy! Singleton that works in tandem with the "main game object".
  */
 
+enum CameraState {
+	None,
+	Rotate,
+	Zoom,
+	MiddleClickZoom,
+	Pan
+}
+
 FEATHERHINT self.prefsData = new PrefsData();
 
 self.camera = new Camera(self.x, self.y, self.prefsData.camZoomMin, self.prefsData.camZoomMax);
-self.fsm = new FSM("none");
+self.fsm = new FSM(CameraState.None);
 
-self.fsm.state("none", {
+self.fsm.state(CameraState.None, {
 	
 	step: function() {
 		
 		if (Mouse.wheel != 0) {
-			return "zoom";
+			return CameraState.Zoom;
 		}
 
 		if (mouse_check_button(mb_middle)) {
-			return "pan";
+			return CameraState.Pan;
 		}
 		
 	}
 	
 });
 
-self.fsm.state("rotate", {
+self.fsm.state(CameraState.Rotate, {
 	
-	enter: function() {
+	enter: ident(function() {
 		self.rotateStartPos = Mouse.x;
 		self.initialRotation = self.camera.rot;
-	},
+	}),
 	
-	step: function() {
+	step: ident(function() {
 		
 		if (!mouse_check_button(mb_middle) || !keyboard_check(vk_shift)) {
-			return "none";
+			return CameraState.None;
 		}
 		
 		if (keyboard_check_pressed(vk_alt)) {
@@ -51,26 +59,26 @@ self.fsm.state("rotate", {
 		
 		self.camera.setRotation(newRot);
 		
-	},
+	}),
 	
-	leave: function() {
+	leave: ident(function() {
 		self.rotateStartPos = undefined;
 		self.initialRotation = undefined;
-	}
+	})
 	
 });
 
-self.fsm.state("zoom", {
+self.fsm.state(CameraState.Zoom, {
 	
-	enter: function() {
+	enter: ident(function() {
 		// Cheating a bit so we don't lose a singular scroll input.
 		self.fsm.run("step");
-	},
+	}),
 	
-	step: function() {
+	step: ident(function() {
 
 		if (Mouse.wheel == 0) {
-			return "none";
+			return CameraState.None;
 		}
 
 		var mouseCanvasPosBefore = self.camera.fromScreen(
@@ -92,44 +100,44 @@ self.fsm.state("zoom", {
 			mouseCanvasPosBefore[Y] - mouseCanvasPosAfter[Y]
 		);
 		
-	}
+	})
 	
 });
 
-self.fsm.state("middleClickZoom", {
+self.fsm.state(CameraState.MiddleClickZoom, {
 	
-	step: function() {
+	step: ident(function() {
 
 		if (!mouse_check_button(mb_middle) || !keyboard_check(vk_control)) {
-			return "none";
+			return CameraState.None;
 		}
 		
 		self.camera.zoomBy(Mouse.deltaX * self.prefsData.camZoomSpeed * self.camera.zoom * -0.1);
 		
-	}
+	})
 	
 });
 
-self.fsm.state("pan", {
+self.fsm.state(CameraState.Pan, {
 	
-	step: function() {
+	step: ident(function() {
 
 		if (!mouse_check_button(mb_middle)) {
-			return "none";
+			return CameraState.None;
 		}
 		
 		if (keyboard_check(vk_shift)) {
-			return "rotate";
+			return CameraState.Rotate;
 		}
 		
 		if (keyboard_check(vk_control)) {
-			return "middleClickZoom";
+			return CameraState.MiddleClickZoom;
 		}
 		
 		var panDelta = self.camera.fromScreen(Mouse.deltaX, Mouse.deltaY, true);
 		self.camera.pan(panDelta[X], panDelta[Y]);
 		
-	}
+	})
 	
 });
 

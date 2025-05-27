@@ -38,20 +38,23 @@ self.changedSinceWrite = false;
  * Path to the current document on disk.
  */
 self.filePath = undefined;
+FEATHERHINT self.filePath = "";
 
-FEATHERHINT {
-	self.filePath = "";
+enum ProgramState {
+	None,
+	CameraMove,
+	ToolStroke
 }
 
-fsm = new FSM("none");
+fsm = new FSM(ProgramState.None);
 
-fsm.state("none", {
+fsm.state(ProgramState.None, {
 	
 	/**
 	 * @param {Real} duration How long we've been in this state.
-	 * @returns {String|undefined}
+	 * @returns {Real|undefined}
 	 */
-	step: function(duration) {
+	step: ident(function(duration) {
 		
 		var status = tool.update();
 		
@@ -80,7 +83,7 @@ fsm.state("none", {
 		}
 		
 		if (mouse_check_button(mb_left)) {
-			return "toolStroke";
+			return ProgramState.ToolStroke;
 		}
 		
 		if (Mouse.wheel != 0) {
@@ -104,59 +107,59 @@ fsm.state("none", {
 			
 		}
 		
-		if (oCameraCtrl.fsm.run("step") != "none") {
-			return "cameraMove";
+		if (oCameraCtrl.fsm.run("step") != CameraState.None) {
+			return ProgramState.CameraMove;
 		}
 		
-	},
+	}),
 
 	/// Draw the tool's path as it is now.
 	/// @param {Real} duration How long we've been in this state.
-	draw: function(duration) {
+	draw: ident(function(duration) {
 		tool.draw(oCameraCtrl.camera.fromScreen(Mouse.x, Mouse.y));
-	}
+	})
 	
 });
 
-fsm.state("cameraMove", {
-	step: function() {
-		if (oCameraCtrl.fsm.run("step") == "none") {
-			return "none";
+fsm.state(ProgramState.CameraMove, {
+	step: ident(function() {
+		if (oCameraCtrl.fsm.run("step") == CameraState.None) {
+			return ProgramState.None;
 		}
-	}
+	})
 });
 
-fsm.state("toolStroke", {
+fsm.state(ProgramState.ToolStroke, {
 	
-	enter: function() {
+	enter: ident(function() {
 		ts.colour = make_color_hsv(irandom(255), 255, 255);
 		tool.beginStroke(oCameraCtrl.camera.fromScreen(Mouse.x, Mouse.y));
-	},
+	}),
 	
 	/**
 	 * @param {Real} duration How long we've been in this state.
 	 */
-	step: function(duration) {
+	step: ident(function(duration) {
 		
 		if (!mouse_check_button(mb_left)) {
-			return "none";
+			return ProgramState.None;
 		}
 		
 		if (Mouse.moved) {
 			tool.updateStroke(oCameraCtrl.camera.fromScreen(Mouse.x, Mouse.y));
 		}
-	},
+	}),
 	
 	/// Draw the tool's path as it is now.
 	/// @param {Real} duration How long we've been in this state.
-	draw: function(duration) {
+	draw: ident(function(duration) {
 		tool.draw(oCameraCtrl.camera.fromScreen(Mouse.x, Mouse.y));
-	},
+	}),
 	
 	/// Complete the stroke.
-	leave: function() {
+	leave: ident(function() {
 		tool.endStroke();
-	}
+	})
 
 });
 
