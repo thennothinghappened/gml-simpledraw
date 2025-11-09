@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"EyedropperTool",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"EyedropperTool",
+  "parent":{
+    "name":"Tools",
+    "path":"folders/Scripts/Tools.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

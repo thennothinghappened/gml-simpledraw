@@ -23,7 +23,8 @@ canvas.clear();
 tools = [
 	new BrushTool(),
 	new PixelTool(),
-	new StampTool()
+	new StampTool(),
+	new EyedropperTool()
 ];
 
 /// Current tool.
@@ -132,7 +133,7 @@ fsm.state(ProgramState.CameraMove, {
 fsm.state(ProgramState.ToolStroke, {
 	
 	enter: ident(function() {
-		ts.colour = make_color_hsv(irandom(255), 255, 255);
+		//ts.colour = make_color_hsv(irandom(255), 255, 255);
 		tool.beginStroke(oCameraCtrl.camera.fromScreen(Mouse.x, Mouse.y));
 	}),
 	
@@ -146,7 +147,7 @@ fsm.state(ProgramState.ToolStroke, {
 		}
 		
 		if (Mouse.moved) {
-			tool.updateStroke(oCameraCtrl.camera.fromScreen(Mouse.x, Mouse.y));
+			tool.updateStroke(oCameraCtrl.camera.fromScreen(Mouse.x, Mouse.y), canvas);
 		}
 	}),
 	
