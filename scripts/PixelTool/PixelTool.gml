@@ -64,14 +64,10 @@ function PixelTool() : Tool() constructor {
 		draw_set_color(ts.colour);
 		
 		array_reduce(self.mouse_path, function(prev, curr) {
-			
-			static osOffset = (IsWindowsCR ? -0.5 : 0.5);
-			
 			draw_rectangle(prev[X], prev[Y], prev[X], prev[Y], false);
-			draw_line_width(prev[X] + osOffset, prev[Y] + osOffset, curr[X] + osOffset, curr[Y] + osOffset, 1);
+			draw_line_width(prev[X], prev[Y], curr[X], curr[Y], 1);
 			
 			return curr;
-			
 		});
 		
 		draw_point(mouse_canvas_pos[X], mouse_canvas_pos[Y]);
@@ -82,15 +78,15 @@ function PixelTool() : Tool() constructor {
 	/// @param {Array<Real>} mouse_canvas_pos Current position of the mouse on the canvas.
 	static draw = function(mouse_canvas_pos) {
 
-		var floored = array_map(mouse_canvas_pos, floor);
+		var topLeft = array_map(mouse_canvas_pos, floor);
 
 		if (self.state != ToolStrokeState.None) {
-			self.drawCanvasPath(floored);
+			self.drawCanvasPath(topLeft);
 		}
 		
 		/// Draw the mouse overlay.
 		gpu_set_blendmode(bm_subtract);
-		draw_rectangle(floored[X], floored[Y], floored[X] + real(!IsWindowsCR), floored[Y] + real(!IsWindowsCR), true);
+		draw_rectangle(topLeft[X], topLeft[Y], topLeft[X] + 1, topLeft[Y] + 1, true);
 		gpu_set_blendmode(bm_normal);
 		
 	}
